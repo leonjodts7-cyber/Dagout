@@ -1,65 +1,111 @@
-import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import HeroSearch from "@/components/HeroSearch";
+import FilterSearchBar from "@/components/FilterSearchBar";
+import CategoryIcon from "@/components/CategoryIcon";
+import PopularActivityCard from "@/components/PopularActivityCard";
+import ForProvidersCTA from "@/components/ForProvidersCTA";
+import ToolsSection from "@/components/ToolsSection";
+import { CATEGORIES } from "@/lib/constants";
+import { getPopularProviders } from "@/lib/providers";
 
-export default function Home() {
+export default function HomePage() {
+  const popularProviders = getPopularProviders();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <Navbar />
+
+      <main className="flex-1">
+        {/* Sectie A — AI zoeken */}
+        <section className="relative overflow-hidden bg-[#0a2a1f] px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
+          <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#1D9E75]/10 blur-3xl" />
+
+          <div className="relative mx-auto max-w-4xl text-center">
+            <h1 className="text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Beschrijf jullie perfecte dag.
+            </h1>
+            <p className="mt-3 text-4xl font-extrabold leading-[1.08] tracking-tight text-[#1D9E75] sm:text-5xl lg:text-6xl">
+              Onze AI regelt de rest.
+            </p>
+            <div className="mx-auto mt-12 w-full max-w-3xl">
+              <HeroSearch />
+            </div>
+          </div>
+        </section>
+
+        {/* Sectie B — Filter zoeken */}
+        <section className="border-b border-gray-100 bg-white px-6 py-12 sm:py-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-center text-2xl font-bold text-gray-900 sm:text-3xl">
+              Of zoek op filters
+            </h2>
+            <div className="mt-8">
+              <FilterSearchBar />
+            </div>
+            <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-gray-500">
+              Gebruik filters voor een snelle selectie, of beschrijf jullie dag
+              hierboven voor AI-aanbevelingen
+            </p>
+          </div>
+        </section>
+
+        {/* Categorieën */}
+        <section className="bg-[#f8f9fa] px-6 py-24 sm:py-32">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="text-center text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              Wat zoeken jullie?
+            </h2>
+            <div className="mt-14 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+              {CATEGORIES.map((category) => (
+                <Link
+                  key={category.slug}
+                  href={`/zoeken?categorie=${encodeURIComponent(category.name)}`}
+                  className="group flex flex-col items-center rounded-2xl border border-gray-200/60 bg-white p-8 text-center shadow-sm transition-all duration-300 hover:border-[#1D9E75] hover:bg-[#1D9E75] hover:shadow-lg sm:p-10"
+                >
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1D9E75]/10 transition-all duration-300 group-hover:bg-white/20">
+                    <CategoryIcon
+                      slug={category.slug}
+                      className="h-10 w-10 text-[#1D9E75] transition-colors duration-300 group-hover:text-white"
+                    />
+                  </div>
+                  <h3 className="mt-5 text-lg font-bold text-gray-900 transition-colors duration-300 group-hover:text-white sm:text-xl">
+                    {category.name}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Populaire activiteiten */}
+        <section className="bg-white px-6 py-24 sm:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-14 flex flex-wrap items-end justify-between gap-4">
+              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                Ontdek wat mogelijk is
+              </h2>
+              <Link
+                href="/zoeken"
+                className="text-sm font-semibold text-[#1D9E75] transition-colors hover:text-[#178a66]"
+              >
+                Bekijk alles &rarr;
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {popularProviders.map((provider) => (
+                <PopularActivityCard key={provider.id} provider={provider} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <ToolsSection />
+        <ForProvidersCTA />
       </main>
-    </div>
+
+      <Footer />
+    </>
   );
 }
