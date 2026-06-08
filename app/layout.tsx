@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Dagout.be",
   },
   description:
-    "Vind en plan de perfecte teambuilding activiteit voor uw team. AI-zoekfunctie en interactieve kaart voor bedrijven in België.",
+    "Vind en plan de perfecte teambuilding activiteit voor je team. AI-zoekfunctie en interactieve kaart voor bedrijven in België.",
   openGraph: {
     type: "website",
     locale: "nl_BE",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: "Dagout.be",
     title: "Dagout.be — Teambuilding platform",
     description:
-      "Vind en plan de perfecte teambuilding activiteit voor uw team in Vlaanderen.",
+      "Vind en plan de perfecte teambuilding activiteit voor je team in Vlaanderen.",
   },
   twitter: {
     card: "summary_large_image",

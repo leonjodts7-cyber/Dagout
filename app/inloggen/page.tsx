@@ -74,7 +74,7 @@ function AuthPageContent() {
     if (registerPassword.length < 6) {
       setMessage({
         type: "error",
-        text: "Uw wachtwoord moet minimaal 6 tekens bevatten.",
+        text: "Je wachtwoord moet minimaal 6 tekens bevatten.",
       });
       setLoading(false);
       return;
@@ -116,7 +116,7 @@ function AuthPageContent() {
       } else {
         setMessage({
           type: "success",
-          text: "Account aangemaakt. Controleer uw e-mail om uw account te bevestigen.",
+          text: "Account aangemaakt. Controleer je e-mail om je account te bevestigen.",
         });
       }
     } catch (err) {
@@ -135,7 +135,7 @@ function AuthPageContent() {
     if (!loginEmail) {
       setMessage({
         type: "error",
-        text: "Vul eerst uw e-mailadres in om uw wachtwoord te resetten.",
+        text: "Vul eerst je e-mailadres in om je wachtwoord te resetten.",
       });
       return;
     }
@@ -151,7 +151,7 @@ function AuthPageContent() {
       if (error) throw error;
       setMessage({
         type: "success",
-        text: "Resetlink verzonden. Controleer uw inbox.",
+        text: "Resetlink verzonden. Controleer je inbox.",
       });
     } catch (err) {
       setMessage({

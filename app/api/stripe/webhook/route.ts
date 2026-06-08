@@ -39,20 +39,25 @@ export async function POST(request: NextRequest) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const userId = session.metadata?.user_id;
+    const planTier =
+      session.metadata?.plan_tier === "basis" ? "basis" : "pro";
 
     if (userId) {
       await supabase.from("profiles").upsert({
         id: userId,
-        is_pro: true,
+        is_pro: planTier === "pro",
+        plan_tier: planTier,
         stripe_customer_id: session.customer as string,
         stripe_subscription_id: session.subscription as string,
       });
 
-      await supabase
-        .from("listings")
-        .update({ featured: true })
-        .eq("user_id", userId)
-        .eq("status", "active");
+      if (planTier === "pro") {
+        await supabase
+          .from("listings")
+          .update({ featured: true })
+          .eq("user_id", userId)
+          .eq("status", "active");
+      }
     }
   }
 
@@ -69,7 +74,11 @@ export async function POST(request: NextRequest) {
     if (profile) {
       await supabase
         .from("profiles")
-        .update({ is_pro: false, stripe_subscription_id: null })
+        .update({
+          is_pro: false,
+          plan_tier: "free",
+          stripe_subscription_id: null,
+        })
         .eq("id", profile.id);
 
       await supabase

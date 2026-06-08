@@ -18,6 +18,10 @@ import {
   type ListingFormData,
 } from "@/lib/listing-types";
 
+import { loadListingForEdit } from "@/lib/listing-edit";
+import { getListingLimit, resolvePlanTier } from "@/lib/provider-plans";
+import type { DbProfile } from "@/lib/listing-types";
+
 const LANGUAGE_OPTIONS = ["Nederlands", "Frans", "Engels", "Duits"];
 const MAX_IMAGES = 10;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -39,31 +43,64 @@ function getVideoEmbed(url: string): string | null {
   return null;
 }
 
-export default function NewListingForm() {
+export default function NewListingForm({ listingId }: { listingId?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isEdit = Boolean(listingId);
   const [form, setForm] = useState<ListingFormData>(defaultFormData());
   const [images, setImages] = useState<ImagePreview[]>([]);
+  const [existingImageUrls, setExistingImageUrls] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [includeInput, setIncludeInput] = useState("");
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedPlan, setSelectedPlan] = useState<"free" | "pro" | null>(null);
-  const [showProNotice, setShowProNotice] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<"free" | "basis" | "pro" | null>(null);
+  const [userProfile, setUserProfile] = useState<DbProfile | null>(null);
+  const [listingLoaded, setListingLoaded] = useState(!listingId);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
     createBrowserSupabase()
       .auth.getUser()
-      .then(({ data }) => {
-        if (!data.user) router.replace("/inloggen?redirect=/aanbieders/nieuw");
+      .then(async ({ data }) => {
+        if (!data.user) {
+          router.replace(
+            `/inloggen?redirect=${isEdit ? `/dashboard/activiteit/${listingId}/bewerken` : "/aanbieders/nieuw"}`
+          );
+          return;
+        }
+
+        const supabase = createBrowserSupabase();
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", data.user.id)
+          .maybeSingle();
+        setUserProfile(profileData as DbProfile | null);
+
+        if (listingId) {
+          const loaded = await loadListingForEdit(
+            supabase,
+            listingId,
+            data.user.id
+          );
+          if (!loaded) {
+            router.replace("/dashboard#activiteiten");
+            return;
+          }
+          setForm(loaded.form);
+          setExistingImageUrls(loaded.existingImageUrls);
+        }
+
+        setListingLoaded(true);
         setAuthChecked(true);
       });
-  }, [router]);
+  }, [router, listingId, isEdit]);
 
   useEffect(() => {
+    if (isEdit) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -83,25 +120,55 @@ export default function NewListingForm() {
     });
 
     return () => observer.disconnect();
-  }, [authChecked]);
+  }, [authChecked, isEdit]);
 
   useEffect(() => {
+    if (isEdit) return;
     if (searchParams.get("pro") === "true") {
       setSelectedPlan("pro");
-      setShowProNotice(true);
       setTimeout(() => {
         document.getElementById("listing-form")?.scrollIntoView({ behavior: "smooth" });
       }, 300);
     }
-  }, [searchParams]);
+  }, [searchParams, isEdit]);
 
-  function scrollToForm(plan: "free" | "pro") {
-    setSelectedPlan(plan);
-    setShowProNotice(plan === "pro");
-    if (plan === "pro") {
-      router.replace("/aanbieders/nieuw?pro=true", { scroll: false });
+  async function startCheckout(plan: "basis" | "pro") {
+    const supabase = createBrowserSupabase();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      router.push(`/inloggen?redirect=/aanbieders/nieuw`);
+      return;
     }
+
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ plan }),
+    });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+  }
+
+  function scrollToForm(plan: "free" | "basis" | "pro") {
+    if (plan === "basis") {
+      void startCheckout("basis");
+      return;
+    }
+    if (plan === "pro") {
+      void startCheckout("pro");
+      return;
+    }
+    setSelectedPlan(plan);
     document.getElementById("listing-form")?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function removeExistingImage(url: string) {
+    setExistingImageUrls((prev) => prev.filter((u) => u !== url));
   }
 
   function updateForm<K extends keyof ListingFormData>(
@@ -177,46 +244,103 @@ export default function NewListingForm() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) throw new Error("U bent niet ingelogd.");
+      if (!user) throw new Error("Je bent niet ingelogd.");
 
-      const { data: listing, error: insertError } = await supabase
-        .from("listings")
-        .insert({
-          user_id: user.id,
-          name: form.name,
-          category: form.category,
-          short_description: form.shortDescription,
-          full_description: form.fullDescription,
-          indoor_outdoor: form.indoorOutdoor,
-          company_name: form.companyName,
-          street_address: form.streetAddress,
-          city: form.city,
-          postal_code: form.postalCode,
-          region: form.region,
-          website: form.website || null,
-          phone: form.phone || null,
-          contact_email: form.contactEmail || null,
-          min_persons: form.minPersons,
-          max_persons: form.maxPersons,
-          duration: form.duration,
-          price_from: form.priceOnRequest ? null : parseFloat(form.priceFrom) || null,
-          price_on_request: form.priceOnRequest,
-          video_url: form.videoUrl || null,
-          certificates: form.certificates || null,
-          languages: form.languages,
-          image_urls: [],
-          status: "pending",
-        })
-        .select("id")
-        .single();
+      if (!isEdit) {
+        const { count } = await supabase
+          .from("listings")
+          .select("*", { count: "exact", head: true })
+          .eq("user_id", user.id);
 
-      if (insertError || !listing) throw insertError ?? new Error("Opslaan mislukt");
+        const limit = getListingLimit(userProfile);
+        if ((count ?? 0) >= limit) {
+          setError(
+            "Upgrade naar Basis of Pro voor meer listings. Je huidige plan staat maximaal 1 listing toe."
+          );
+          setLoading(false);
+          return;
+        }
+      }
 
-      const imageUrls: string[] = [];
+      let targetListingId = listingId;
+
+      if (isEdit && listingId) {
+        const { error: updateError } = await supabase
+          .from("listings")
+          .update({
+            name: form.name,
+            category: form.category,
+            short_description: form.shortDescription,
+            full_description: form.fullDescription,
+            indoor_outdoor: form.indoorOutdoor,
+            company_name: form.companyName,
+            street_address: form.streetAddress,
+            city: form.city,
+            postal_code: form.postalCode,
+            region: form.region,
+            website: form.website || null,
+            phone: form.phone || null,
+            contact_email: form.contactEmail || null,
+            min_persons: form.minPersons,
+            max_persons: form.maxPersons,
+            duration: form.duration,
+            price_from: form.priceOnRequest
+              ? null
+              : parseFloat(form.priceFrom) || null,
+            price_on_request: form.priceOnRequest,
+            video_url: form.videoUrl || null,
+            certificates: form.certificates || null,
+            languages: form.languages,
+          })
+          .eq("id", listingId)
+          .eq("user_id", user.id);
+
+        if (updateError) throw updateError;
+      } else {
+        const { data: listing, error: insertError } = await supabase
+          .from("listings")
+          .insert({
+            user_id: user.id,
+            name: form.name,
+            category: form.category,
+            short_description: form.shortDescription,
+            full_description: form.fullDescription,
+            indoor_outdoor: form.indoorOutdoor,
+            company_name: form.companyName,
+            street_address: form.streetAddress,
+            city: form.city,
+            postal_code: form.postalCode,
+            region: form.region,
+            website: form.website || null,
+            phone: form.phone || null,
+            contact_email: form.contactEmail || null,
+            min_persons: form.minPersons,
+            max_persons: form.maxPersons,
+            duration: form.duration,
+            price_from: form.priceOnRequest
+              ? null
+              : parseFloat(form.priceFrom) || null,
+            price_on_request: form.priceOnRequest,
+            video_url: form.videoUrl || null,
+            certificates: form.certificates || null,
+            languages: form.languages,
+            image_urls: [],
+            status: "pending",
+          })
+          .select("id")
+          .single();
+
+        if (insertError || !listing) {
+          throw insertError ?? new Error("Opslaan mislukt");
+        }
+        targetListingId = listing.id as string;
+      }
+
+      const imageUrls: string[] = [...existingImageUrls];
       for (let i = 0; i < images.length; i++) {
         const img = images[i];
         const ext = img.file.name.split(".").pop() ?? "jpg";
-        const path = `${user.id}/${listing.id}/${i}-${Date.now()}.${ext}`;
+        const path = `${user.id}/${targetListingId}/${i}-${Date.now()}.${ext}`;
         const { error: uploadError } = await supabase.storage
           .from("listing-images")
           .upload(path, img.file, { upsert: true });
@@ -227,39 +351,53 @@ export default function NewListingForm() {
         imageUrls.push(urlData.publicUrl);
       }
 
-      if (imageUrls.length > 0) {
+      if (targetListingId) {
         await supabase
           .from("listings")
           .update({ image_urls: imageUrls })
-          .eq("id", listing.id);
+          .eq("id", targetListingId);
+
+        await supabase
+          .from("opening_hours")
+          .delete()
+          .eq("listing_id", targetListingId);
+        const hoursRows = form.openingHours.map((h) => ({
+          listing_id: targetListingId,
+          day_of_week: h.dayOfWeek,
+          is_closed: h.isClosed,
+          time_from: h.isClosed ? null : h.timeFrom,
+          time_to: h.isClosed ? null : h.timeTo,
+        }));
+        await supabase.from("opening_hours").insert(hoursRows);
+
+        await supabase
+          .from("listing_includes")
+          .delete()
+          .eq("listing_id", targetListingId);
+        if (form.includes.length > 0) {
+          await supabase.from("listing_includes").insert(
+            form.includes.map((item, i) => ({
+              listing_id: targetListingId,
+              item,
+              sort_order: i,
+            }))
+          );
+        }
+
+        await supabase
+          .from("listing_tags")
+          .delete()
+          .eq("listing_id", targetListingId);
+        if (form.tags.length > 0) {
+          await supabase.from("listing_tags").insert(
+            form.tags.map((tag) => ({ listing_id: targetListingId, tag }))
+          );
+        }
       }
 
-      const hoursRows = form.openingHours.map((h) => ({
-        listing_id: listing.id,
-        day_of_week: h.dayOfWeek,
-        is_closed: h.isClosed,
-        time_from: h.isClosed ? null : h.timeFrom,
-        time_to: h.isClosed ? null : h.timeTo,
-      }));
-      await supabase.from("opening_hours").insert(hoursRows);
-
-      if (form.includes.length > 0) {
-        await supabase.from("listing_includes").insert(
-          form.includes.map((item, i) => ({
-            listing_id: listing.id,
-            item,
-            sort_order: i,
-          }))
-        );
-      }
-
-      if (form.tags.length > 0) {
-        await supabase.from("listing_tags").insert(
-          form.tags.map((tag) => ({ listing_id: listing.id, tag }))
-        );
-      }
-
-      router.push("/dashboard?success=listing");
+      router.push(
+        isEdit ? "/dashboard?success=updated#activiteiten" : "/dashboard?success=listing"
+      );
     } catch (err) {
       setError(
         translateFormError(
@@ -271,7 +409,7 @@ export default function NewListingForm() {
     }
   }
 
-  if (!authChecked) {
+  if (!authChecked || !listingLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="ai-loader" />
@@ -288,36 +426,53 @@ export default function NewListingForm() {
       <Navbar />
       <div className="min-h-screen bg-gray-50 pb-20">
         <PageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Voor aanbieders", href: "/aanbieders/nieuw" },
-            { label: "Nieuwe activiteit" },
-          ]}
+          breadcrumbs={
+            isEdit
+              ? [
+                  { label: "Home", href: "/" },
+                  { label: "Dashboard", href: "/dashboard" },
+                  { label: "Activiteit bewerken" },
+                ]
+              : [
+                  { label: "Home", href: "/" },
+                  { label: "Voor aanbieders", href: "/aanbieders/nieuw" },
+                  { label: "Nieuwe activiteit" },
+                ]
+          }
         />
 
-        <section className="bg-[#0a2a1f] px-6 py-16 text-center text-white">
-          <h1 className="text-3xl font-extrabold sm:text-4xl">
-            Lijst je activiteit op Dagout
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-white/75">
-            Bereik bedrijven die op zoek zijn naar teambuilding in Vlaanderen.
-            Kies een plan en vul het formulier in — goedkeuring binnen 48 uur.
-          </p>
-        </section>
-
-        <ProviderPlanSection
-          onSelectFree={() => scrollToForm("free")}
-          onSelectPro={() => scrollToForm("pro")}
-        />
-
-        {showProNotice && (
-          <div className="border-b border-amber-200 bg-amber-50 px-6 py-4 text-center text-sm text-amber-900">
-            Je hebt Pro gekozen. Maak eerst je listing aan — je kunt Pro
-            activeren via Stripe zodra je listing live staat.
-          </div>
+        {!isEdit && (
+          <section className="bg-[#0a2a1f] px-6 py-16 text-center text-white">
+            <h1 className="text-3xl font-extrabold sm:text-4xl">
+              Lijst je activiteit op Dagout
+            </h1>
+            <p className="mx-auto mt-4 max-w-xl text-white/75">
+              Bereik bedrijven die op zoek zijn naar teambuilding in Vlaanderen.
+              Kies een plan en vul het formulier in — goedkeuring binnen 48 uur.
+            </p>
+          </section>
         )}
 
-        {selectedPlan && !showProNotice && (
+        {isEdit && (
+          <section className="border-b border-gray-200 bg-white px-6 py-10">
+            <h1 className="text-center text-3xl font-extrabold text-gray-900">
+              Activiteit bewerken
+            </h1>
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
+              Pas je listing aan en sla op. Wijzigingen worden opnieuw beoordeeld indien nodig.
+            </p>
+          </section>
+        )}
+
+        {!isEdit && (
+          <ProviderPlanSection
+            onSelectFree={() => scrollToForm("free")}
+            onSelectBasis={() => scrollToForm("basis")}
+            onSelectPro={() => scrollToForm("pro")}
+          />
+        )}
+
+        {!isEdit && selectedPlan === "free" && (
           <div className="border-b border-[#1D9E75]/20 bg-[#1D9E75]/5 px-6 py-3 text-center text-sm text-[#0a2a1f]">
             Gratis plan geselecteerd — vul hieronder je activiteit in.
           </div>
@@ -327,7 +482,7 @@ export default function NewListingForm() {
         <div className="sticky top-[65px] z-20 border-b border-gray-200 bg-white shadow-sm">
           <div className="mx-auto max-w-4xl px-6 py-4">
             <h2 className="text-lg font-bold text-gray-900">
-              Activiteit toevoegen
+              {isEdit ? "Activiteit bijwerken" : "Activiteit toevoegen"}
             </h2>
             <div className="mt-4 flex gap-1 overflow-x-auto">
               {FORM_STEPS.map((step, i) => (
@@ -767,6 +922,26 @@ export default function NewListingForm() {
             <h2 className="text-lg font-semibold text-gray-900">
               6. Foto&apos;s en video&apos;s
             </h2>
+            {existingImageUrls.length > 0 && (
+              <div className="mt-4">
+                <p className="text-sm font-medium text-gray-700">Huidige foto&apos;s</p>
+                <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-5">
+                  {existingImageUrls.map((url, i) => (
+                    <div key={url} className="relative aspect-square overflow-hidden rounded-lg">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={url} alt={`Foto ${i + 1}`} className="h-full w-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => removeExistingImage(url)}
+                        className="absolute right-1 top-1 rounded-full bg-black/50 px-1.5 text-xs text-white hover:bg-black/70"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
@@ -940,7 +1115,11 @@ export default function NewListingForm() {
               disabled={loading}
               className="rounded-xl bg-[#1D9E75] px-8 py-3.5 text-sm font-semibold text-white hover:bg-[#178a66] disabled:opacity-50"
             >
-              {loading ? "Bezig met indienen..." : "Activiteit indienen ter goedkeuring"}
+              {loading
+                ? "Bezig met opslaan..."
+                : isEdit
+                  ? "Wijzigingen opslaan"
+                  : "Activiteit indienen ter goedkeuring"}
             </button>
           </div>
         </form>

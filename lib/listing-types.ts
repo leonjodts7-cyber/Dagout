@@ -141,6 +141,10 @@ export interface DbListing {
   max_persons: number | null;
   price_from: number | null;
   website: string | null;
+  city: string | null;
+  region: string | null;
+  image_urls: string[] | null;
+  rejection_reason: string | null;
 }
 
 export interface DbInquiry {
@@ -166,6 +170,7 @@ export interface DbProfile {
   website: string | null;
   is_provider: boolean | null;
   is_pro: boolean | null;
+  plan_tier: "free" | "basis" | "pro" | null;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
 }

@@ -15,3 +15,19 @@ export function formatDateNl(date: Date = new Date()): string {
     year: "numeric",
   });
 }
+
+export function formatDateShortNl(
+  date: Date | string = new Date()
+): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return d.toLocaleDateString("nl-BE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+export function capitalizeFirst(text: string): string {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}

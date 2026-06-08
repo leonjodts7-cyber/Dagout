@@ -7,7 +7,8 @@ import { createBrowserSupabase } from "@/lib/supabase/client";
 import { useEscapeKey } from "@/lib/hooks/useEscapeKey";
 import type { User } from "@supabase/supabase-js";
 import type { DbInquiry, DbListing, DbProfile } from "@/lib/listing-types";
-import { formatDateNl, slugify } from "@/lib/utils";
+import { formatDateNl, formatDateShortNl, capitalizeFirst, slugify } from "@/lib/utils";
+import { getPlanBadgeLabel } from "@/lib/provider-plans";
 import { TOOLS_LINKS } from "@/lib/tools-constants";
 
 type Section = "overzicht" | "activiteiten" | "aanvragen" | "profiel" | "tools";
@@ -16,12 +17,14 @@ const STATUS_LABELS: Record<string, string> = {
   pending: "In afwachting",
   active: "Actief",
   inactive: "Inactief",
+  rejected: "Geweigerd",
 };
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-amber-100 text-amber-800",
   active: "bg-green-100 text-green-800",
   inactive: "bg-gray-100 text-gray-600",
+  rejected: "bg-red-100 text-red-800",
 };
 
 const INQUIRY_STATUS_LABELS: Record<string, string> = {
@@ -61,6 +64,10 @@ export default function DashboardClient() {
   const [loading, setLoading] = useState(true);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [selectedInquiry, setSelectedInquiry] = useState<DbInquiry | null>(null);
+  const [deleteModal, setDeleteModal] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const [profileForm, setProfileForm] = useState({
@@ -80,11 +87,16 @@ export default function DashboardClient() {
 
   useEscapeKey(() => setSelectedInquiry(null), Boolean(selectedInquiry));
 
+  useEscapeKey(() => setDeleteModal(null), Boolean(deleteModal));
+
   useEffect(() => {
-    if (searchParams.get("success") === "listing") {
+    const success = searchParams.get("success");
+    if (success === "listing") {
       setSuccessMsg(
-        "Uw activiteit is ingediend en wacht op goedkeuring. We nemen contact op zodra deze live staat."
+        "Je activiteit is ingediend en wacht op goedkeuring. We nemen contact op zodra deze live staat."
       );
+    } else if (success === "updated") {
+      setSuccessMsg("Je activiteit is succesvol bijgewerkt.");
     }
   }, [searchParams]);
 
@@ -123,6 +135,10 @@ export default function DashboardClient() {
         phone: null,
         website: null,
         is_provider: meta?.is_provider ?? false,
+        is_pro: false,
+        plan_tier: "free",
+        stripe_customer_id: null,
+        stripe_subscription_id: null,
       };
 
       setProfile(p);
@@ -137,7 +153,7 @@ export default function DashboardClient() {
       const { data: listingData } = await supabase
         .from("listings")
         .select(
-          "id, user_id, name, category, short_description, status, created_at, min_persons, max_persons, price_from, website"
+          "id, user_id, name, category, short_description, status, created_at, min_persons, max_persons, price_from, website, city, region, image_urls, rejection_reason"
         )
         .eq("user_id", authUser.id)
         .order("created_at", { ascending: false });
@@ -219,9 +235,7 @@ export default function DashboardClient() {
     }
   }
 
-  async function deleteListing(id: string, name: string) {
-    if (!confirm(`Weet u zeker dat u "${name}" wilt verwijderen?`)) return;
-
+  async function deleteListing(id: string) {
     setDeletingId(id);
     const supabase = createBrowserSupabase();
     const { error } = await supabase.from("listings").delete().eq("id", id);
@@ -231,6 +245,7 @@ export default function DashboardClient() {
       setInquiries((prev) => prev.filter((i) => i.listing_id !== id));
     }
     setDeletingId(null);
+    setDeleteModal(null);
   }
 
   async function markInquiryHandled(inquiry: DbInquiry) {
@@ -255,11 +270,12 @@ export default function DashboardClient() {
     window.location.hash = sectionId;
   }
 
-  const displayName =
+  const displayName = capitalizeFirst(
     profile?.first_name ||
-    user?.user_metadata?.first_name ||
-    user?.email?.split("@")[0] ||
-    "aanbieder";
+      user?.user_metadata?.first_name ||
+      user?.email?.split("@")[0] ||
+      "aanbieder"
+  );
 
   const openInquiries = inquiries.filter((i) => i.status !== "handled").length;
   const activeListings = listings.filter((l) => l.status === "active").length;
@@ -287,7 +303,16 @@ export default function DashboardClient() {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <aside className="hidden w-64 shrink-0 bg-[#0a2a1f] md:block">
-        <div className="border-b border-white/10 p-6">
+        <div className="border-b border-white/10 p-4">
+          <Link
+            href="/"
+            className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-[#1D9E75] hover:border-[#1D9E75]"
+            aria-label="Terug naar homepage"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </Link>
           <Link href="/" className="text-xl font-bold text-white">
             Dagout
           </Link>
@@ -302,8 +327,8 @@ export default function DashboardClient() {
                   onClick={() => navigate(id)}
                   className={`w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
                     section === id
-                      ? "bg-[#1D9E75]/25 text-[#86efac]"
-                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                      ? "bg-[#1D9E75] text-white shadow-sm"
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   {label}
@@ -342,6 +367,11 @@ export default function DashboardClient() {
                     Pro
                   </span>
                 )}
+                {!profile?.is_pro && (
+                  <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700">
+                    {getPlanBadgeLabel(profile)}
+                  </span>
+                )}
               </div>
               <p className="mt-1 text-sm capitalize text-gray-500">{todayFormatted}</p>
             </div>
@@ -362,7 +392,7 @@ export default function DashboardClient() {
                 Welkom terug, {displayName}
               </h2>
               <p className="mt-2 text-gray-600">
-                Beheer uw activiteiten en volg binnenkomende aanvragen op.
+                Beheer je activiteiten en volg binnenkomende aanvragen op.
               </p>
 
               <div className="mt-8 grid gap-6 sm:grid-cols-3">
@@ -432,7 +462,7 @@ export default function DashboardClient() {
                     Je hebt nog geen activiteiten
                   </h3>
                   <p className="mt-2 max-w-sm text-sm text-gray-500">
-                    Voeg uw eerste teambuilding activiteit toe en ontvang aanvragen van bedrijven.
+                    Voeg je eerste teambuilding activiteit toe en ontvang aanvragen van bedrijven.
                   </p>
                   <Link
                     href="/aanbieders/nieuw"
@@ -443,64 +473,85 @@ export default function DashboardClient() {
                 </div>
               ) : (
                 <div className="mt-6 space-y-4">
-                  {listings.map((listing) => (
-                    <div
-                      key={listing.id}
-                      className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="font-semibold text-gray-900">{listing.name}</h3>
-                          <span
-                            className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[listing.status]}`}
-                          >
-                            {STATUS_LABELS[listing.status]}
-                          </span>
+                  {listings.map((listing) => {
+                    const thumb = listing.image_urls?.[0];
+                    return (
+                      <div
+                        key={listing.id}
+                        className="flex flex-wrap gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-6"
+                      >
+                        {thumb ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={thumb}
+                            alt={listing.name}
+                            className="h-24 w-32 shrink-0 rounded-xl object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-24 w-32 shrink-0 items-center justify-center rounded-xl bg-[#1D9E75]/10 text-xs text-[#1D9E75]">
+                            Geen foto
+                          </div>
+                        )}
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-semibold text-gray-900">{listing.name}</h3>
+                            <span
+                              className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_COLORS[listing.status] ?? STATUS_COLORS.pending}`}
+                            >
+                              {STATUS_LABELS[listing.status] ?? listing.status}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-sm text-gray-500">{listing.category}</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            {[listing.city, listing.region].filter(Boolean).join(", ") || "Locatie onbekend"}
+                          </p>
+                          {listing.price_from != null && (
+                            <p className="mt-1 text-sm font-semibold text-[#1D9E75]">
+                              €{listing.price_from}/pers
+                            </p>
+                          )}
+                          <p className="mt-1 text-xs text-gray-400">
+                            Toegevoegd op {formatDateShortNl(listing.created_at)}
+                          </p>
+                          {listing.status === "rejected" && listing.rejection_reason && (
+                            <p className="mt-2 text-xs text-red-600">
+                              Reden: {listing.rejection_reason}
+                            </p>
+                          )}
                         </div>
-                        <p className="mt-1 text-sm text-gray-500">{listing.category}</p>
-                        <p className="mt-1 text-xs text-gray-400">
-                          Toegevoegd op{" "}
-                          {new Date(listing.created_at).toLocaleDateString("nl-BE")}
-                        </p>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        <Link
-                          href="/aanbieders/nieuw"
-                          className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75]"
-                        >
-                          Bewerken
-                        </Link>
-                        {listing.status === "active" && (
-                          <a
-                            href={`/activiteit/${slugify(listing.name)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+
+                        <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-col lg:flex-row">
+                          <Link
+                            href={`/dashboard/activiteit/${listing.id}/bewerken`}
                             className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75]"
                           >
-                            Bekijk op site
-                          </a>
-                        )}
-                        {listing.website && (
-                          <a
-                            href={listing.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75]"
+                            Bewerken
+                          </Link>
+                          {listing.status === "active" && (
+                            <a
+                              href={`/activiteit/${slugify(listing.name)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:border-[#1D9E75] hover:text-[#1D9E75]"
+                            >
+                              Bekijk op site
+                            </a>
+                          )}
+                          <button
+                            type="button"
+                            disabled={deletingId === listing.id}
+                            onClick={() =>
+                              setDeleteModal({ id: listing.id, name: listing.name })
+                            }
+                            className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
                           >
-                            Website
-                          </a>
-                        )}
-                        <button
-                          type="button"
-                          disabled={deletingId === listing.id}
-                          onClick={() => deleteListing(listing.id, listing.name)}
-                          className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
-                        >
-                          {deletingId === listing.id ? "..." : "Verwijderen"}
-                        </button>
+                            Verwijderen
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -511,7 +562,7 @@ export default function DashboardClient() {
               <h2 className="text-xl font-semibold text-gray-900">Aanvragen</h2>
               {inquiries.length === 0 ? (
                 <p className="mt-8 text-sm text-gray-500">
-                  Geen aanvragen ontvangen voor uw activiteiten.
+                  Geen aanvragen ontvangen voor je activiteiten.
                 </p>
               ) : (
                 <div className="mt-6 space-y-4">
@@ -572,7 +623,7 @@ export default function DashboardClient() {
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Tools</h2>
               <p className="mt-1 text-sm text-gray-500">
-                Handige hulpmiddelen voor het plannen van uw teambuilding
+                Handige hulpmiddelen voor het plannen van je teambuilding
               </p>
               <div className="mt-8 grid gap-6 sm:grid-cols-3">
                 {TOOLS_LINKS.map((tool) => (
@@ -595,7 +646,7 @@ export default function DashboardClient() {
           {section === "profiel" && (
             <div className="max-w-xl">
               <h2 className="text-xl font-semibold text-gray-900">Profiel</h2>
-              <p className="mt-1 text-sm text-gray-500">Pas uw bedrijfsgegevens aan</p>
+              <p className="mt-1 text-sm text-gray-500">Pas je bedrijfsgegevens aan</p>
               <form onSubmit={saveProfile} className="mt-6 space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -815,6 +866,41 @@ export default function DashboardClient() {
                 Markeer als behandeld
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {deleteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setDeleteModal(null)}
+            aria-label="Sluiten"
+          />
+          <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <h3 className="text-lg font-bold text-gray-900">Activiteit verwijderen?</h3>
+            <p className="mt-2 text-sm text-gray-600">
+              Weet je zeker dat je &ldquo;{deleteModal.name}&rdquo; wilt verwijderen?
+              Dit kan niet ongedaan worden gemaakt.
+            </p>
+            <div className="mt-6 flex gap-3">
+              <button
+                type="button"
+                onClick={() => setDeleteModal(null)}
+                className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Annuleren
+              </button>
+              <button
+                type="button"
+                disabled={deletingId === deleteModal.id}
+                onClick={() => deleteListing(deleteModal.id)}
+                className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+              >
+                {deletingId === deleteModal.id ? "Bezig..." : "Verwijderen"}
+              </button>
+            </div>
           </div>
         </div>
       )}

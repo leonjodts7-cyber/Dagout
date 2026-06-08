@@ -138,6 +138,7 @@ create table if not exists public.profiles (
   phone text,
   website text,
   is_provider boolean default false,
+  plan_tier text default 'free',
   is_pro boolean default false,
   stripe_customer_id text,
   stripe_subscription_id text,
