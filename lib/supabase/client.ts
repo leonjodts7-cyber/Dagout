@@ -1,8 +1,10 @@
 "use client";
 
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 let browserClient: SupabaseClient | null = null;
+
+const AUTH_STORAGE_KEY = "dagout-supabase-auth";
 
 export function createBrowserSupabase(): SupabaseClient {
   if (browserClient) return browserClient;
@@ -14,6 +16,16 @@ export function createBrowserSupabase(): SupabaseClient {
     throw new Error("Supabase is niet geconfigureerd.");
   }
 
-  browserClient = createClient(url, key);
+  browserClient = createClient(url, key, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      storage:
+        typeof window !== "undefined" ? window.localStorage : undefined,
+      storageKey: AUTH_STORAGE_KEY,
+    },
+  });
+
   return browserClient;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import GlobalBackButton from "@/components/GlobalBackButton";
+import AuthProvider from "@/components/AuthProvider";
 import { ToastProvider } from "@/components/ToastProvider";
 import { SITE_URL } from "@/lib/admin";
 import "./globals.css";
@@ -47,10 +48,12 @@ export default function RootLayout({
   return (
     <html lang="nl" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
-        <ToastProvider>
-          <GlobalBackButton />
-          {children}
-        </ToastProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <GlobalBackButton />
+            {children}
+          </ToastProvider>
+        </AuthProvider>
       </body>
     </html>
   );
