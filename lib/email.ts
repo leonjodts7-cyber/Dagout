@@ -1,16 +1,19 @@
 import { Resend } from "resend";
 import { SITE_URL } from "@/lib/admin";
-import { isResendConfigured } from "@/lib/env-config";
 
-const FROM = "Dagout.be <noreply@dagout.be>";
+const FROM = "noreply@dagout.be";
 
-function logSkippedEmail(type: string, to: string, subject: string) {
-  console.log(`[Email skipped — Resend niet geconfigureerd] ${type}: "${subject}" → ${to}`);
-}
+let resendClient: Resend | null = null;
 
-function getResend(): Resend | null {
-  if (!isResendConfigured()) return null;
-  return new Resend(process.env.RESEND_API_KEY!);
+function getResend(): Resend {
+  if (!resendClient) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error("RESEND_API_KEY is niet geconfigureerd");
+    }
+    resendClient = new Resend(apiKey);
+  }
+  return resendClient;
 }
 
 function baseTemplate(content: string) {
@@ -76,10 +79,6 @@ export interface ListingApprovedEmailData {
 export async function sendInquiryToProvider(data: InquiryEmailData) {
   const subject = `Nieuwe aanvraag via Dagout.be — ${data.companyName || data.contactName}`;
   const resend = getResend();
-  if (!resend) {
-    logSkippedEmail("inquiry-provider", data.providerEmail, subject);
-    return { ok: true, skipped: true };
-  }
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Nieuwe aanvraag ontvangen</h1>
@@ -96,17 +95,19 @@ export async function sendInquiryToProvider(data: InquiryEmailData) {
     <a href="${SITE_URL}/dashboard" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Bekijk in dashboard</a>
   `);
 
-  await resend.emails.send({ from: FROM, to: data.providerEmail, subject, html });
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: data.providerEmail,
+    subject,
+    html,
+  });
+  if (error) throw new Error(error.message);
   return { ok: true };
 }
 
 export async function sendInquiryConfirmation(data: InquiryConfirmationData) {
   const subject = `Je aanvraag is verstuurd — ${data.activityName}`;
   const resend = getResend();
-  if (!resend) {
-    logSkippedEmail("inquiry-confirmation", data.email, subject);
-    return { ok: true, skipped: true };
-  }
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Aanvraag verstuurd!</h1>
@@ -121,17 +122,19 @@ export async function sendInquiryConfirmation(data: InquiryConfirmationData) {
     <a href="${SITE_URL}/zoeken" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Meer activiteiten bekijken</a>
   `);
 
-  await resend.emails.send({ from: FROM, to: data.email, subject, html });
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: data.email,
+    subject,
+    html,
+  });
+  if (error) throw new Error(error.message);
   return { ok: true };
 }
 
 export async function sendWelcomeEmail(data: WelcomeEmailData) {
   const subject = "Welkom bij Dagout.be";
   const resend = getResend();
-  if (!resend) {
-    logSkippedEmail("welcome", data.email, subject);
-    return { ok: true, skipped: true };
-  }
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Welkom bij Dagout, ${data.firstName}!</h1>
@@ -141,17 +144,19 @@ export async function sendWelcomeEmail(data: WelcomeEmailData) {
     <a href="${SITE_URL}/aanbieders/nieuw" style="display:inline-block;border:2px solid #1D9E75;color:#1D9E75;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:600;">Eerste activiteit toevoegen</a>
   `);
 
-  await resend.emails.send({ from: FROM, to: data.email, subject, html });
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: data.email,
+    subject,
+    html,
+  });
+  if (error) throw new Error(error.message);
   return { ok: true };
 }
 
 export async function sendListingApprovedEmail(data: ListingApprovedEmailData) {
   const subject = "Je activiteit staat live op Dagout.be";
   const resend = getResend();
-  if (!resend) {
-    logSkippedEmail("listing-approved", data.email, subject);
-    return { ok: true, skipped: true };
-  }
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Gefeliciteerd, ${data.firstName}!</h1>
@@ -165,7 +170,13 @@ export async function sendListingApprovedEmail(data: ListingApprovedEmailData) {
     <a href="${data.listingUrl}" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Bekijk uw listing</a>
   `);
 
-  await resend.emails.send({ from: FROM, to: data.email, subject, html });
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: data.email,
+    subject,
+    html,
+  });
+  if (error) throw new Error(error.message);
   return { ok: true };
 }
 
@@ -177,10 +188,6 @@ export async function sendListingRejectedEmail(
 ) {
   const subject = `Listing niet goedgekeurd — ${listingName}`;
   const resend = getResend();
-  if (!resend) {
-    logSkippedEmail("listing-rejected", email, subject);
-    return { ok: true, skipped: true };
-  }
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Listing niet goedgekeurd</h1>
@@ -191,7 +198,13 @@ export async function sendListingRejectedEmail(
     <a href="${SITE_URL}/dashboard" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Naar dashboard</a>
   `);
 
-  await resend.emails.send({ from: FROM, to: email, subject, html });
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: email,
+    subject,
+    html,
+  });
+  if (error) throw new Error(error.message);
   return { ok: true };
 }
 
@@ -207,10 +220,6 @@ export interface VoteNotificationEmailData {
 export async function sendVoteNotificationEmail(data: VoteNotificationEmailData) {
   const subject = `${data.voterName} heeft gestemd op jullie teambuilding stemronde`;
   const resend = getResend();
-  if (!resend) {
-    logSkippedEmail("vote-notification", data.organizerEmail, subject);
-    return { ok: true, skipped: true };
-  }
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Nieuwe stem ontvangen</h1>
@@ -220,11 +229,12 @@ export async function sendVoteNotificationEmail(data: VoteNotificationEmailData)
     <a href="${data.resultsUrl}" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Bekijk resultaten</a>
   `);
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: FROM,
     to: data.organizerEmail,
     subject,
     html,
   });
+  if (error) throw new Error(error.message);
   return { ok: true };
 }
