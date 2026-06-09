@@ -6,8 +6,8 @@ import type { Provider } from "@/lib/types";
 const Map = dynamic(() => import("@/components/Map"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-48 items-center justify-center rounded-xl bg-gray-100 text-sm text-gray-500">
-      Kaart laden...
+    <div className="flex h-48 items-center justify-center rounded-xl text-sm text-gray-400">
+      <span className="ai-loader" aria-hidden="true" />
     </div>
   ),
 });

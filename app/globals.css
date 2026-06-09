@@ -91,3 +91,135 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+.btn-primary {
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(29, 158, 117, 0.25);
+}
+
+.card-hover {
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.dagout-map {
+  background: #f5f5f5;
+}
+
+.dagout-map .leaflet-container {
+  background: transparent;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.dagout-map-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.dagout-map-tooltip {
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+.dagout-map-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.dagout-map-popup .leaflet-popup-content {
+  margin: 0;
+  width: 260px !important;
+}
+
+.dagout-map-popup .leaflet-popup-tip-container {
+  display: none;
+}
+
+.dagout-map-popup .leaflet-popup-close-button {
+  top: 8px !important;
+  right: 8px !important;
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 18px !important;
+  color: white !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.dagout-popup-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.dagout-popup-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.dagout-popup-body {
+  padding: 14px 16px 16px;
+}
+
+.dagout-popup-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.dagout-popup-city {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.dagout-popup-price {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d9e75;
+}
+
+.dagout-popup-button {
+  display: block;
+  margin-top: 12px;
+  width: 100%;
+  border-radius: 10px;
+  background: #1d9e75;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dagout-popup-button:hover {
+  background: #178a66;
+  transform: translateY(-1px);
+}

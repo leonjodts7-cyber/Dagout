@@ -19,7 +19,7 @@ import {
 } from "@/lib/listing-types";
 
 import { loadListingForEdit } from "@/lib/listing-edit";
-import { getListingLimit, resolvePlanTier } from "@/lib/provider-plans";
+import { getListingLimit, hasActivePlan } from "@/lib/provider-plans";
 import type { DbProfile } from "@/lib/listing-types";
 
 const LANGUAGE_OPTIONS = ["Nederlands", "Frans", "Engels", "Duits"];
@@ -56,7 +56,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
   const [loading, setLoading] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedPlan, setSelectedPlan] = useState<"free" | "basis" | "pro" | null>(null);
+  const [planConfirmed, setPlanConfirmed] = useState(false);
   const [userProfile, setUserProfile] = useState<DbProfile | null>(null);
   const [listingLoaded, setListingLoaded] = useState(!listingId);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -79,6 +79,9 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
           .eq("id", data.user.id)
           .maybeSingle();
         setUserProfile(profileData as DbProfile | null);
+        if (hasActivePlan(profileData as DbProfile | null)) {
+          setPlanConfirmed(true);
+        }
 
         if (listingId) {
           const loaded = await loadListingForEdit(
@@ -124,8 +127,11 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
 
   useEffect(() => {
     if (isEdit) return;
-    if (searchParams.get("pro") === "true") {
-      setSelectedPlan("pro");
+    if (
+      searchParams.get("pro") === "true" ||
+      searchParams.get("basis") === "true"
+    ) {
+      setPlanConfirmed(true);
       setTimeout(() => {
         document.getElementById("listing-form")?.scrollIntoView({ behavior: "smooth" });
       }, 300);
@@ -154,17 +160,8 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
     if (data.url) window.location.href = data.url;
   }
 
-  function scrollToForm(plan: "free" | "basis" | "pro") {
-    if (plan === "basis") {
-      void startCheckout("basis");
-      return;
-    }
-    if (plan === "pro") {
-      void startCheckout("pro");
-      return;
-    }
-    setSelectedPlan(plan);
-    document.getElementById("listing-form")?.scrollIntoView({ behavior: "smooth" });
+  function selectPlan(plan: "basis" | "pro") {
+    void startCheckout(plan);
   }
 
   function removeExistingImage(url: string) {
@@ -253,9 +250,14 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
           .eq("user_id", user.id);
 
         const limit = getListingLimit(userProfile);
+        if (limit === 0) {
+          setError("Kies Basis of Pro om je activiteit te publiceren.");
+          setLoading(false);
+          return;
+        }
         if ((count ?? 0) >= limit) {
           setError(
-            "Upgrade naar Basis of Pro voor meer listings. Je huidige plan staat maximaal 1 listing toe."
+            "Upgrade naar Pro voor meer listings. Je Basis-plan staat maximaal 1 listing toe."
           );
           setLoading(false);
           return;
@@ -466,15 +468,14 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
 
         {!isEdit && (
           <ProviderPlanSection
-            onSelectFree={() => scrollToForm("free")}
-            onSelectBasis={() => scrollToForm("basis")}
-            onSelectPro={() => scrollToForm("pro")}
+            onSelectBasis={() => selectPlan("basis")}
+            onSelectPro={() => selectPlan("pro")}
           />
         )}
 
-        {!isEdit && selectedPlan === "free" && (
+        {!isEdit && planConfirmed && (
           <div className="border-b border-[#1D9E75]/20 bg-[#1D9E75]/5 px-6 py-3 text-center text-sm text-[#0a2a1f]">
-            Gratis plan geselecteerd — vul hieronder je activiteit in.
+            Plan geactiveerd — vul hieronder je activiteit in.
           </div>
         )}
 

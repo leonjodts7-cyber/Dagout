@@ -73,7 +73,7 @@ export default function BookingCard({ provider }: BookingCardProps) {
         </div>
 
         <p className="mt-4 text-center text-xs text-gray-400">
-          Geen betaling vereist. Gratis aanvraag.
+          Geen betaling vereist. Vrijblijvende aanvraag.
         </p>
       </div>
 

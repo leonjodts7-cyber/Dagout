@@ -36,12 +36,12 @@ export default function HomePage() {
         </section>
 
         {/* Sectie B — Filter zoeken */}
-        <section className="border-b border-gray-100 bg-white px-6 py-12 sm:py-16">
+        <section className="border-b border-gray-100 bg-[#f3f4f6] px-6 py-12 sm:py-16">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-center text-2xl font-bold text-gray-900 sm:text-3xl">
               Of zoek op filters
             </h2>
-            <div className="mt-8">
+            <div className="card-hover mt-8 rounded-2xl border border-gray-200/80 bg-white p-6 shadow-sm sm:p-8">
               <FilterSearchBar />
             </div>
             <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-gray-500">

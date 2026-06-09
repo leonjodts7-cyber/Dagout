@@ -51,13 +51,13 @@ export default function FilterSearchBar({
   }
 
   const selectClass =
-    "min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
+    "min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
       <div
         className={`flex flex-col gap-3 ${
-          compact ? "lg:flex-row lg:items-center" : "md:flex-row md:flex-wrap md:items-center"
+          compact ? "lg:flex-row lg:items-stretch" : "lg:flex-row lg:items-stretch"
         }`}
       >
         <select
@@ -116,7 +116,7 @@ export default function FilterSearchBar({
 
         <button
           type="submit"
-          className="shrink-0 rounded-lg bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#178a66] lg:px-8"
+          className="btn-primary shrink-0 rounded-xl bg-[#1D9E75] px-10 py-3.5 text-base font-semibold text-white hover:bg-[#178a66] lg:min-w-[140px]"
         >
           Zoek
         </button>

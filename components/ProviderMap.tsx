@@ -7,8 +7,9 @@ import { getMapViewForRegion } from "@/lib/geocoding";
 const Map = dynamic(() => import("@/components/Map"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full items-center justify-center bg-gray-100 text-sm text-gray-500">
-      Kaart laden...
+    <div className="flex h-full items-center justify-center text-sm text-gray-400">
+      <span className="ai-loader" aria-hidden="true" />
+      <span className="sr-only">Kaart laden...</span>
     </div>
   ),
 });

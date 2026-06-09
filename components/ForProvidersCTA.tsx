@@ -13,9 +13,9 @@ export default function ForProvidersCTA() {
         </p>
         <Link
           href="/aanbieders/nieuw"
-          className="mt-8 inline-block rounded-xl bg-white px-8 py-4 text-base font-semibold text-[#1D9E75] transition-all hover:bg-white/90 hover:shadow-lg"
+          className="btn-primary mt-8 inline-block rounded-xl bg-white px-8 py-4 text-base font-semibold text-[#1D9E75] hover:bg-white/90 hover:shadow-lg"
         >
-          Lijst je activiteit gratis
+          Lijst je activiteit
         </Link>
       </div>
     </section>

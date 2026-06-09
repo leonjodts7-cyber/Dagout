@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
         .from("profiles")
         .update({
           is_pro: false,
-          plan_tier: "free",
+          plan_tier: null,
           stripe_subscription_id: null,
         })
         .eq("id", profile.id);

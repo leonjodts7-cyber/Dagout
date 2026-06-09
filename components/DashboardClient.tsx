@@ -136,7 +136,7 @@ export default function DashboardClient() {
         website: null,
         is_provider: meta?.is_provider ?? false,
         is_pro: false,
-        plan_tier: "free",
+        plan_tier: null,
         stripe_customer_id: null,
         stripe_subscription_id: null,
       };
@@ -367,7 +367,7 @@ export default function DashboardClient() {
                     Pro
                   </span>
                 )}
-                {!profile?.is_pro && (
+                {!profile?.is_pro && getPlanBadgeLabel(profile) && (
                   <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700">
                     {getPlanBadgeLabel(profile)}
                   </span>

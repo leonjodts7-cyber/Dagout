@@ -84,7 +84,7 @@ export function getCategorySeo(slug: string) {
     title: `${cat.name} teambuilding — Vind de beste activiteiten`,
     description: `${cat.description}. Boek ${cat.name.toLowerCase()} teambuilding activiteiten in Vlaanderen via Dagout.be.`,
     intro: `${cat.name} teambuilding`,
-    body: `${cat.name} is een van de populairste teambuilding formats in België. ${cat.description}. Via Dagout.be vergelijkt u eenvoudig aanbieders in heel Vlaanderen, bekijkt u prijzen per persoon en stuurt u gratis een aanvraag naar de aanbieder van uw keuze.`,
+    body: `${cat.name} is een van de populairste teambuilding formats in België. ${cat.description}. Via Dagout.be vergelijkt u eenvoudig aanbieders in heel Vlaanderen, bekijkt u prijzen per persoon en stuurt u een aanvraag naar de aanbieder van uw keuze.`,
   };
 }
 

@@ -170,7 +170,7 @@ export interface DbProfile {
   website: string | null;
   is_provider: boolean | null;
   is_pro: boolean | null;
-  plan_tier: "free" | "basis" | "pro" | null;
+  plan_tier: "basis" | "pro" | null;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
 }

@@ -80,7 +80,7 @@ export const MOCK_PROVIDERS: Provider[] = [
     active: true,
     website: "https://escapehunt.com",
     phone: "+32 3 123 45 67",
-    includes: ["Spelbegeleiding", "Gratis herhaling bij mislukking", "Foto na afloop"],
+    includes: ["Spelbegeleiding", "Herhaling bij mislukking", "Foto na afloop"],
   }),
   toProvider({
     id: "3",
@@ -305,7 +305,7 @@ export const MOCK_PROVIDERS: Provider[] = [
     active: true,
     website: "https://locked.be",
     phone: "+32 9 345 67 89",
-    includes: ["Spelbegeleiding", "Foto na afloop", "Gratis drankje bij succes"],
+    includes: ["Spelbegeleiding", "Foto na afloop", "Verfrissend drankje bij succes"],
   }),
   toProvider({
     id: "12",
