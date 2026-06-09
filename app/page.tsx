@@ -18,9 +18,10 @@ export default function HomePage() {
       <Navbar />
 
       <main className="flex-1">
-        {/* Sectie A — AI zoeken */}
-        <section className="relative overflow-hidden bg-[#0a2a1f] px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
-          <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#1D9E75]/10 blur-3xl" />
+        {/* Hero + filters */}
+        <section className="hero-gradient relative overflow-hidden px-6 pb-10 pt-16 sm:pb-12 sm:pt-24">
+          <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-[#1D9E75]/20 blur-3xl" />
+          <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#1D9E75]/10 blur-3xl" />
 
           <div className="relative mx-auto max-w-4xl text-center">
             <h1 className="text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -29,25 +30,13 @@ export default function HomePage() {
             <p className="mt-3 text-4xl font-extrabold leading-[1.08] tracking-tight text-[#1D9E75] sm:text-5xl lg:text-6xl">
               Onze AI regelt de rest.
             </p>
-            <div className="mx-auto mt-12 w-full max-w-3xl">
+            <div className="mx-auto mt-10 w-full max-w-3xl">
               <HeroSearch />
             </div>
           </div>
-        </section>
 
-        {/* Sectie B — Filter zoeken */}
-        <section className="border-b border-gray-100 bg-[#f3f4f6] px-6 py-12 sm:py-16">
-          <div className="mx-auto max-w-5xl">
-            <h2 className="text-center text-2xl font-bold text-gray-900 sm:text-3xl">
-              Of zoek op filters
-            </h2>
-            <div className="card-hover mt-8 rounded-2xl border border-gray-200/80 bg-white p-6 shadow-sm sm:p-8">
-              <FilterSearchBar />
-            </div>
-            <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-gray-500">
-              Gebruik filters voor een snelle selectie, of beschrijf jullie dag
-              hierboven voor AI-aanbevelingen
-            </p>
+          <div className="relative mx-auto mt-10 max-w-5xl border-t border-white/20 pt-8">
+            <FilterSearchBar variant="hero" />
           </div>
         </section>
 
@@ -62,7 +51,7 @@ export default function HomePage() {
                 <Link
                   key={category.slug}
                   href={`/zoeken?categorie=${encodeURIComponent(category.name)}`}
-                  className="group flex flex-col items-center rounded-2xl border border-gray-200/60 bg-white p-8 text-center shadow-sm transition-all duration-300 hover:border-[#1D9E75] hover:bg-[#1D9E75] hover:shadow-lg sm:p-10"
+                  className="card-hover group flex flex-col items-center rounded-2xl border border-gray-200/60 bg-white p-8 text-center shadow-sm transition-all duration-300 hover:border-[#1D9E75] hover:bg-[#1D9E75] hover:shadow-lg sm:p-10"
                 >
                   <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1D9E75]/10 transition-all duration-300 group-hover:bg-white/20">
                     <CategoryIcon

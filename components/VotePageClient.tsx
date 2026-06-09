@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import ConfettiBurst from "@/components/ConfettiBurst";
 import { resolveProvider } from "@/lib/providers";
-import { CATEGORY_IMAGES } from "@/lib/constants";
+import { getProviderImageUrl } from "@/lib/constants";
 import {
   formatCountdown,
   formatDeadlineNl,
@@ -330,7 +330,9 @@ export default function VotePageClient({ session }: VotePageClientProps) {
       <div className="space-y-8">
         {providers.map((provider) => {
           const imageUrl =
-            provider.image_url ?? CATEGORY_IMAGES[provider.category] ?? null;
+            provider.image_url ??
+              getProviderImageUrl(provider.category, provider.slug) ??
+              null;
 
           return (
             <article

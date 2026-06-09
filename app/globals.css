@@ -92,6 +92,28 @@ html {
   scroll-behavior: smooth;
 }
 
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    #0a2a1f 0%,
+    #0d3528 35%,
+    #0a2a1f 65%,
+    #103d2e 100%
+  );
+  background-size: 200% 200%;
+  animation: hero-gradient-shift 10s ease infinite;
+}
+
+@keyframes hero-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 .btn-primary {
   transition:
     transform 0.2s ease,
@@ -138,6 +160,31 @@ html {
   font-size: 12px !important;
   font-weight: 600 !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+.dagout-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+  border: none !important;
+}
+
+.dagout-popup .leaflet-popup-tip-container {
+  display: none !important;
+}
+
+.dagout-popup .leaflet-popup-content {
+  margin: 0 !important;
+  width: 200px !important;
+}
+
+.dagout-popup .leaflet-popup-close-button {
+  top: 8px !important;
+  right: 8px !important;
+  color: white !important;
+  font-size: 18px !important;
+  z-index: 10 !important;
 }
 
 .custom-popup .leaflet-popup-content-wrapper,

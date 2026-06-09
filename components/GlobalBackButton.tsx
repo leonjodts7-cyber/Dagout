@@ -6,7 +6,7 @@ import BackButton from "@/components/BackButton";
 export default function GlobalBackButton() {
   const pathname = usePathname();
 
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname.startsWith("/dashboard")) return null;
 
   return <BackButton />;
 }

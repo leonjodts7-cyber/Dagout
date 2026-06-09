@@ -24,7 +24,7 @@ interface FilterSearchBarProps {
   defaultCategory?: string;
   defaultPersonen?: string;
   defaultOmgeving?: string;
-  compact?: boolean;
+  variant?: "default" | "hero";
 }
 
 export default function FilterSearchBar({
@@ -32,13 +32,15 @@ export default function FilterSearchBar({
   defaultCategory = "",
   defaultPersonen = "",
   defaultOmgeving = "",
-  compact = false,
+  variant = "default",
 }: FilterSearchBarProps) {
   const router = useRouter();
   const [region, setRegion] = useState(defaultRegion);
   const [category, setCategory] = useState(defaultCategory);
   const [personen, setPersonen] = useState(defaultPersonen);
   const [omgeving, setOmgeving] = useState(defaultOmgeving);
+
+  const isHero = variant === "hero";
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -50,16 +52,13 @@ export default function FilterSearchBar({
     router.push(`/zoeken?${params.toString()}`);
   }
 
-  const selectClass =
-    "min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
+  const selectClass = isHero
+    ? "min-w-0 flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/30 [&>option]:text-gray-900"
+    : "min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div
-        className={`flex flex-col gap-3 ${
-          compact ? "lg:flex-row lg:items-stretch" : "lg:flex-row lg:items-stretch"
-        }`}
-      >
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
         <select
           value={region}
           onChange={(e) => setRegion(e.target.value)}
@@ -109,14 +108,18 @@ export default function FilterSearchBar({
         >
           {OMGEVING_OPTIONS.map((o) => (
             <option key={o.value || "all"} value={o.value}>
-              {o.value === "" ? "Binnen/Buiten: Alle" : o.label}
+              {o.value === "" ? "Binnen/Buiten" : o.label}
             </option>
           ))}
         </select>
 
         <button
           type="submit"
-          className="btn-primary shrink-0 rounded-xl bg-[#1D9E75] px-10 py-3.5 text-base font-semibold text-white hover:bg-[#178a66] lg:min-w-[140px]"
+          className={`btn-primary shrink-0 rounded-lg px-8 py-2.5 text-sm font-semibold sm:min-w-[120px] ${
+            isHero
+              ? "bg-[#1D9E75] text-white hover:bg-[#178a66]"
+              : "bg-[#1D9E75] text-white hover:bg-[#178a66]"
+          }`}
         >
           Zoek
         </button>

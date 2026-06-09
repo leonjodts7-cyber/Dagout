@@ -91,6 +91,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
   const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [planConfirmed, setPlanConfirmed] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<"basis" | "pro" | null>(null);
   const [userProfile, setUserProfile] = useState<DbProfile | null>(null);
   const [listingLoaded, setListingLoaded] = useState(!listingId);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -195,6 +196,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
   }
 
   function selectPlan(plan: "basis" | "pro") {
+    setSelectedPlan(plan);
     void startCheckout(plan);
   }
 
@@ -502,6 +504,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
 
         {!isEdit && (
           <ProviderPlanSection
+            selectedPlan={selectedPlan}
             onSelectBasis={() => selectPlan("basis")}
             onSelectPro={() => selectPlan("pro")}
           />
@@ -519,7 +522,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
             <h2 className="text-lg font-bold text-gray-900">
               {isEdit ? "Activiteit bijwerken" : "Activiteit toevoegen"}
             </h2>
-            <div className="mt-4 flex gap-1 overflow-x-auto">
+            <div className="mt-6 flex gap-2 overflow-x-auto pb-1">
               {FORM_STEPS.map((step, i) => (
                 <button
                   key={step}
@@ -527,13 +530,26 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
                   onClick={() =>
                     sectionRefs.current[i]?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                    activeStep === i
-                      ? "bg-[#1D9E75] text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
+                  className="flex shrink-0 flex-col items-center gap-1.5 px-2"
                 >
-                  {i + 1}. {step}
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-colors ${
+                      activeStep === i
+                        ? "bg-[#1D9E75] text-white shadow-md"
+                        : activeStep > i
+                          ? "bg-[#1D9E75]/20 text-[#1D9E75]"
+                          : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                  <span
+                    className={`text-[11px] font-medium ${
+                      activeStep === i ? "text-[#1D9E75]" : "text-gray-500"
+                    }`}
+                  >
+                    {step}
+                  </span>
                 </button>
               ))}
             </div>

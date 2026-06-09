@@ -5,7 +5,7 @@ import Link from "next/link";
 import FavoriteButton from "@/components/FavoriteButton";
 import AddToVoteButton from "@/components/AddToVoteButton";
 import type { Provider } from "@/lib/types";
-import { CATEGORY_IMAGES } from "@/lib/constants";
+import { getProviderImageUrl } from "@/lib/constants";
 import { formatDurationBadge } from "@/lib/voting-utils";
 
 interface ActivityCardProps {
@@ -44,7 +44,9 @@ export default function ActivityCard({
   className = "",
 }: ActivityCardProps) {
   const imageUrl =
-    provider.image_url ?? CATEGORY_IMAGES[provider.category] ?? null;
+    provider.image_url ??
+    getProviderImageUrl(provider.category, provider.slug) ??
+    null;
   const durationLabel = formatDurationBadge(provider.duration_minutes);
   const personsLabel = `${provider.min_persons}-${provider.max_persons} pers`;
 

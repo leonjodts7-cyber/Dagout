@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createBrowserSupabase } from "@/lib/supabase/client";
 import { useFormPersistence } from "@/lib/hooks/useFormPersistence";
 import { MOCK_PROVIDERS } from "@/lib/providers";
-import { CATEGORY_IMAGES } from "@/lib/constants";
+import { getProviderImageUrl } from "@/lib/constants";
 import {
   createVoteSession,
   generateSessionId,
@@ -47,7 +47,9 @@ function ActivitySelectCard({
   disabled: boolean;
 }) {
   const imageUrl =
-    provider.image_url ?? CATEGORY_IMAGES[provider.category] ?? null;
+    provider.image_url ??
+    getProviderImageUrl(provider.category, provider.slug) ??
+    null;
 
   return (
     <button
@@ -567,7 +569,7 @@ export default function CreateVoteSessionForm({
             <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {selectedProviders.map((p) => {
                 const imageUrl =
-                  p.image_url ?? CATEGORY_IMAGES[p.category] ?? null;
+                  p.image_url ?? getProviderImageUrl(p.category, p.slug) ?? null;
                 return (
                   <div
                     key={p.id}

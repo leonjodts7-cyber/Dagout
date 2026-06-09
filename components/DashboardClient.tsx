@@ -303,20 +303,22 @@ export default function DashboardClient() {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <aside className="hidden w-64 shrink-0 bg-[#0a2a1f] md:block">
-        <div className="border-b border-white/10 p-4">
+        <div className="flex items-center gap-3 border-b border-white/10 p-4">
           <Link
             href="/"
-            className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-[#1D9E75] hover:border-[#1D9E75]"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:border-[#1D9E75] hover:bg-[#1D9E75]"
             aria-label="Terug naar homepage"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
           </Link>
-          <Link href="/" className="text-xl font-bold text-white">
-            Dagout
-          </Link>
-          <p className="mt-1 text-xs text-white/60">Aanbieder portaal</p>
+          <div className="min-w-0">
+            <Link href="/" className="block truncate text-lg font-bold text-white">
+              Dagout
+            </Link>
+            <p className="truncate text-xs text-white/60">Aanbieder portaal</p>
+          </div>
         </div>
         <nav className="p-4">
           <ul className="space-y-1">

@@ -22,7 +22,7 @@ export const PLAN_DETAILS = {
     price: 19,
     listingLimit: 1,
     badge: "Aanbevolen",
-    badgeClass: "bg-amber-500",
+    badgeClass: "bg-[#1D9E75]",
     features: [
       "1 listing",
       "Featured plaatsing bovenaan zoekresultaten",

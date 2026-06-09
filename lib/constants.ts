@@ -60,7 +60,27 @@ export const CATEGORY_IMAGES: Record<string, string> = {
     "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&auto=format",
   Wellness:
     "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&auto=format",
+  Klimmen:
+    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&auto=format",
+  Paintball:
+    "https://images.unsplash.com/photo-1608501078713-8e445a709b39?w=400&auto=format",
+  Wijnproeverij:
+    "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&auto=format",
 };
+
+export function getProviderImageUrl(
+  category: string,
+  slug?: string
+): string {
+  if (slug?.includes("paintball")) return CATEGORY_IMAGES.Paintball;
+  if (slug?.includes("wijn")) return CATEGORY_IMAGES.Wijnproeverij;
+  if (slug?.includes("klim")) return CATEGORY_IMAGES.Klimmen;
+  return (
+    CATEGORY_IMAGES[category] ??
+    CATEGORY_IMAGES.Outdoor ??
+    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&auto=format"
+  );
+}
 
 export const SEARCH_SUGGESTIONS = [
   {

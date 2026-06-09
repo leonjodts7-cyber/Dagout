@@ -1,4 +1,5 @@
 import type { Provider } from "./types";
+import { getProviderImageUrl } from "./constants";
 
 function normalizeRegion(region: string): string {
   const map: Record<string, string> = {
@@ -16,10 +17,11 @@ function normalizeRegion(region: string): string {
 }
 
 function toProvider(
-  raw: Omit<Provider, "price_per_person" | "email" | "rating"> & {
+  raw: Omit<Provider, "price_per_person" | "email" | "rating" | "image_url"> & {
     price_per_person?: number;
     email?: string | null;
     rating?: number;
+    image_url?: string | null;
   }
 ): Provider {
   return {
@@ -28,6 +30,9 @@ function toProvider(
     price_per_person: true,
     email: raw.email ?? null,
     rating: raw.rating ?? 4.8,
+    image_url:
+      raw.image_url ??
+      getProviderImageUrl(raw.category, raw.slug),
   };
 }
 
@@ -49,8 +54,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "outdoor",
     lat: 51.0543,
     lng: 3.6821,
-    image_url:
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format",
     featured: true,
     active: true,
     website: "https://dobber.life",
@@ -74,8 +77,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "indoor",
     lat: 51.2194,
     lng: 4.4025,
-    image_url:
-      "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=600&auto=format",
     featured: true,
     active: true,
     website: "https://escapehunt.com",
@@ -99,8 +100,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "indoor",
     lat: 51.0612,
     lng: 3.7194,
-    image_url:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://volta.be",
@@ -124,8 +123,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "indoor",
     lat: 50.8503,
     lng: 4.3517,
-    image_url:
-      "https://images.unsplash.com/photo-1552072805-516d4f2c3a64?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://lasergame.be",
@@ -149,8 +146,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "outdoor",
     lat: 51.1547,
     lng: 4.7523,
-    image_url:
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://dewimpe.be",
@@ -174,8 +169,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "outdoor",
     lat: 51.0259,
     lng: 4.4777,
-    image_url:
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://urbanescapemechelen.be",
@@ -199,8 +192,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "outdoor",
     lat: 50.8798,
     lng: 4.7005,
-    image_url:
-      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://klimavontuur.be",
@@ -224,8 +215,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "both",
     lat: 51.2093,
     lng: 3.2247,
-    image_url:
-      "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://wellnessbrugge.be",
@@ -249,8 +238,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "outdoor",
     lat: 50.9307,
     lng: 5.3378,
-    image_url:
-      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://paintballhasselt.be",
@@ -274,8 +261,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "indoor",
     lat: 50.8281,
     lng: 3.265,
-    image_url:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://wijnkortrijk.be",
@@ -299,8 +284,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "indoor",
     lat: 51.0543,
     lng: 3.7174,
-    image_url:
-      "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=600&auto=format",
     featured: false,
     active: true,
     website: "https://locked.be",
@@ -324,8 +307,6 @@ export const MOCK_PROVIDERS: Provider[] = [
     indoor_outdoor: "indoor",
     lat: 51.2194,
     lng: 4.3973,
-    image_url:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&auto=format",
     featured: true,
     active: true,
     website: "https://cookinglab.be",
