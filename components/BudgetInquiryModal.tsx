@@ -92,7 +92,7 @@ export default function BudgetInquiryModal({
           <div className="py-8 text-center">
             <h2 className="text-xl font-bold text-gray-900">Budget doorgestuurd</h2>
             <p className="mt-2 text-sm text-gray-600">
-              Uw aanvraag is verstuurd naar {providers.length} aanbieder
+              Je aanvraag is verstuurd naar {providers.length} aanbieder
               {providers.length !== 1 ? "s" : ""}.
             </p>
             <button type="button" onClick={handleClose} className="mt-6 rounded-xl bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66]">

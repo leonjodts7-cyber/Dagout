@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ActivityCard from "@/components/ActivityCard";
 import AiRecommendations from "@/components/AiRecommendations";
 import ProviderMap from "@/components/ProviderMap";
+import ZoekenCategoryChips from "@/components/ZoekenCategoryChips";
 import {
   searchProviders,
   sortProviders,
@@ -53,7 +54,17 @@ export default function ZoekenPageClient({
             <AiRecommendations query={query} region={region} />
           )}
 
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-t border-gray-100 pt-8">
+          <div className="mb-6">
+            <ZoekenCategoryChips
+              query={query}
+              region={region}
+              category={category}
+              personen={personen}
+              omgeving={omgeving}
+            />
+          </div>
+
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-t border-gray-100 pt-6">
             <h2 className="text-xl font-bold text-gray-900">{resultLabel}</h2>
             <select
               value={sort}
@@ -76,7 +87,7 @@ export default function ZoekenPageClient({
               <button
                 type="button"
                 onClick={() => router.push("/zoeken")}
-                className="mt-6 rounded-xl bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66]"
+                className="btn-primary mt-6 rounded-xl bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66]"
               >
                 Wis filters
               </button>
@@ -98,7 +109,7 @@ export default function ZoekenPageClient({
       </div>
 
       <div className="sticky top-[65px] order-1 h-72 lg:top-[8.5rem] lg:h-[calc(100vh-8.5rem)] lg:w-1/2">
-        <ProviderMap providers={providers} region={region} />
+        <ProviderMap providers={sorted} region={region} />
       </div>
     </div>
   );

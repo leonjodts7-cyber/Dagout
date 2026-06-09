@@ -23,6 +23,7 @@ export default function HeroSearch() {
 
   function handleSuggestionClick(suggestionQuery: string) {
     setQuery(suggestionQuery);
+    navigate(suggestionQuery);
   }
 
   return (
@@ -39,7 +40,7 @@ export default function HeroSearch() {
           <div className="mt-4 flex justify-end">
             <button
               type="submit"
-              className="w-full rounded-xl bg-[#1D9E75] px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#178a66] sm:w-auto sm:px-10"
+              className="btn-primary w-full rounded-xl bg-[#1D9E75] px-8 py-3.5 text-base font-semibold text-white hover:bg-[#178a66] sm:w-auto sm:px-10"
             >
               Zoek met AI &rarr;
             </button>

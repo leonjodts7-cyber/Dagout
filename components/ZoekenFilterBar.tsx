@@ -120,7 +120,7 @@ export default function ZoekenFilterBar({
 
         <button
           type="submit"
-          className="shrink-0 rounded-lg bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#178a66] lg:px-8"
+          className="btn-primary shrink-0 rounded-lg bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66] lg:px-8"
         >
           Zoek
         </button>

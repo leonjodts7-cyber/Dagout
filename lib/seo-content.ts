@@ -31,14 +31,14 @@ export const REGION_SEO: Record<
     description:
       "Plan de perfecte teambuilding in Antwerpen. Escape rooms, lasergame, kookworkshops en outdoor activiteiten.",
     intro: "Teambuilding in Antwerpen",
-    body: "Antwerpen is dé hub voor dynamische teambuilding in Vlaanderen. Of u nu kiest voor een spannende escape room, een competitieve lasergame sessie of een gezamenlijke kookworkshop — de stad heeft voor elk team iets te bieden. Via Dagout.be vergelijkt u eenvoudig aanbieders en stuurt u direct een aanvraag.",
+    body: "Antwerpen is dé hub voor dynamische teambuilding in Vlaanderen. Of je nu kiest voor een spannende escape room, een competitieve lasergame sessie of een gezamenlijke kookworkshop — de stad heeft voor elk team iets te bieden. Via Dagout.be vergelijk je eenvoudig aanbieders en stuur je direct een aanvraag.",
   },
   brussel: {
     title: "Teambuilding Brussel — Vind de beste activiteiten",
     description:
-      "Teambuilding activiteiten in Brussel en omgeving. Vind en boek de beste ervaringen voor uw team.",
+      "Teambuilding activiteiten in Brussel en omgeving. Vind en boek de beste ervaringen voor je team.",
     intro: "Teambuilding in Brussel",
-    body: "Brussel combineert internationaliteit met een rijk aanbod aan teambuilding mogelijkheden. Perfect voor multinationale teams die op zoek zijn naar unieke ervaringen. Dagout.be helpt u snel de juiste activiteit te vinden op basis van groepsgrootte, budget en voorkeuren.",
+    body: "Brussel combineert internationaliteit met een rijk aanbod aan teambuilding mogelijkheden. Perfect voor multinationale teams die op zoek zijn naar unieke ervaringen. Dagout.be helpt je snel de juiste activiteit te vinden op basis van groepsgrootte, budget en voorkeuren.",
   },
   mechelen: {
     title: "Teambuilding Mechelen — Vind de beste activiteiten",
@@ -52,7 +52,7 @@ export const REGION_SEO: Record<
     description:
       "Teambuilding activiteiten in Leuven. Lasergame, escape rooms en meer voor bedrijven.",
     intro: "Teambuilding in Leuven",
-    body: "Leuven, de studentenstad met een bruisende bedrijfswereld, biedt diverse teambuilding opties. Van actieve lasergame sessies tot rustige wellness retreats — vind via Dagout.be de activiteit die past bij uw teamcultuur.",
+    body: "Leuven, de studentenstad met een bruisende bedrijfswereld, biedt diverse teambuilding opties. Van actieve lasergame sessies tot rustige wellness retreats — vind via Dagout.be de activiteit die past bij jullie teamcultuur.",
   },
   brugge: {
     title: "Teambuilding Brugge — Vind de beste activiteiten",
@@ -66,7 +66,7 @@ export const REGION_SEO: Record<
     description:
       "Teambuilding activiteiten in Hasselt en Limburg. Vind de beste aanbieders op Dagout.be.",
     intro: "Teambuilding in Hasselt",
-    body: "Hasselt is het hart van Limburg en groeit uit als teambuilding bestemming. Teams vinden hier een warm onthaal en gevarieerd aanbod — van actieve outdoor programma's tot creatieve workshops. Plan uw volgende uitstap via Dagout.be.",
+    body: "Hasselt is het hart van Limburg en groeit uit als teambuilding bestemming. Teams vinden hier een warm onthaal en gevarieerd aanbod — van actieve outdoor programma's tot creatieve workshops. Plan jullie volgende uitstap via Dagout.be.",
   },
   kortrijk: {
     title: "Teambuilding Kortrijk — Vind de beste activiteiten",
@@ -84,7 +84,7 @@ export function getCategorySeo(slug: string) {
     title: `${cat.name} teambuilding — Vind de beste activiteiten`,
     description: `${cat.description}. Boek ${cat.name.toLowerCase()} teambuilding activiteiten in Vlaanderen via Dagout.be.`,
     intro: `${cat.name} teambuilding`,
-    body: `${cat.name} is een van de populairste teambuilding formats in België. ${cat.description}. Via Dagout.be vergelijkt u eenvoudig aanbieders in heel Vlaanderen, bekijkt u prijzen per persoon en stuurt u een aanvraag naar de aanbieder van uw keuze.`,
+    body: `${cat.name} is een van de populairste teambuilding formats in België. ${cat.description}. Via Dagout.be vergelijk je eenvoudig aanbieders in heel Vlaanderen, bekijk je prijzen per persoon en stuur je een aanvraag naar de aanbieder van je keuze.`,
   };
 }
 

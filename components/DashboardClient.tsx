@@ -422,7 +422,7 @@ export default function DashboardClient() {
               {listings.length === 0 && (
                 <div className="mt-10 rounded-2xl border border-dashed border-[#1D9E75]/30 bg-[#1D9E75]/5 p-10 text-center">
                   <p className="text-gray-600">
-                    U heeft nog geen activiteiten gepubliceerd.
+                    Je hebt nog geen activiteiten gepubliceerd.
                   </p>
                   <Link
                     href="/aanbieders/nieuw"

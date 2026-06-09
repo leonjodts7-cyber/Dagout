@@ -53,10 +53,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const providersContext = MOCK_PROVIDERS.filter((p) => p.active)
+    const providersContext = [...MOCK_PROVIDERS]
+      .filter((p) => p.active)
+      .sort((a, b) => Number(b.featured) - Number(a.featured))
       .map(
         (p) =>
-          `- slug: ${p.slug} | ${p.name} (${p.category}, ${p.city}, €${p.price_from}/pers, ${p.min_persons}-${p.max_persons} personen, ${indoorLabel(p.indoor_outdoor)})`
+          `- slug: ${p.slug} | ${p.name} (${p.category}, ${p.city}, €${p.price_from}/pers, ${p.min_persons}-${p.max_persons} personen, ${indoorLabel(p.indoor_outdoor)}${p.featured ? ", PRO/featured" : ""})`
       )
       .join("\n");
 
@@ -74,7 +76,7 @@ ${providersContext}
 Zoekopdracht van de gebruiker: "${query}"
 ${region && region !== "alle" ? `Regio voorkeur: ${region}` : ""}
 
-Analyseer de zoekopdracht en kies de beste 3 activiteiten. Gebruik het slug-veld als id. Antwoord ALLEEN als geldige JSON zonder markdown, geen uitleg erbuiten:
+Analyseer de zoekopdracht en kies de beste 3 activiteiten. Geef prioriteit aan PRO/featured activiteiten wanneer ze passen bij de vraag. Gebruik het slug-veld als id. Antwoord ALLEEN als geldige JSON zonder markdown, geen uitleg erbuiten:
 {
   "recommendations": [
     {

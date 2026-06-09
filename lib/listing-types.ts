@@ -121,7 +121,7 @@ export function defaultFormData(): ListingFormData {
     priceFrom: "",
     priceOnRequest: false,
     openingHours: defaultOpeningHours(),
-    includes: ["Materiaal", "Begeleiding"],
+    includes: [],
     tags: [],
     languages: ["Nederlands"],
     certificates: "",

@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Dagout.be — Teambuilding platform",
     short_name: "Dagout",
     description:
-      "Vind en plan de perfecte teambuilding activiteit voor uw team in België.",
+      "Vind en plan de perfecte teambuilding activiteit voor je team in België.",
     start_url: "/",
     display: "standalone",
     background_color: "#0a2a1f",

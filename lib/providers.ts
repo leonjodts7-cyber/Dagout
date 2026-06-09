@@ -430,6 +430,14 @@ export function searchProviders(
 
 export type SortOption = "relevant" | "price-asc" | "price-desc" | "rating";
 
+/** Pro (featured) listings first, then Basis, then by rating. */
+function comparePlanVisibility(a: Provider, b: Provider): number {
+  const rank = (p: Provider) => (p.featured ? 2 : 1);
+  const diff = rank(b) - rank(a);
+  if (diff !== 0) return diff;
+  return b.rating - a.rating;
+}
+
 export function sortProviders(
   providers: Provider[],
   sort: SortOption
@@ -437,14 +445,47 @@ export function sortProviders(
   const copy = [...providers];
   switch (sort) {
     case "price-asc":
-      return copy.sort((a, b) => a.price_from - b.price_from);
+      return copy.sort(
+        (a, b) => comparePlanVisibility(a, b) || a.price_from - b.price_from
+      );
     case "price-desc":
-      return copy.sort((a, b) => b.price_from - a.price_from);
+      return copy.sort(
+        (a, b) => comparePlanVisibility(a, b) || b.price_from - a.price_from
+      );
     case "rating":
-      return copy.sort((a, b) => b.rating - a.rating);
+      return copy.sort(
+        (a, b) => comparePlanVisibility(a, b) || b.rating - a.rating
+      );
     default:
-      return copy;
+      return copy.sort(comparePlanVisibility);
   }
+}
+
+export const SEARCH_FILTER_CATEGORIES = [
+  "Alle",
+  "Kajakken",
+  "Escape Room",
+  "Kookworkshop",
+  "Lasergame",
+  "Outdoor",
+  "Wellness",
+] as const;
+
+export function getCategoryCounts(
+  query?: string,
+  region?: string,
+  personen?: string,
+  omgeving?: string
+): Record<string, number> {
+  const base = searchProviders(query, region, undefined, personen, omgeving);
+  const counts: Record<string, number> = { Alle: base.length };
+  for (const cat of SEARCH_FILTER_CATEGORIES) {
+    if (cat === "Alle") continue;
+    counts[cat] = base.filter(
+      (p) => p.category.toLowerCase() === cat.toLowerCase()
+    ).length;
+  }
+  return counts;
 }
 
 export function getProvidersForAi() {

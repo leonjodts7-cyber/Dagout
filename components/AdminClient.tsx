@@ -361,7 +361,11 @@ export default function AdminClient() {
                           <td className="px-4 py-3">{u.email}</td>
                           <td className="px-4 py-3">{u.name}</td>
                           <td className="px-4 py-3 text-gray-500">
-                            {new Date(u.created_at).toLocaleDateString("nl-BE")}
+                            {new Date(u.created_at).toLocaleDateString("nl-BE", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
                           </td>
                           <td className="px-4 py-3">{u.listing_count}</td>
                         </tr>

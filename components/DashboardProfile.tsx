@@ -19,7 +19,7 @@ export default function DashboardProfile() {
     <div id="profiel" className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
       <h2 className="text-xl font-semibold text-gray-900">Profiel bewerken</h2>
       <p className="mt-1 text-sm text-gray-500">
-        Werk uw bedrijfsprofiel en activiteiten bij
+        Werk je bedrijfsprofiel en activiteiten bij
       </p>
 
       <form onSubmit={handleSave} className="mt-6 space-y-5">

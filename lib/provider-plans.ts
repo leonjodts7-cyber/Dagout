@@ -7,23 +7,29 @@ export const PLAN_DETAILS = {
     label: "Basis",
     price: 14,
     listingLimit: 1,
+    badge: "Meest gekozen",
+    badgeClass: "bg-[#1D9E75]",
     features: [
       "1 listing",
-      "Basis zichtbaarheid op kaart",
-      "Aanvragen ontvangen",
-      "Dashboard toegang",
+      "Zichtbaar op kaart en zoekresultaten",
+      "Aanvragen ontvangen via het platform",
+      "Dashboard met statistieken",
+      "Basis positie in zoekresultaten",
     ],
   },
   pro: {
     label: "Pro",
     price: 19,
-    listingLimit: Infinity,
+    listingLimit: 1,
+    badge: "Aanbevolen",
+    badgeClass: "bg-amber-500",
     features: [
-      "Onbeperkt listings",
-      "Featured plaatsing bovenaan",
-      "AI prioriteit",
-      "Analytics",
-      "Pro badge",
+      "1 listing",
+      "Featured plaatsing bovenaan zoekresultaten",
+      "Prioriteit in AI aanbevelingen",
+      "Pro badge op je listing",
+      "Hogere positie op de kaart",
+      "Maandelijkse analytics rapport",
     ],
   },
 } as const;
@@ -38,8 +44,7 @@ export function resolvePlanTier(profile: DbProfile | null): PlanTier {
 export function getListingLimit(profile: DbProfile | null): number {
   const tier = resolvePlanTier(profile);
   if (tier === "none") return 0;
-  const limit = PLAN_DETAILS[tier].listingLimit;
-  return limit === Infinity ? 999 : limit;
+  return PLAN_DETAILS[tier].listingLimit;
 }
 
 export function getPlanBadgeLabel(profile: DbProfile | null): string | null {

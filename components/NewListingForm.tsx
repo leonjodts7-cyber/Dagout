@@ -31,6 +31,40 @@ interface ImagePreview {
   preview: string;
 }
 
+function validateListingForm(
+  form: ListingFormData,
+  newImageCount: number,
+  existingImageCount: number,
+  isEdit: boolean
+): string | null {
+  if (!form.name.trim()) return "Vul een naam in voor je activiteit.";
+  if (!form.category) return "Selecteer een categorie.";
+  if (!form.shortDescription.trim()) return "Vul een korte beschrijving in.";
+  if (form.shortDescription.length > 150) {
+    return "Korte beschrijving mag maximaal 150 tekens bevatten.";
+  }
+  if (!form.fullDescription.trim()) return "Vul een volledige beschrijving in.";
+  if (!form.companyName.trim()) return "Vul je bedrijfsnaam in.";
+  if (!form.city.trim()) return "Vul een gemeente in.";
+  if (!form.postalCode.trim()) return "Vul een postcode in.";
+  if (!form.region) return "Selecteer een regio.";
+  if (!form.contactEmail.trim()) return "Vul een e-mailadres in.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail)) {
+    return "Vul een geldig e-mailadres in.";
+  }
+  if (form.minPersons < 1) return "Minimum aantal personen moet minstens 1 zijn.";
+  if (form.maxPersons < form.minPersons) {
+    return "Maximum aantal personen mag niet lager zijn dan het minimum.";
+  }
+  if (!form.priceOnRequest && !form.priceFrom.trim()) {
+    return "Vul een prijs per persoon in of vink 'prijs op aanvraag' aan.";
+  }
+  if (!isEdit && newImageCount === 0 && existingImageCount === 0) {
+    return "Voeg minimaal één foto toe bij Media.";
+  }
+  return null;
+}
+
 function getVideoEmbed(url: string): string | null {
   const yt = url.match(
     /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/
@@ -224,14 +258,14 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
     setError(null);
     setLoading(true);
 
-    if (!form.name || !form.category || !form.shortDescription) {
-      setError("Vul alle verplichte velden in bij Basisinfo.");
-      setLoading(false);
-      return;
-    }
-
-    if (form.shortDescription.length > 150) {
-      setError("Korte beschrijving mag maximaal 150 tekens bevatten.");
+    const validationError = validateListingForm(
+      form,
+      images.length,
+      existingImageUrls.length,
+      isEdit
+    );
+    if (validationError) {
+      setError(validationError);
       setLoading(false);
       return;
     }
@@ -257,7 +291,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
         }
         if ((count ?? 0) >= limit) {
           setError(
-            "Upgrade naar Pro voor meer listings. Je Basis-plan staat maximaal 1 listing toe."
+            "Je hebt al een actieve listing. Bewerk je bestaande listing in het dashboard."
           );
           setLoading(false);
           return;

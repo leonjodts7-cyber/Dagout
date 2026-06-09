@@ -117,14 +117,14 @@ export async function POST(request: NextRequest) {
     const reply = stripPlanningJson(fullText);
 
     return NextResponse.json({
-      reply: reply || "Ik heb een dagplanning voor u samengesteld.",
+      reply: reply || "Ik heb een dagplanning voor je samengesteld.",
       planning,
       source: "ai",
     });
   } catch (error) {
     console.error("Dagassistent API error:", error);
     return NextResponse.json(
-      { error: "Er is een fout opgetreden bij het verwerken van uw vraag." },
+      { error: "Er is een fout opgetreden bij het verwerken van je vraag." },
       { status: 500 }
     );
   }

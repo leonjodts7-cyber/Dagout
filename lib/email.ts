@@ -82,7 +82,7 @@ export async function sendInquiryToProvider(data: InquiryEmailData) {
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Nieuwe aanvraag ontvangen</h1>
-    <p>U heeft een nieuwe aanvraag ontvangen voor <strong>${data.activityName}</strong>.</p>
+    <p>Je hebt een nieuwe aanvraag ontvangen voor <strong>${data.activityName}</strong>.</p>
     <table style="width:100%;margin:20px 0;border-collapse:collapse;">
       <tr><td style="padding:8px 0;color:#6b7280;">Naam</td><td style="padding:8px 0;"><strong>${data.contactName}</strong></td></tr>
       <tr><td style="padding:8px 0;color:#6b7280;">Bedrijf</td><td style="padding:8px 0;">${data.companyName || "—"}</td></tr>
@@ -112,13 +112,13 @@ export async function sendInquiryConfirmation(data: InquiryConfirmationData) {
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Aanvraag verstuurd!</h1>
     <p>Beste ${data.contactName},</p>
-    <p>Uw aanvraag voor <strong>${data.activityName}</strong> is succesvol verstuurd naar de aanbieder.</p>
+    <p>Je aanvraag voor <strong>${data.activityName}</strong> is succesvol verstuurd naar de aanbieder.</p>
     <table style="width:100%;margin:20px 0;border-collapse:collapse;">
       ${data.companyName ? `<tr><td style="padding:8px 0;color:#6b7280;">Bedrijf</td><td style="padding:8px 0;">${data.companyName}</td></tr>` : ""}
       ${data.groupSize ? `<tr><td style="padding:8px 0;color:#6b7280;">Groepsgrootte</td><td style="padding:8px 0;">${data.groupSize} personen</td></tr>` : ""}
       ${data.preferredDate ? `<tr><td style="padding:8px 0;color:#6b7280;">Gewenste datum</td><td style="padding:8px 0;">${data.preferredDate}</td></tr>` : ""}
     </table>
-    <p>De aanbieder neemt doorgaans binnen <strong>24 uur</strong> contact met u op.</p>
+    <p>De aanbieder neemt doorgaans binnen <strong>24 uur</strong> contact met je op.</p>
     <a href="${SITE_URL}/zoeken" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Meer activiteiten bekijken</a>
   `);
 
@@ -138,8 +138,8 @@ export async function sendWelcomeEmail(data: WelcomeEmailData) {
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Welkom bij Dagout, ${data.firstName}!</h1>
-    <p>Fijn dat u zich heeft geregistreerd op het Belgische teambuilding platform.</p>
-    <p>Als aanbieder kunt u nu uw eerste activiteit toevoegen en aanvragen van bedrijven ontvangen.</p>
+    <p>Fijn dat je je hebt geregistreerd op het Belgische teambuilding platform.</p>
+    <p>Als aanbieder kun je nu je eerste activiteit toevoegen en aanvragen van bedrijven ontvangen.</p>
     <a href="${SITE_URL}/dashboard" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin:8px 8px 8px 0;">Naar dashboard</a>
     <a href="${SITE_URL}/aanbieders/nieuw" style="display:inline-block;border:2px solid #1D9E75;color:#1D9E75;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:600;">Eerste activiteit toevoegen</a>
   `);
@@ -160,14 +160,14 @@ export async function sendListingApprovedEmail(data: ListingApprovedEmailData) {
 
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Gefeliciteerd, ${data.firstName}!</h1>
-    <p>Uw activiteit <strong>${data.listingName}</strong> is goedgekeurd en staat nu live op Dagout.be.</p>
+    <p>Je activiteit <strong>${data.listingName}</strong> is goedgekeurd en staat nu live op Dagout.be.</p>
     <p><strong>Tips voor meer aanvragen:</strong></p>
     <ul style="padding-left:20px;">
-      <li>Voeg duidelijke foto's toe aan uw listing</li>
-      <li>Houd uw contactgegevens up-to-date</li>
+      <li>Voeg duidelijke foto's toe aan je listing</li>
+      <li>Houd je contactgegevens up-to-date</li>
       <li>Reageer snel op binnenkomende aanvragen</li>
     </ul>
-    <a href="${data.listingUrl}" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Bekijk uw listing</a>
+    <a href="${data.listingUrl}" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Bekijk je listing</a>
   `);
 
   const { error } = await resend.emails.send({
@@ -192,9 +192,9 @@ export async function sendListingRejectedEmail(
   const html = baseTemplate(`
     <h1 style="color:#111827;font-size:20px;margin:0 0 16px;">Listing niet goedgekeurd</h1>
     <p>Beste ${firstName},</p>
-    <p>Uw activiteit <strong>${listingName}</strong> kon helaas niet worden goedgekeurd.</p>
+    <p>Je activiteit <strong>${listingName}</strong> kon helaas niet worden goedgekeurd.</p>
     <p style="background:#fef2f2;padding:16px;border-radius:8px;border-left:4px solid #ef4444;"><strong>Reden:</strong> ${reason}</p>
-    <p>Pas uw listing aan en dien opnieuw in via het dashboard.</p>
+    <p>Pas je listing aan en dien opnieuw in via het dashboard.</p>
     <a href="${SITE_URL}/dashboard" style="display:inline-block;background:#1D9E75;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;">Naar dashboard</a>
   `);
 

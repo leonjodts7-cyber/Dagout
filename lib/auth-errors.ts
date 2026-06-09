@@ -3,11 +3,11 @@ export function translateAuthError(message: string): string {
     "Invalid login credentials":
       "Onjuist e-mailadres of wachtwoord. Probeer het opnieuw.",
     "Email not confirmed":
-      "Bevestig eerst uw e-mailadres via de link in uw inbox.",
+      "Bevestig eerst je e-mailadres via de link in je inbox.",
     "User already registered":
       "Dit e-mailadres is al geregistreerd. Log in of gebruik een ander adres.",
     "Password should be at least 6 characters":
-      "Uw wachtwoord moet minimaal 6 tekens bevatten.",
+      "Je wachtwoord moet minimaal 6 tekens bevatten.",
     "Unable to validate email address: invalid format":
       "Voer een geldig e-mailadres in.",
     "Signup requires a valid password":
@@ -19,7 +19,7 @@ export function translateAuthError(message: string): string {
   }
 
   if (message.toLowerCase().includes("network")) {
-    return "Netwerkfout. Controleer uw internetverbinding.";
+    return "Netwerkfout. Controleer je internetverbinding.";
   }
 
   return message || "Er is een onbekende fout opgetreden. Probeer het later opnieuw.";
@@ -30,7 +30,7 @@ export function translateFormError(message: string): string {
     return "Deze gegevens bestaan al in het systeem.";
   }
   if (message.includes("permission") || message.includes("policy")) {
-    return "U heeft geen rechten voor deze actie. Log opnieuw in.";
+    return "Je hebt geen rechten voor deze actie. Log opnieuw in.";
   }
   return translateAuthError(message);
 }

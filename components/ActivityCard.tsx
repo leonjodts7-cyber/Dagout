@@ -22,15 +22,16 @@ function indoorBadgeLabel(value: Provider["indoor_outdoor"]): string {
   return "Binnen & buiten";
 }
 
-function FeaturedStar() {
+function ProBadge() {
   return (
     <span
-      className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-400 text-white shadow-md"
-      title="Featured activiteit"
+      className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm"
+      title="Pro listing"
     >
-      <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+      <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 7.1-1.01L12 2z" />
       </svg>
+      Pro
     </span>
   );
 }
@@ -79,7 +80,7 @@ export default function ActivityCard({
                 <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-600">
                   {personsLabel}
                 </span>
-                {provider.featured && <FeaturedStar />}
+                {provider.featured && <ProBadge />}
               </div>
               <div className="flex items-center gap-1">
                 {showAddToVote && <AddToVoteButton provider={provider} />}
@@ -143,7 +144,7 @@ export default function ActivityCard({
         </div>
 
         <div className="absolute right-3 top-3 flex items-start gap-2">
-          {provider.featured && <FeaturedStar />}
+          {provider.featured && <ProBadge />}
           {showAddToVote && <AddToVoteButton provider={provider} />}
           {showFavorite && (
             <div className="rounded-full bg-white/95 shadow-sm">

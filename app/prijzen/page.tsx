@@ -7,15 +7,16 @@ import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { createBrowserSupabase } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
+import { PLAN_DETAILS } from "@/lib/provider-plans";
 
 const FAQ = [
   {
     q: "Wat is het verschil tussen Basis en Pro?",
-    a: "Basis biedt 1 listing met zichtbaarheid op de kaart. Pro geeft onbeperkt listings, featured plaatsing en AI prioriteit.",
+    a: "Beide plannen geven 1 listing. Pro biedt featured plaatsing, AI-prioriteit, een Pro badge en hogere zichtbaarheid op de kaart.",
   },
   {
     q: "Wat houdt Featured plaatsing in?",
-    a: "Pro listings krijgen een Featured badge en hogere zichtbaarheid in zoekresultaten en AI-aanbevelingen.",
+    a: "Pro listings verschijnen bovenaan zoekresultaten met een Featured badge en krijgen prioriteit in AI-aanbevelingen.",
   },
   {
     q: "Kan ik op elk moment opzeggen?",
@@ -71,6 +72,11 @@ export default function PrijzenPage() {
     }
   }
 
+  const plans = [
+    { key: "basis" as const, highlighted: true },
+    { key: "pro" as const, highlighted: false },
+  ];
+
   return (
     <>
       <Navbar />
@@ -91,54 +97,47 @@ export default function PrijzenPage() {
         </section>
 
         <section className="mx-auto grid max-w-4xl gap-8 px-6 pb-16 md:grid-cols-2">
-          <div className="relative rounded-2xl border-2 border-[#1D9E75] bg-white p-8 shadow-lg">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#1D9E75] px-3 py-0.5 text-xs font-semibold text-white">
-              Meest gekozen
-            </span>
-            <h2 className="text-xl font-bold">Basis</h2>
-            <p className="mt-2 text-3xl font-extrabold text-gray-900">
-              €14<span className="text-base font-normal text-gray-500">/maand</span>
-            </p>
-            <ul className="mt-6 space-y-3 text-sm text-gray-600">
-              <li>✓ 1 listing</li>
-              <li>✓ Basis zichtbaarheid op kaart</li>
-              <li>✓ Aanvragen ontvangen</li>
-              <li>✓ Dashboard toegang</li>
-            </ul>
-            <button
-              type="button"
-              disabled={loadingPlan === "basis"}
-              onClick={() => startCheckout("basis")}
-              className="btn-primary mt-8 w-full rounded-xl border-2 border-[#1D9E75] py-3 text-sm font-semibold text-[#1D9E75] hover:bg-[#1D9E75]/5 disabled:opacity-50"
-            >
-              {loadingPlan === "basis" ? "Laden..." : "Kies Basis"}
-            </button>
-          </div>
-
-          <div className="relative rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-500 px-3 py-0.5 text-xs font-semibold text-white">
-              Aanbevolen
-            </span>
-            <h2 className="text-xl font-bold">Pro</h2>
-            <p className="mt-2 text-3xl font-extrabold text-gray-900">
-              €19<span className="text-base font-normal text-gray-500">/maand</span>
-            </p>
-            <ul className="mt-6 space-y-3 text-sm text-gray-600">
-              <li>✓ Onbeperkt listings</li>
-              <li>✓ Featured plaatsing bovenaan</li>
-              <li>✓ AI prioriteit</li>
-              <li>✓ Analytics</li>
-              <li>✓ Pro badge</li>
-            </ul>
-            <button
-              type="button"
-              disabled={loadingPlan === "pro"}
-              onClick={() => startCheckout("pro")}
-              className="btn-primary mt-8 w-full rounded-xl bg-[#1D9E75] py-3 text-sm font-semibold text-white hover:bg-[#178a66] disabled:opacity-50"
-            >
-              {loadingPlan === "pro" ? "Laden..." : "Kies Pro"}
-            </button>
-          </div>
+          {plans.map(({ key, highlighted }) => {
+            const plan = PLAN_DETAILS[key];
+            return (
+              <div
+                key={key}
+                className={`relative rounded-2xl bg-white p-8 ${
+                  highlighted
+                    ? "border-2 border-[#1D9E75] shadow-lg"
+                    : "border border-gray-200 shadow-sm"
+                }`}
+              >
+                <span
+                  className={`absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-xs font-semibold text-white ${plan.badgeClass}`}
+                >
+                  {plan.badge}
+                </span>
+                <h2 className="text-xl font-bold">{plan.label}</h2>
+                <p className="mt-2 text-3xl font-extrabold text-gray-900">
+                  €{plan.price}
+                  <span className="text-base font-normal text-gray-500">/maand</span>
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-gray-600">
+                  {plan.features.map((feature) => (
+                    <li key={feature}>✓ {feature}</li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  disabled={loadingPlan === key}
+                  onClick={() => startCheckout(key)}
+                  className={`btn-primary mt-8 w-full rounded-xl py-3 text-sm font-semibold disabled:opacity-50 ${
+                    key === "pro"
+                      ? "bg-[#1D9E75] text-white hover:bg-[#178a66]"
+                      : "border-2 border-[#1D9E75] text-[#1D9E75] hover:bg-[#1D9E75]/5"
+                  }`}
+                >
+                  {loadingPlan === key ? "Laden..." : `Kies ${plan.label}`}
+                </button>
+              </div>
+            );
+          })}
         </section>
 
         <section className="border-t border-gray-200 bg-white px-6 py-16">
