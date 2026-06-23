@@ -20,7 +20,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -31,7 +30,6 @@ export default function Navbar() {
     const supabase = createBrowserSupabase();
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
-      setLoading(false);
     });
     const {
       data: { subscription },
@@ -75,32 +73,20 @@ export default function Navbar() {
 
   const closeMobile = () => setMobileOpen(false);
   const linkClass =
-    "text-sm font-medium text-gray-600 transition-colors hover:text-[#1D9E75]";
+    "text-sm font-medium text-gray-600 transition-all duration-150 hover:text-[#1D9E75]";
   const iconLinkClass =
-    "rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-[#1D9E75]";
+    "rounded-full p-2.5 text-gray-500 transition-all duration-150 hover:bg-gray-100 hover:text-[#1D9E75]";
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-gray-200/60 bg-white/80 backdrop-blur-md">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-1">
-            <Link
-              href="/"
-              className="text-2xl font-bold tracking-tight text-[#1D9E75]"
-              aria-label="Dagout homepage"
-            >
-              Dagout
-            </Link>
-            <Link
-              href="/"
-              className={`rounded-lg p-2 ${pathname === "/" ? "text-[#1D9E75]" : "text-gray-400"} hover:bg-gray-100`}
-              aria-label="Home"
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-            </Link>
-          </div>
+      <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 shadow-[0_1px_3px_rgba(0,0,0,0.08)] backdrop-blur-md">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5">
+          <Link
+            href="/"
+            className="text-[1.4rem] font-bold tracking-tight text-[#1D9E75]"
+          >
+            Dagout
+          </Link>
 
           <ul className="hidden items-center gap-8 md:flex">
             <li>
@@ -117,7 +103,13 @@ export default function Navbar() {
                   aria-expanded={toolsOpen}
                 >
                   Tools
-                  <svg className={`h-4 w-4 transition-transform ${toolsOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <svg
+                    className={`h-4 w-4 transition-transform ${toolsOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -128,7 +120,7 @@ export default function Navbar() {
                         key={tool.href}
                         href={tool.href}
                         onClick={() => setToolsOpen(false)}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-[#1D9E75]/5 hover:text-[#1D9E75]"
+                        className="block px-4 py-2.5 text-sm text-gray-700 transition-colors hover:bg-[#1D9E75]/5 hover:text-[#1D9E75]"
                       >
                         {tool.title}
                       </Link>
@@ -144,7 +136,10 @@ export default function Navbar() {
             </li>
             {user && isAdminEmail(user.email) && (
               <li>
-                <Link href="/admin" className="text-sm font-medium text-amber-600 hover:text-amber-700">
+                <Link
+                  href="/admin"
+                  className="text-sm font-medium text-amber-600 hover:text-amber-700"
+                >
                   Admin
                 </Link>
               </li>
@@ -152,10 +147,8 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-2 md:flex">
-              {loading ? (
-                <div className="h-9 w-28 animate-pulse rounded-lg bg-gray-100" />
-              ) : user ? (
+            <div className="hidden items-center gap-3 md:flex">
+              {user ? (
                 <>
                   <Link href="/favorieten" className={iconLinkClass} aria-label="Favorieten">
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -171,7 +164,7 @@ export default function Navbar() {
                     <button
                       type="button"
                       onClick={() => setAvatarOpen((o) => !o)}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1D9E75] text-xs font-bold text-white hover:bg-[#178a66]"
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1D9E75] text-xs font-bold text-white transition-all duration-150 hover:bg-[#178a66]"
                       aria-label="Accountmenu"
                     >
                       {userInitials(user)}
@@ -205,7 +198,10 @@ export default function Navbar() {
                   <Link href="/inloggen" className={linkClass}>
                     Inloggen
                   </Link>
-                  <Link href="/aanbieders/nieuw" className="rounded-lg bg-[#1D9E75] px-4 py-2 text-sm font-semibold text-white hover:bg-[#178a66]">
+                  <Link
+                    href="/aanbieders/nieuw"
+                    className="rounded-full bg-[#1D9E75] px-5 py-2.5 text-sm font-semibold text-white transition-all duration-150 hover:bg-[#178a66] hover:shadow-md"
+                  >
                     Lijst je activiteit
                   </Link>
                 </>
@@ -239,9 +235,6 @@ export default function Navbar() {
             </button>
           </div>
           <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-6">
-            <Link href="/" onClick={closeMobile} className="flex items-center gap-2 text-lg font-medium text-gray-800">
-              Home
-            </Link>
             <Link href="/zoeken" onClick={closeMobile} className="text-lg font-medium text-gray-800">
               Ontdek
             </Link>
@@ -272,7 +265,7 @@ export default function Navbar() {
             ) : (
               <>
                 <Link href="/inloggen" onClick={closeMobile} className="text-base text-gray-600">Inloggen</Link>
-                <Link href="/aanbieders/nieuw" onClick={closeMobile} className="rounded-xl bg-[#1D9E75] px-4 py-3 text-center text-sm font-semibold text-white">
+                <Link href="/aanbieders/nieuw" onClick={closeMobile} className="rounded-full bg-[#1D9E75] px-4 py-3 text-center text-sm font-semibold text-white">
                   Lijst je activiteit
                 </Link>
               </>

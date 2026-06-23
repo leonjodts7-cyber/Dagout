@@ -21,5 +21,9 @@ interface ProviderMapProps {
 
 export default function ProviderMap({ providers, region }: ProviderMapProps) {
   const { center, zoom } = getMapViewForRegion(region);
-  return <Map providers={providers} center={center} zoom={zoom} />;
+  return (
+    <div className="h-full min-h-[288px] w-full">
+      <Map providers={providers} center={center} zoom={zoom} />
+    </div>
+  );
 }

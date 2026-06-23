@@ -24,7 +24,7 @@ interface FilterSearchBarProps {
   defaultCategory?: string;
   defaultPersonen?: string;
   defaultOmgeving?: string;
-  variant?: "default" | "hero";
+  variant?: "default" | "hero" | "home";
 }
 
 export default function FilterSearchBar({
@@ -41,6 +41,7 @@ export default function FilterSearchBar({
   const [omgeving, setOmgeving] = useState(defaultOmgeving);
 
   const isHero = variant === "hero";
+  const isHome = variant === "home";
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -52,13 +53,19 @@ export default function FilterSearchBar({
     router.push(`/zoeken?${params.toString()}`);
   }
 
-  const selectClass = isHero
-    ? "min-w-0 flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/30 [&>option]:text-gray-900"
-    : "min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
+  const selectClass = isHome
+    ? "min-w-[140px] flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20"
+    : isHero
+      ? "min-w-0 flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/30 [&>option]:text-gray-900"
+      : "min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
+
+  const rowClass = isHome
+    ? "flex gap-3 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible"
+    : "flex flex-col gap-2 sm:flex-row sm:items-stretch";
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
+      <div className={rowClass}>
         <select
           value={region}
           onChange={(e) => setRegion(e.target.value)}
@@ -115,11 +122,7 @@ export default function FilterSearchBar({
 
         <button
           type="submit"
-          className={`btn-primary shrink-0 rounded-lg px-8 py-2.5 text-sm font-semibold sm:min-w-[120px] ${
-            isHero
-              ? "bg-[#1D9E75] text-white hover:bg-[#178a66]"
-              : "bg-[#1D9E75] text-white hover:bg-[#178a66]"
-          }`}
+          className="btn-primary shrink-0 rounded-lg bg-[#1D9E75] px-8 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66] sm:min-w-[120px]"
         >
           Zoek
         </button>

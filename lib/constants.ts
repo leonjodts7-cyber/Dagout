@@ -47,54 +47,94 @@ export const CATEGORIES = [
 
 export const CATEGORY_NAMES = CATEGORIES.map((c) => c.name);
 
+export const CATEGORY_CARD_IMAGES: Record<string, string> = {
+  kajakken:
+    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+  "escape-room":
+    "https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=600&q=80",
+  kookworkshop:
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+  lasergame:
+    "https://images.unsplash.com/photo-1552072805-516d4f2c3a64?w=600&q=80",
+  outdoor:
+    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
+  wellness:
+    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
+};
+
+export const PROVIDER_IMAGE_OVERRIDES: Record<string, string> = {
+  "dobber-kajakken-gent":
+    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+  "escape-hunt-antwerpen":
+    "https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=600&q=80",
+  "volta-kookworkshop-gent":
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+  "lasergame-arena-brussel":
+    "https://images.unsplash.com/photo-1552072805-516d4f2c3a64?w=600&q=80",
+  "de-wimpe-kanovaren-herenthout":
+    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+  "urban-escape-mechelen":
+    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+  "klimavontuur-leuven":
+    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
+  "wellness-retreat-brugge":
+    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
+  "paintball-hasselt":
+    "https://images.unsplash.com/photo-1608501078713-8e445a709b39?w=600&q=80",
+  "wijnproeverij-kortrijk":
+    "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80",
+  "escape-room-gent":
+    "https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=600&q=80",
+  "cooking-lab-antwerpen":
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+};
+
 export const CATEGORY_IMAGES: Record<string, string> = {
-  Kajakken:
-    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&auto=format",
-  "Escape Room":
-    "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=400&auto=format",
-  Kookworkshop:
-    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&auto=format",
-  Lasergame:
-    "https://images.unsplash.com/photo-1552072805-516d4f2c3a64?w=400&auto=format",
-  Outdoor:
-    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&auto=format",
-  Wellness:
-    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&auto=format",
-  Klimmen:
-    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&auto=format",
-  Paintball:
-    "https://images.unsplash.com/photo-1608501078713-8e445a709b39?w=400&auto=format",
-  Wijnproeverij:
-    "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&auto=format",
+  Kajakken: PROVIDER_IMAGE_OVERRIDES["dobber-kajakken-gent"],
+  "Escape Room": PROVIDER_IMAGE_OVERRIDES["escape-hunt-antwerpen"],
+  Kookworkshop: PROVIDER_IMAGE_OVERRIDES["volta-kookworkshop-gent"],
+  Lasergame: PROVIDER_IMAGE_OVERRIDES["lasergame-arena-brussel"],
+  Outdoor: PROVIDER_IMAGE_OVERRIDES["klimavontuur-leuven"],
+  Wellness: PROVIDER_IMAGE_OVERRIDES["wellness-retreat-brugge"],
+  Klimmen: PROVIDER_IMAGE_OVERRIDES["klimavontuur-leuven"],
+  Paintball: PROVIDER_IMAGE_OVERRIDES["paintball-hasselt"],
+  Wijnproeverij: PROVIDER_IMAGE_OVERRIDES["wijnproeverij-kortrijk"],
 };
 
 export function getProviderImageUrl(
   category: string,
   slug?: string
 ): string {
+  if (slug && PROVIDER_IMAGE_OVERRIDES[slug]) {
+    return PROVIDER_IMAGE_OVERRIDES[slug];
+  }
   if (slug?.includes("paintball")) return CATEGORY_IMAGES.Paintball;
   if (slug?.includes("wijn")) return CATEGORY_IMAGES.Wijnproeverij;
   if (slug?.includes("klim")) return CATEGORY_IMAGES.Klimmen;
   return (
     CATEGORY_IMAGES[category] ??
     CATEGORY_IMAGES.Outdoor ??
-    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&auto=format"
+    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80"
   );
 }
 
 export const SEARCH_SUGGESTIONS = [
   {
-    label: "25 mensen buiten Gent",
+    label: "Actieve dag voor 20 mensen in Gent 🌊",
     query:
-      "Wij zijn met 25 mensen, willen iets actiefs buiten doen in Gent, budget €30 per persoon",
+      "Wij zijn met 20 mensen en zoeken een actieve outdoor activiteit in Gent, budget rond €30 per persoon",
   },
   {
-    label: "Escape room Antwerpen",
-    query: "Escape room voor 15 personen in Antwerpen",
+    label: "Escape room teambuilding Antwerpen 🔐",
+    query: "Escape room teambuilding voor 15 personen in Antwerpen",
   },
   {
-    label: "Kookworkshop Brussel",
-    query: "Kookworkshop met lunch voor ons team in Brussel",
+    label: "Kookworkshop met lunch Brussel 👨‍🍳",
+    query: "Kookworkshop met lunch voor ons team van 25 personen in Brussel",
+  },
+  {
+    label: "Wellness dag voor ons team 🧘",
+    query: "Wellness en ontspanning teambuilding voor 12 personen, rustige sfeer",
   },
 ] as const;
 
@@ -105,6 +145,7 @@ export const TESTIMONIALS = [
     name: "Sophie Vermeulen",
     role: "HR Manager",
     company: "Belfius",
+    initials: "SV",
   },
   {
     quote:
@@ -112,6 +153,7 @@ export const TESTIMONIALS = [
     name: "Thomas De Smet",
     role: "Office Manager",
     company: "Colruyt Group",
+    initials: "TD",
   },
   {
     quote:
@@ -119,6 +161,7 @@ export const TESTIMONIALS = [
     name: "Lien Janssens",
     role: "Teambuilding Coördinator",
     company: "Umicore",
+    initials: "LJ",
   },
 ] as const;
 

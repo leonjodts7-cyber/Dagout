@@ -31,6 +31,19 @@ function createGreenPin() {
 
 const greenIcon = createGreenPin();
 
+function MapInvalidateSize() {
+  const map = useMap();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [map]);
+
+  return null;
+}
+
 function MapFlyTo({
   center,
   zoom,
@@ -96,11 +109,12 @@ export default function Map({
       className="dagout-map z-0 h-full w-full"
     >
       <TileLayer
-        attribution="© OpenStreetMap contributors © CARTO"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        subdomains="abcd"
+        subdomains={["a", "b", "c", "d"]}
         maxZoom={20}
       />
+      <MapInvalidateSize />
       <MapFlyTo center={center} zoom={zoom} />
       {markerPositions.map(({ provider, popupHtml }) => (
         <Marker

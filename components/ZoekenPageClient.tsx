@@ -93,7 +93,7 @@ export default function ZoekenPageClient({
               </button>
             </div>
           ) : (
-            <div className="space-y-4 pb-8">
+            <div className="space-y-6 pb-8">
               {sorted.map((provider) => (
                 <ActivityCard
                   key={provider.id}
