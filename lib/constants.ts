@@ -49,17 +49,17 @@ export const CATEGORY_NAMES = CATEGORIES.map((c) => c.name);
 
 export const CATEGORY_CARD_IMAGES: Record<string, string> = {
   kajakken:
-    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80",
   "escape-room":
-    "https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=600&q=80",
+    "https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=400&q=80",
   kookworkshop:
-    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80",
   lasergame:
-    "https://images.unsplash.com/photo-1552072805-516d4f2c3a64?w=600&q=80",
+    "https://images.unsplash.com/photo-1552072805-516d4f2c3a64?w=400&q=80",
   outdoor:
-    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
+    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=80",
   wellness:
-    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
+    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80",
 };
 
 export const PROVIDER_IMAGE_OVERRIDES: Record<string, string> = {

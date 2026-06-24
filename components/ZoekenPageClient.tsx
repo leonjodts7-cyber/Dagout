@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import ActivityCard from "@/components/ActivityCard";
 import AiRecommendations from "@/components/AiRecommendations";
+import SearchResultCard from "@/components/SearchResultCard";
 import ZoekenCategoryChips from "@/components/ZoekenCategoryChips";
 import { Skeleton } from "@/components/ui/Skeleton";
 import {
@@ -51,17 +51,17 @@ export default function ZoekenPageClient({
 
   const resultLabel = `${providers.length} ${
     providers.length === 1 ? "activiteit" : "activiteiten"
-  } gevonden`;
+  }`;
 
   return (
-    <div className="flex flex-1 flex-col-reverse lg:flex-row lg:overflow-hidden">
-      <div className="order-2 lg:order-1 lg:h-[calc(100vh-8.5rem)] lg:w-1/2 lg:overflow-y-auto">
-        <div className="px-6 py-8">
+    <div className="flex flex-1 flex-col lg:flex-row">
+      <div className="order-2 flex-1 overflow-y-auto lg:order-1 lg:max-h-[calc(100vh-140px)] lg:w-1/2">
+        <div className="px-4 py-6 sm:px-6">
           {aiMode && query.trim() && (
             <AiRecommendations query={query} region={region} />
           )}
 
-          <div className="mb-6 -mx-1 overflow-x-auto px-1 pb-1">
+          <div className="mb-5 -mx-1 overflow-x-auto px-1 pb-1">
             <ZoekenCategoryChips
               query={query}
               region={region}
@@ -71,15 +71,15 @@ export default function ZoekenPageClient({
             />
           </div>
 
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-t border-gray-100 pt-6">
-            <h2 className="text-xl font-bold text-gray-900">{resultLabel}</h2>
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-4">
+            <p className="text-sm font-medium text-gray-700">{resultLabel}</p>
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as SortOption)}
               aria-label="Sorteer op"
-              className="rounded-lg border border-gray-200/80 bg-white px-4 py-2 text-sm text-gray-700 transition-colors focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20"
+              className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20"
             >
-              <option value="relevant">Meest relevant (Pro eerst)</option>
+              <option value="relevant">Meest relevant</option>
               <option value="price-asc">Prijs laag-hoog</option>
               <option value="price-desc">Prijs hoog-laag</option>
               <option value="rating">Hoogst beoordeeld</option>
@@ -87,35 +87,29 @@ export default function ZoekenPageClient({
           </div>
 
           {sorted.length === 0 ? (
-            <div className="rounded-xl border border-gray-200/60 bg-gray-50 p-10 text-center">
-              <p className="text-lg font-medium text-gray-800">
-                Geen activiteiten gevonden voor deze filters
+            <div className="rounded-xl border border-gray-200 bg-gray-50 p-10 text-center">
+              <p className="font-medium text-gray-800">
+                Geen activiteiten gevonden
               </p>
               <button
                 type="button"
                 onClick={() => router.push("/zoeken")}
-                className="btn-primary mt-6 rounded-xl bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66]"
+                className="mt-4 rounded-lg bg-[#1D9E75] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66]"
               >
                 Wis filters
               </button>
             </div>
           ) : (
-            <div className="space-y-6 pb-8">
+            <div className="space-y-4 pb-8">
               {sorted.map((provider) => (
-                <ActivityCard
-                  key={provider.id}
-                  provider={provider}
-                  variant="list"
-                  showFavorite
-                  showAddToVote
-                />
+                <SearchResultCard key={provider.id} provider={provider} />
               ))}
             </div>
           )}
         </div>
       </div>
 
-      <div className="sticky top-[65px] order-1 h-72 lg:top-[8.5rem] lg:h-[calc(100vh-8.5rem)] lg:w-1/2">
+      <div className="relative order-1 h-64 shrink-0 lg:sticky lg:top-[140px] lg:order-2 lg:h-[calc(100vh-140px)] lg:w-1/2">
         {!mapReady && <Skeleton className="absolute inset-0 z-10 h-full w-full" />}
         <div className={`h-full w-full ${mapReady ? "" : "opacity-0"}`}>
           <ProviderMap

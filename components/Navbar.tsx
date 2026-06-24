@@ -28,9 +28,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const supabase = createBrowserSupabase();
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-    });
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -72,25 +70,23 @@ export default function Navbar() {
   }
 
   const closeMobile = () => setMobileOpen(false);
-  const linkClass =
-    "text-sm font-medium text-gray-600 transition-all duration-150 hover:text-[#1D9E75]";
-  const iconLinkClass =
-    "rounded-full p-2.5 text-gray-500 transition-all duration-150 hover:bg-gray-100 hover:text-[#1D9E75]";
+  const navLink =
+    "text-sm font-medium text-gray-700 transition-colors hover:text-[#1D9E75]";
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 shadow-[0_1px_3px_rgba(0,0,0,0.08)] backdrop-blur-md">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5">
+      <header className="sticky top-0 z-50 border-b border-[#e5e7eb] bg-white">
+        <nav className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-4">
           <Link
             href="/"
-            className="text-[1.4rem] font-bold tracking-tight text-[#1D9E75]"
+            className="text-[22px] font-bold text-[#1D9E75]"
           >
             Dagout
           </Link>
 
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center justify-center gap-8 md:flex">
             <li>
-              <Link href="/zoeken" className={linkClass}>
+              <Link href="/zoeken" className={navLink}>
                 Ontdek
               </Link>
             </li>
@@ -99,7 +95,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => setToolsOpen((o) => !o)}
-                  className={`flex items-center gap-1 ${linkClass}`}
+                  className={`flex items-center gap-1 ${navLink}`}
                   aria-expanded={toolsOpen}
                 >
                   Tools
@@ -114,13 +110,13 @@ export default function Navbar() {
                   </svg>
                 </button>
                 {toolsOpen && (
-                  <div className="absolute left-1/2 top-full z-50 mt-2 w-52 -translate-x-1/2 rounded-xl border border-gray-200 bg-white py-2 shadow-lg">
+                  <div className="absolute left-1/2 top-full z-50 mt-2 w-52 -translate-x-1/2 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
                     {NAV_TOOLS_LINKS.map((tool) => (
                       <Link
                         key={tool.href}
                         href={tool.href}
                         onClick={() => setToolsOpen(false)}
-                        className="block px-4 py-2.5 text-sm text-gray-700 transition-colors hover:bg-[#1D9E75]/5 hover:text-[#1D9E75]"
+                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#1D9E75]"
                       >
                         {tool.title}
                       </Link>
@@ -130,77 +126,58 @@ export default function Navbar() {
               </div>
             </li>
             <li>
-              <Link href="/aanbieders/nieuw" className={linkClass}>
+              <Link href="/aanbieders/nieuw" className={navLink}>
                 Voor aanbieders
               </Link>
             </li>
             {user && isAdminEmail(user.email) && (
               <li>
-                <Link
-                  href="/admin"
-                  className="text-sm font-medium text-amber-600 hover:text-amber-700"
-                >
+                <Link href="/admin" className="text-sm font-medium text-amber-600 hover:text-amber-700">
                   Admin
                 </Link>
               </li>
             )}
           </ul>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-3 md:flex">
+          <div className="flex items-center justify-end gap-3">
+            <div className="hidden items-center gap-4 md:flex">
               {user ? (
-                <>
-                  <Link href="/favorieten" className={iconLinkClass} aria-label="Favorieten">
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </Link>
-                  <Link href="/planning" className={iconLinkClass} aria-label="Planning">
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </Link>
-                  <div ref={avatarRef} className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setAvatarOpen((o) => !o)}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1D9E75] text-xs font-bold text-white transition-all duration-150 hover:bg-[#178a66]"
-                      aria-label="Accountmenu"
-                    >
-                      {userInitials(user)}
-                    </button>
-                    {avatarOpen && (
-                      <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-xl border border-gray-200 bg-white py-2 shadow-lg">
-                        <p className="truncate px-4 py-2 text-xs text-gray-500">
-                          {user.email}
-                        </p>
-                        <hr className="my-1 border-gray-100" />
-                        <Link
-                          href="/dashboard"
-                          onClick={() => setAvatarOpen(false)}
-                          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-[#1D9E75]/5 hover:text-[#1D9E75]"
-                        >
-                          Dashboard
-                        </Link>
-                        <button
-                          type="button"
-                          onClick={handleLogout}
-                          className="block w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-red-50 hover:text-red-600"
-                        >
-                          Uitloggen
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </>
+                <div ref={avatarRef} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setAvatarOpen((o) => !o)}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1D9E75] text-xs font-bold text-white hover:bg-[#178a66]"
+                    aria-label="Accountmenu"
+                  >
+                    {userInitials(user)}
+                  </button>
+                  {avatarOpen && (
+                    <div className="absolute right-0 top-full z-50 mt-2 w-44 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setAvatarOpen(false)}
+                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+                      >
+                        Dashboard
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="block w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-50"
+                      >
+                        Uitloggen
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <>
-                  <Link href="/inloggen" className={linkClass}>
+                  <Link href="/inloggen" className={navLink}>
                     Inloggen
                   </Link>
                   <Link
                     href="/aanbieders/nieuw"
-                    className="rounded-full bg-[#1D9E75] px-5 py-2.5 text-sm font-semibold text-white transition-all duration-150 hover:bg-[#178a66] hover:shadow-md"
+                    className="rounded-full bg-[#1D9E75] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66]"
                   >
                     Lijst je activiteit
                   </Link>
@@ -224,7 +201,7 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] flex flex-col bg-white md:hidden">
-          <div className="flex items-center justify-between border-b px-6 py-4">
+          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
             <Link href="/" onClick={closeMobile} className="text-xl font-bold text-[#1D9E75]">
               Dagout
             </Link>
@@ -247,24 +224,21 @@ export default function Navbar() {
             <Link href="/aanbieders/nieuw" onClick={closeMobile} className="text-lg font-medium text-gray-800">
               Voor aanbieders
             </Link>
-            {user && isAdminEmail(user.email) && (
-              <Link href="/admin" onClick={closeMobile} className="text-lg font-medium text-amber-600">
-                Admin
-              </Link>
-            )}
-            <hr className="my-2" />
+            <hr className="my-2 border-gray-200" />
             {user ? (
               <>
-                <Link href="/favorieten" onClick={closeMobile} className="text-base text-gray-700">Favorieten</Link>
-                <Link href="/planning" onClick={closeMobile} className="text-base text-gray-700">Planning</Link>
-                <Link href="/dashboard" onClick={closeMobile} className="text-base text-gray-700">Dashboard</Link>
+                <Link href="/dashboard" onClick={closeMobile} className="text-base text-gray-700">
+                  Dashboard
+                </Link>
                 <button type="button" onClick={() => { closeMobile(); handleLogout(); }} className="text-left text-base text-red-600">
                   Uitloggen
                 </button>
               </>
             ) : (
               <>
-                <Link href="/inloggen" onClick={closeMobile} className="text-base text-gray-600">Inloggen</Link>
+                <Link href="/inloggen" onClick={closeMobile} className="text-base text-gray-600">
+                  Inloggen
+                </Link>
                 <Link href="/aanbieders/nieuw" onClick={closeMobile} className="rounded-full bg-[#1D9E75] px-4 py-3 text-center text-sm font-semibold text-white">
                   Lijst je activiteit
                 </Link>

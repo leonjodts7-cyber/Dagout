@@ -4,18 +4,18 @@ import Link from "next/link";
 import { PLAN_DETAILS } from "@/lib/provider-plans";
 
 interface ProviderPlanSectionProps {
-  selectedPlan?: "basis" | "pro" | null;
-  onSelectBasis: () => void;
+  selectedPlan?: "free" | "pro" | null;
+  onSelectFree: () => void;
   onSelectPro: () => void;
 }
 
 export default function ProviderPlanSection({
   selectedPlan,
-  onSelectBasis,
+  onSelectFree,
   onSelectPro,
 }: ProviderPlanSectionProps) {
   const plans = [
-    { key: "basis" as const, onSelect: onSelectBasis },
+    { key: "free" as const, onSelect: onSelectFree },
     { key: "pro" as const, onSelect: onSelectPro },
   ];
 
@@ -26,7 +26,7 @@ export default function ProviderPlanSection({
           Kies je plan
         </h2>
         <p className="mx-auto mt-2 max-w-lg text-center text-sm text-gray-500">
-          Kies het plan dat bij jouw activiteit past
+          Start gratis of kies Pro voor meer zichtbaarheid
         </p>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -38,26 +38,32 @@ export default function ProviderPlanSection({
                 key={key}
                 type="button"
                 onClick={onSelect}
-                className={`relative rounded-2xl bg-white p-8 text-left transition-all ${
+                className={`relative rounded-xl border bg-white p-8 text-left transition-all ${
                   isSelected
-                    ? "border-2 border-[#1D9E75] shadow-lg ring-2 ring-[#1D9E75]/20"
-                    : "border-2 border-[#1D9E75]/40 shadow-sm hover:border-[#1D9E75] hover:shadow-md"
-                } ${key === "pro" ? "bg-[#f0fdf4]" : ""}`}
+                    ? "border-[#1D9E75] shadow-md ring-2 ring-[#1D9E75]/20"
+                    : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                }`}
               >
                 {isSelected && (
-                  <span className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-full bg-[#1D9E75] text-white">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                  <span className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#1D9E75] text-white">
+                    <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </span>
                 )}
-                <span className="inline-block rounded-full bg-[#1D9E75] px-3 py-0.5 text-xs font-semibold text-white">
+                <span className={`inline-block rounded-full px-3 py-0.5 text-xs font-semibold text-white ${plan.badgeClass}`}>
                   {plan.badge}
                 </span>
                 <h3 className="mt-4 text-xl font-bold text-gray-900">{plan.label}</h3>
                 <p className="mt-2 text-3xl font-extrabold text-gray-900">
-                  €{plan.price}
-                  <span className="text-base font-normal text-gray-500">/maand</span>
+                  {plan.price === 0 ? (
+                    "Gratis"
+                  ) : (
+                    <>
+                      €{plan.price}
+                      <span className="text-base font-normal text-gray-500">/maand</span>
+                    </>
+                  )}
                 </p>
                 <ul className="mt-6 space-y-2 text-sm text-gray-600">
                   {plan.features.map((feature) => (
@@ -67,8 +73,8 @@ export default function ProviderPlanSection({
                     </li>
                   ))}
                 </ul>
-                <span className="btn-primary mt-8 inline-flex w-full items-center justify-center rounded-xl bg-[#1D9E75] py-3 text-sm font-semibold text-white hover:bg-[#178a66]">
-                  Kies {plan.label}
+                <span className="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-[#1D9E75] py-3 text-sm font-semibold text-white">
+                  {key === "free" ? "Start gratis" : "Kies Pro"}
                 </span>
               </button>
             );

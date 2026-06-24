@@ -53,15 +53,18 @@ export default function FilterSearchBar({
     router.push(`/zoeken?${params.toString()}`);
   }
 
+  const rowClass = isHome
+    ? "flex flex-wrap items-center gap-3"
+    : "flex flex-col gap-2 sm:flex-row sm:items-stretch";
+
+  const homeSelectClass =
+    "min-w-[140px] flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
+
   const selectClass = isHome
-    ? "min-w-[140px] flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20"
+    ? homeSelectClass
     : isHero
       ? "min-w-0 flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/30 [&>option]:text-gray-900"
       : "min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm transition-all focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
-
-  const rowClass = isHome
-    ? "flex gap-3 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible"
-    : "flex flex-col gap-2 sm:flex-row sm:items-stretch";
 
   return (
     <form onSubmit={handleSubmit} className="w-full">

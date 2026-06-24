@@ -1,20 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { SEARCH_SUGGESTIONS } from "@/lib/constants";
+import { FormEvent, useState } from "react";
+
+const CHIPS = [
+  { label: "Kajakken in Gent", query: "Kajakken teambuilding voor 20 personen in Gent" },
+  { label: "Escape room Antwerpen", query: "Escape room teambuilding Antwerpen voor 15 personen" },
+  { label: "Kookworkshop Brussel", query: "Kookworkshop teambuilding Brussel voor 25 personen" },
+];
 
 export default function HeroSearch() {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    const el = inputRef.current;
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
-  }, [query]);
 
   function navigate(searchQuery: string) {
     const params = new URLSearchParams();
@@ -29,47 +26,35 @@ export default function HeroSearch() {
     navigate(query);
   }
 
-  function handleSuggestionClick(suggestionQuery: string) {
-    setQuery(suggestionQuery);
-    navigate(suggestionQuery);
-  }
-
   return (
-    <div className="w-full">
+    <div className="w-full max-w-2xl">
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-3 rounded-2xl bg-white p-3 shadow-2xl ring-1 ring-black/5 sm:flex-row sm:items-center sm:gap-4 sm:p-2 sm:pl-6">
-          <textarea
-            ref={inputRef}
+        <div className="flex flex-col gap-2 rounded-[14px] bg-white p-1.5 shadow-lg sm:flex-row sm:items-center sm:pl-5">
+          <input
+            type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit(e);
-              }
-            }}
-            rows={1}
-            placeholder="Beschrijf jullie perfecte teambuilding dag..."
-            className="max-h-[140px] min-h-[52px] w-full flex-1 resize-none border-0 bg-transparent py-3 text-[17px] leading-snug text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/30 focus:ring-offset-2 sm:py-5"
+            placeholder="bv. actieve dag voor 25 mensen in Gent, budget €30/pers"
+            className="min-w-0 flex-1 border-0 bg-transparent px-2 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:py-3.5"
           />
           <button
             type="submit"
-            className="btn-primary w-full shrink-0 rounded-xl bg-[#1D9E75] px-8 py-5 text-base font-semibold text-white hover:bg-[#178a66] sm:w-auto"
+            className="shrink-0 rounded-[10px] bg-[#1D9E75] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#178a66] sm:px-6"
           >
             Zoek met AI →
           </button>
         </div>
       </form>
 
-      <div className="mt-6 flex flex-wrap justify-center gap-2.5">
-        {SEARCH_SUGGESTIONS.map((suggestion) => (
+      <div className="mt-5 flex flex-wrap justify-center gap-2">
+        {CHIPS.map((chip) => (
           <button
-            key={suggestion.label}
+            key={chip.label}
             type="button"
-            onClick={() => handleSuggestionClick(suggestion.query)}
-            className="rounded-full border border-white/25 bg-white/20 px-4 py-2.5 text-sm font-medium text-white backdrop-blur-md transition-all duration-150 hover:border-white/40 hover:bg-white/30"
+            onClick={() => navigate(chip.query)}
+            className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20"
           >
-            {suggestion.label}
+            {chip.label}
           </button>
         ))}
       </div>

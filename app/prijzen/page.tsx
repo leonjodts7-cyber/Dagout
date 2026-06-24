@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
@@ -10,28 +11,28 @@ import { useToast } from "@/components/ToastProvider";
 import { PLAN_DETAILS } from "@/lib/provider-plans";
 
 const COMPARISON_ROWS = [
-  { feature: "Aantal activiteiten", basis: "1", pro: "1" },
-  { feature: "Zichtbaar op kaart", basis: "✓", pro: "✓" },
-  { feature: "Featured plaatsing", basis: "—", pro: "✓" },
-  { feature: "AI prioriteit", basis: "—", pro: "✓" },
-  { feature: "Pro badge", basis: "—", pro: "✓" },
-  { feature: "Positie op kaart", basis: "Basis", pro: "Hoger" },
-  { feature: "Analytics rapport", basis: "Dashboard", pro: "Maandelijks" },
-  { feature: "Aanvragen ontvangen", basis: "✓", pro: "✓" },
+  { feature: "Aantal activiteiten", free: "1", pro: "1" },
+  { feature: "Zichtbaar op kaart", free: "✓", pro: "✓" },
+  { feature: "Featured plaatsing", free: "—", pro: "✓" },
+  { feature: "AI prioriteit", free: "—", pro: "✓" },
+  { feature: "Pro badge", free: "—", pro: "✓" },
+  { feature: "Positie op kaart", free: "Standaard", pro: "Hoger" },
+  { feature: "Analytics rapport", free: "Dashboard", pro: "Maandelijks" },
+  { feature: "Aanvragen ontvangen", free: "✓", pro: "✓" },
 ];
 
 const FAQ = [
   {
-    q: "Wat is het verschil tussen Basis en Pro?",
+    q: "Wat is het verschil tussen Gratis en Pro?",
     a: "Beide plannen geven 1 activiteit. Pro biedt featured plaatsing, AI-prioriteit, een Pro badge en hogere zichtbaarheid op de kaart.",
   },
   {
     q: "Wat houdt Featured plaatsing in?",
-    a: "Pro activiteiten verschijnen bovenaan zoekresultaten met een Pro badge en krijgen prioriteit in AI-aanbevelingen.",
+    a: "Pro activiteiten verschijnen bovenaan zoekresultaten en krijgen prioriteit in AI-aanbevelingen.",
   },
   {
     q: "Kan ik op elk moment opzeggen?",
-    a: "Ja, je kunt je abonnement maandelijks opzeggen via het dashboard.",
+    a: "Ja, je kunt je Pro-abonnement maandelijks opzeggen via het dashboard.",
   },
   {
     q: "Hoe ontvang ik aanvragen?",
@@ -42,10 +43,10 @@ const FAQ = [
 export default function PrijzenPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [loadingPlan, setLoadingPlan] = useState<"basis" | "pro" | null>(null);
+  const [loadingPro, setLoadingPro] = useState(false);
 
-  async function startCheckout(plan: "basis" | "pro") {
-    setLoadingPlan(plan);
+  async function startProCheckout() {
+    setLoadingPro(true);
     try {
       const supabase = createBrowserSupabase();
       const {
@@ -63,7 +64,7 @@ export default function PrijzenPage() {
           Authorization: `Bearer ${session.access_token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ plan }),
+        body: JSON.stringify({ plan: "pro" }),
       });
 
       const data = await res.json();
@@ -79,12 +80,12 @@ export default function PrijzenPage() {
     } catch {
       toast("Checkout mislukt", "error");
     } finally {
-      setLoadingPlan(null);
+      setLoadingPro(false);
     }
   }
 
   const plans = [
-    { key: "basis" as const },
+    { key: "free" as const },
     { key: "pro" as const },
   ];
 
@@ -99,31 +100,39 @@ export default function PrijzenPage() {
           ]}
         />
         <section className="px-6 py-10 text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Kies het plan dat bij jouw activiteit past
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+            Eenvoudige prijzen
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-gray-500">
-            Bereik meer bedrijven met Dagout.be
+            Start gratis. Upgrade naar Pro wanneer je meer zichtbaarheid wilt.
           </p>
         </section>
 
-        <section className="mx-auto grid max-w-5xl gap-8 px-6 pb-12 md:grid-cols-2">
+        <section className="mx-auto grid max-w-4xl gap-8 px-6 pb-12 md:grid-cols-2">
           {plans.map(({ key }) => {
             const plan = PLAN_DETAILS[key];
             return (
               <div
                 key={key}
-                className={`relative flex min-h-[520px] flex-col rounded-2xl border-2 border-[#1D9E75] p-8 shadow-lg ${
-                  key === "pro" ? "bg-[#f0fdf4]" : "bg-white"
+                className={`flex flex-col rounded-xl border p-8 ${
+                  key === "pro"
+                    ? "border-[#1D9E75] bg-[#f0fdf4] shadow-md"
+                    : "border-gray-200 bg-white"
                 }`}
               >
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#1D9E75] px-4 py-1 text-xs font-semibold text-white">
+                <span className={`inline-block w-fit rounded-full px-3 py-0.5 text-xs font-semibold text-white ${plan.badgeClass}`}>
                   {plan.badge}
                 </span>
-                <h2 className="text-2xl font-bold">{plan.label}</h2>
+                <h2 className="mt-4 text-2xl font-bold">{plan.label}</h2>
                 <p className="mt-3 text-4xl font-extrabold text-gray-900">
-                  €{plan.price}
-                  <span className="text-lg font-normal text-gray-500">/maand</span>
+                  {plan.price === 0 ? (
+                    "Gratis"
+                  ) : (
+                    <>
+                      €{plan.price}
+                      <span className="text-lg font-normal text-gray-500">/maand</span>
+                    </>
+                  )}
                 </p>
                 <ul className="mt-8 flex-1 space-y-3 text-sm text-gray-700">
                   {plan.features.map((feature) => (
@@ -133,46 +142,47 @@ export default function PrijzenPage() {
                     </li>
                   ))}
                 </ul>
-                <button
-                  type="button"
-                  disabled={loadingPlan === key}
-                  onClick={() => startCheckout(key)}
-                  className="btn-primary mt-8 w-full rounded-xl bg-[#1D9E75] py-3.5 text-sm font-semibold text-white hover:bg-[#178a66] disabled:opacity-50"
-                >
-                  {loadingPlan === key ? "Laden..." : `Kies ${plan.label}`}
-                </button>
+                {key === "free" ? (
+                  <Link
+                    href="/aanbieders/nieuw"
+                    className="mt-8 block w-full rounded-lg border border-gray-200 py-3 text-center text-sm font-semibold text-gray-800 hover:bg-gray-50"
+                  >
+                    Start gratis
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={loadingPro}
+                    onClick={startProCheckout}
+                    className="mt-8 w-full rounded-lg bg-[#1D9E75] py-3 text-sm font-semibold text-white hover:bg-[#178a66] disabled:opacity-50"
+                  >
+                    {loadingPro ? "Laden..." : "Kies Pro"}
+                  </button>
+                )}
               </div>
             );
           })}
         </section>
 
-        <section className="mx-auto max-w-4xl px-6 pb-16">
+        <section className="mx-auto max-w-3xl px-6 pb-16">
           <h2 className="mb-6 text-center text-xl font-bold text-gray-900">
             Vergelijk de plannen
           </h2>
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
-                  <th className="px-5 py-4 text-left font-semibold text-gray-900">
-                    Feature
-                  </th>
-                  <th className="px-5 py-4 text-center font-semibold text-gray-900">
-                    Basis
-                  </th>
-                  <th className="px-5 py-4 text-center font-semibold text-[#1D9E75]">
-                    Pro
-                  </th>
+                  <th className="px-5 py-4 text-left font-semibold text-gray-900">Feature</th>
+                  <th className="px-5 py-4 text-center font-semibold text-gray-900">Gratis</th>
+                  <th className="px-5 py-4 text-center font-semibold text-[#1D9E75]">Pro</th>
                 </tr>
               </thead>
               <tbody>
                 {COMPARISON_ROWS.map((row) => (
                   <tr key={row.feature} className="border-b border-gray-50 last:border-0">
                     <td className="px-5 py-3.5 text-gray-700">{row.feature}</td>
-                    <td className="px-5 py-3.5 text-center text-gray-600">{row.basis}</td>
-                    <td className="px-5 py-3.5 text-center font-medium text-gray-900">
-                      {row.pro}
-                    </td>
+                    <td className="px-5 py-3.5 text-center text-gray-600">{row.free}</td>
+                    <td className="px-5 py-3.5 text-center font-medium text-gray-900">{row.pro}</td>
                   </tr>
                 ))}
               </tbody>

@@ -107,7 +107,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
   const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [planConfirmed, setPlanConfirmed] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<"basis" | "pro" | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<"free" | "pro" | null>(null);
   const [userProfile, setUserProfile] = useState<DbProfile | null>(null);
   const [listingLoaded, setListingLoaded] = useState(!listingId);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -132,6 +132,12 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
         setUserProfile(profileData as DbProfile | null);
         if (hasActivePlan(profileData as DbProfile | null)) {
           setPlanConfirmed(true);
+          setSelectedPlan(
+            (profileData as DbProfile)?.is_pro ||
+            (profileData as DbProfile)?.plan_tier === "pro"
+              ? "pro"
+              : "free"
+          );
         }
 
         if (listingId) {
@@ -179,17 +185,17 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
   useEffect(() => {
     if (isEdit) return;
     if (
-      searchParams.get("pro") === "true" ||
-      searchParams.get("basis") === "true"
+      searchParams.get("pro") === "true"
     ) {
       setPlanConfirmed(true);
+      setSelectedPlan(searchParams.get("pro") === "true" ? "pro" : "free");
       setTimeout(() => {
         document.getElementById("listing-form")?.scrollIntoView({ behavior: "smooth" });
       }, 300);
     }
   }, [searchParams, isEdit]);
 
-  async function startCheckout(plan: "basis" | "pro") {
+  async function startCheckout(plan: "pro") {
     const supabase = createBrowserSupabase();
     const {
       data: { session },
@@ -211,9 +217,16 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
     if (data.url) window.location.href = data.url;
   }
 
-  function selectPlan(plan: "basis" | "pro") {
+  function selectPlan(plan: "free" | "pro") {
     setSelectedPlan(plan);
-    void startCheckout(plan);
+    if (plan === "free") {
+      setPlanConfirmed(true);
+      setTimeout(() => {
+        document.getElementById("listing-form")?.scrollIntoView({ behavior: "smooth" });
+      }, 200);
+      return;
+    }
+    void startCheckout("pro");
   }
 
   function removeExistingImage(url: string) {
@@ -320,9 +333,12 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
           .select("*", { count: "exact", head: true })
           .eq("user_id", user.id);
 
-        const limit = getListingLimit(userProfile);
+        const limit =
+          !isEdit && selectedPlan === "free"
+            ? 1
+            : getListingLimit(userProfile);
         if (limit === 0) {
-          setError("Kies Basis of Pro om je activiteit te publiceren.");
+          setError("Kies Gratis of Pro om je activiteit te publiceren.");
           setLoading(false);
           return;
         }
@@ -540,7 +556,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
         {!isEdit && (
           <ProviderPlanSection
             selectedPlan={selectedPlan}
-            onSelectBasis={() => selectPlan("basis")}
+            onSelectFree={() => selectPlan("free")}
             onSelectPro={() => selectPlan("pro")}
           />
         )}

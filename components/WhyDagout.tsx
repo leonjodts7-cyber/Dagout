@@ -1,104 +1,66 @@
-function BrainIcon() {
+function SearchIcon() {
   return (
-    <svg className="h-12 w-12" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path
-        d="M32 8c-6 0-11 4-12 10-4 1-7 5-7 9 0 3 2 6 5 7-1 5 2 10 7 11 1 5 6 9 12 9s11-4 12-9c5-1 8-6 7-11 3-1 5-4 5-7 0-4-3-8-7-9C43 12 38 8 32 8z"
-        fill="#1D9E75"
-        fillOpacity="0.15"
-        stroke="#1D9E75"
-        strokeWidth="2"
-      />
-      <path d="M32 20v24M24 28c4 2 8 2 16 0M24 36c4 2 8 2 16 0" stroke="#1D9E75" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="26" cy="24" r="2" fill="#1D9E75" />
-      <circle cx="38" cy="24" r="2" fill="#1D9E75" />
+    <svg className="h-10 w-10 text-[#1D9E75]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
     </svg>
   );
 }
 
 function MapIcon() {
   return (
-    <svg className="h-12 w-12" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path
-        d="M8 20l16-6 16 6 16-6v36l-16 6-16-6-16 6V20z"
-        fill="#1D9E75"
-        fillOpacity="0.15"
-        stroke="#1D9E75"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path d="M24 14v36M40 20v36" stroke="#1D9E75" strokeWidth="2" />
-      <circle cx="32" cy="30" r="4" fill="#1D9E75" />
+    <svg className="h-10 w-10 text-[#1D9E75]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
     </svg>
   );
 }
 
-function CalendarIcon() {
+function ContactIcon() {
   return (
-    <svg className="h-12 w-12" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <rect x="10" y="14" width="44" height="40" rx="4" fill="#1D9E75" fillOpacity="0.15" stroke="#1D9E75" strokeWidth="2" />
-      <path d="M10 24h44M22 10v8M42 10v8" stroke="#1D9E75" strokeWidth="2" strokeLinecap="round" />
-      <rect x="18" y="32" width="8" height="8" rx="1" fill="#1D9E75" />
-      <rect x="30" y="32" width="8" height="8" rx="1" fill="#1D9E75" fillOpacity="0.5" />
-      <rect x="42" y="32" width="8" height="8" rx="1" fill="#1D9E75" fillOpacity="0.5" />
+    <svg className="h-10 w-10 text-[#1D9E75]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
     </svg>
   );
 }
 
-const REASONS = [
+const ITEMS = [
   {
-    icon: BrainIcon,
-    title: "AI die écht begrijpt wat je wil",
-    description:
-      "Typ gewoon wat jullie zoeken — locatie, budget, groepsgrootte. Onze AI vertaalt dat naar de beste matches.",
+    icon: SearchIcon,
+    title: "AI zoekfunctie",
+    text: "Typ in gewone taal wat jullie zoeken. Geen filters, geen gedoe.",
   },
   {
     icon: MapIcon,
-    title: "Alles in één overzicht",
-    description:
-      "Van kajakken in Gent tot escape rooms in Antwerpen. Alle Vlaamse aanbieders op één platform met kaart en filters.",
+    title: "Alles in Vlaanderen",
+    text: "Van kajakken tot kookworkshops, van Gent tot Hasselt.",
   },
   {
-    icon: CalendarIcon,
-    title: "Van idee tot geplande dag",
-    description:
-      "Combineer activiteiten, stem met je team en deel de planning. Van eerste idee tot bevestigde dag uit.",
+    icon: ContactIcon,
+    title: "Direct contact",
+    text: "Stuur aanvragen en plan jullie dag in één platform.",
   },
 ];
 
 export default function WhyDagout() {
   return (
-    <section className="bg-[#f8f9fa] px-6 py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+    <section className="bg-[#f9fafb] px-6 py-20">
+      <div className="mx-auto max-w-5xl">
+        <h2 className="text-center text-[32px] font-bold text-gray-900">
           Waarom Dagout?
         </h2>
-        <div className="mt-16 grid gap-10 md:grid-cols-3 md:gap-12">
-          {REASONS.map((item) => {
+        <div className="mt-14 grid gap-10 md:grid-cols-3">
+          {ITEMS.map((item) => {
             const Icon = item.icon;
             return (
               <div key={item.title} className="text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-sm">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-white shadow-sm">
                   <Icon />
                 </div>
-                <h3 className="mt-6 text-lg font-bold text-gray-900">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                  {item.description}
-                </p>
+                <h3 className="mt-5 text-lg font-semibold text-gray-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600">{item.text}</p>
               </div>
             );
           })}
         </div>
-
-        <blockquote className="mx-auto mt-16 max-w-2xl rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-          <p className="text-lg italic leading-relaxed text-gray-700">
-            &ldquo;We bespaarden uren zoekwerk. Binnen vijf minuten hadden we de perfecte
-            teambuilding voor ons team van 25 personen.&rdquo;
-          </p>
-          <footer className="mt-4">
-            <p className="font-semibold text-gray-900">Sophie Vermeulen</p>
-            <p className="text-sm text-gray-500">HR Manager, Belfius</p>
-          </footer>
-        </blockquote>
       </div>
     </section>
   );

@@ -2,7 +2,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ZoekenFilterBar from "@/components/ZoekenFilterBar";
 import ZoekenPageClient from "@/components/ZoekenPageClient";
-import PageHeader from "@/components/PageHeader";
 
 interface ZoekenPageProps {
   searchParams: Promise<{
@@ -28,15 +27,8 @@ export default async function ZoekenPage({ searchParams }: ZoekenPageProps) {
     <>
       <Navbar />
 
-      <main className="flex min-h-screen flex-col">
-        <PageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Ontdek" },
-          ]}
-        />
-
-        <div className="sticky top-[65px] z-30 border-b border-gray-200 bg-white/95 px-4 py-4 shadow-sm backdrop-blur-md sm:px-6">
+      <main className="flex min-h-[calc(100vh-65px)] flex-col">
+        <div className="sticky top-[65px] z-30 border-b border-gray-200 bg-white px-4 py-4 sm:px-6">
           <div className="mx-auto max-w-7xl">
             <ZoekenFilterBar
               defaultQuery={query}
