@@ -37,29 +37,45 @@ function validateListingForm(
   existingImageCount: number,
   isEdit: boolean
 ): string | null {
-  if (!form.name.trim()) return "Vul een naam in voor je activiteit.";
-  if (!form.category) return "Selecteer een categorie.";
-  if (!form.shortDescription.trim()) return "Vul een korte beschrijving in.";
-  if (form.shortDescription.length > 150) {
-    return "Korte beschrijving mag maximaal 150 tekens bevatten.";
+  return validateListingStep(form, 6, newImageCount, existingImageCount, isEdit);
+}
+
+function validateListingStep(
+  form: ListingFormData,
+  stepIndex: number,
+  newImageCount = 0,
+  existingImageCount = 0,
+  isEdit = false
+): string | null {
+  if (stepIndex >= 0) {
+    if (!form.name.trim()) return "Vul een naam in voor je activiteit.";
+    if (!form.category) return "Selecteer een categorie.";
+    if (!form.shortDescription.trim()) return "Vul een korte beschrijving in.";
+    if (form.shortDescription.length > 150) {
+      return "Korte beschrijving mag maximaal 150 tekens bevatten.";
+    }
+    if (!form.fullDescription.trim()) return "Vul een volledige beschrijving in.";
   }
-  if (!form.fullDescription.trim()) return "Vul een volledige beschrijving in.";
-  if (!form.companyName.trim()) return "Vul je bedrijfsnaam in.";
-  if (!form.city.trim()) return "Vul een gemeente in.";
-  if (!form.postalCode.trim()) return "Vul een postcode in.";
-  if (!form.region) return "Selecteer een regio.";
-  if (!form.contactEmail.trim()) return "Vul een e-mailadres in.";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail)) {
-    return "Vul een geldig e-mailadres in.";
+  if (stepIndex >= 1) {
+    if (!form.companyName.trim()) return "Vul je bedrijfsnaam in.";
+    if (!form.city.trim()) return "Vul een gemeente in.";
+    if (!form.postalCode.trim()) return "Vul een postcode in.";
+    if (!form.region) return "Selecteer een regio.";
+    if (!form.contactEmail.trim()) return "Vul een e-mailadres in.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail)) {
+      return "Vul een geldig e-mailadres in.";
+    }
   }
-  if (form.minPersons < 1) return "Minimum aantal personen moet minstens 1 zijn.";
-  if (form.maxPersons < form.minPersons) {
-    return "Maximum aantal personen mag niet lager zijn dan het minimum.";
+  if (stepIndex >= 2) {
+    if (form.minPersons < 1) return "Minimum aantal personen moet minstens 1 zijn.";
+    if (form.maxPersons < form.minPersons) {
+      return "Maximum aantal personen mag niet lager zijn dan het minimum.";
+    }
+    if (!form.priceOnRequest && !form.priceFrom.trim()) {
+      return "Vul een prijs per persoon in of vink 'prijs op aanvraag' aan.";
+    }
   }
-  if (!form.priceOnRequest && !form.priceFrom.trim()) {
-    return "Vul een prijs per persoon in of vink 'prijs op aanvraag' aan.";
-  }
-  if (!isEdit && newImageCount === 0 && existingImageCount === 0) {
+  if (stepIndex >= 5 && !isEdit && newImageCount === 0 && existingImageCount === 0) {
     return "Voeg minimaal één foto toe bij Media.";
   }
   return null;
@@ -204,6 +220,25 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
     setExistingImageUrls((prev) => prev.filter((u) => u !== url));
   }
 
+  function goToStep(stepIndex: number) {
+    if (!isEdit && stepIndex > activeStep) {
+      const stepError = validateListingStep(
+        form,
+        stepIndex - 1,
+        images.length,
+        existingImageUrls.length,
+        isEdit
+      );
+      if (stepError) {
+        setError(stepError);
+        sectionRefs.current[activeStep]?.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      setError(null);
+    }
+    sectionRefs.current[stepIndex]?.scrollIntoView({ behavior: "smooth" });
+  }
+
   function updateForm<K extends keyof ListingFormData>(
     key: K,
     value: ListingFormData[K]
@@ -293,7 +328,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
         }
         if ((count ?? 0) >= limit) {
           setError(
-            "Je hebt al een actieve listing. Bewerk je bestaande listing in het dashboard."
+            "Je hebt al een actieve activiteit. Bewerk je bestaande activiteit in het dashboard."
           );
           setLoading(false);
           return;
@@ -497,7 +532,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
               Activiteit bewerken
             </h1>
             <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
-              Pas je listing aan en sla op. Wijzigingen worden opnieuw beoordeeld indien nodig.
+              Pas je activiteit aan en sla op. Wijzigingen worden opnieuw beoordeeld indien nodig.
             </p>
           </section>
         )}
@@ -527,9 +562,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
                 <button
                   key={step}
                   type="button"
-                  onClick={() =>
-                    sectionRefs.current[i]?.scrollIntoView({ behavior: "smooth" })
-                  }
+                  onClick={() => goToStep(i)}
                   className="flex shrink-0 flex-col items-center gap-1.5 px-2"
                 >
                   <span
@@ -957,6 +990,7 @@ export default function NewListingForm({ listingId }: { listingId?: string }) {
                 type="button"
                 onClick={addInclude}
                 className="shrink-0 rounded-xl bg-gray-100 px-4 py-2 text-sm font-medium hover:bg-gray-200"
+                aria-label="Toevoegen"
               >
                 +
               </button>

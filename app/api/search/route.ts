@@ -20,19 +20,24 @@ function enrichRecommendations(
     match_score?: number;
   }>
 ) {
-  return recommendations.slice(0, 3).map((rec) => {
-    const provider = rec.id ? resolveProvider(rec.id) : undefined;
-    return {
-      id: provider?.id ?? rec.id ?? "",
-      slug: provider?.slug ?? rec.id ?? "",
-      name: rec.name ?? provider?.name ?? "",
-      reason: rec.reason ?? "",
-      match_score: Math.min(
-        100,
-        Math.max(0, Math.round(rec.match_score ?? 80))
-      ),
-    };
-  }).filter((rec) => rec.slug && rec.name);
+  return recommendations
+    .slice(0, 3)
+    .map((rec) => {
+      const provider = rec.id ? resolveProvider(rec.id) : undefined;
+      return {
+        id: provider?.id ?? rec.id ?? "",
+        slug: provider?.slug ?? rec.id ?? "",
+        name: rec.name ?? provider?.name ?? "",
+        reason: rec.reason ?? "",
+        match_score: Math.min(
+          100,
+          Math.max(0, Math.round(rec.match_score ?? 80))
+        ),
+        featured: provider?.featured ?? false,
+      };
+    })
+    .filter((rec) => rec.slug && rec.name)
+    .sort((a, b) => Number(b.featured) - Number(a.featured));
 }
 
 export async function POST(request: NextRequest) {

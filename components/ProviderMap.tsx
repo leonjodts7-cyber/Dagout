@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { memo, useEffect } from "react";
 import type { Provider } from "@/lib/types";
 import { getMapViewForRegion } from "@/lib/geocoding";
 
@@ -17,13 +18,21 @@ const Map = dynamic(() => import("@/components/Map"), {
 interface ProviderMapProps {
   providers: Provider[];
   region?: string;
+  onReady?: () => void;
 }
 
-export default function ProviderMap({ providers, region }: ProviderMapProps) {
+function ProviderMapInner({ providers, region, onReady }: ProviderMapProps) {
   const { center, zoom } = getMapViewForRegion(region);
+
+  useEffect(() => {
+    onReady?.();
+  }, [onReady]);
+
   return (
     <div className="h-full min-h-[288px] w-full">
       <Map providers={providers} center={center} zoom={zoom} />
     </div>
   );
 }
+
+export default memo(ProviderMapInner);

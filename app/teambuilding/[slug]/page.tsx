@@ -90,7 +90,7 @@ export default async function TeambuildingSlugPage({ params }: PageProps) {
             </h2>
             {listings.length === 0 ? (
               <p className="mt-4 text-gray-500">
-                Nog geen actieve listings in deze categorie.{" "}
+                Nog geen actieve activiteiten in deze categorie.{" "}
                 <Link href="/zoeken" className="text-[#1D9E75] hover:underline">
                   Bekijk alle activiteiten
                 </Link>

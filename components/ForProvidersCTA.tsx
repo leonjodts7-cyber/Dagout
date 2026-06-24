@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const BENEFITS = [
   "Bereik Belgische bedrijven die actief op zoek zijn naar teambuilding",
-  "Beheer je listing, prijzen en beschikbaarheid in één dashboard",
+  "Beheer je activiteit, prijzen en beschikbaarheid in één dashboard",
   "Krijg meer aanvragen via AI-zoekopdrachten en filters",
 ];
 

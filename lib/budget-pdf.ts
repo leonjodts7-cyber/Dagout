@@ -1,6 +1,7 @@
 import { jsPDF } from "jspdf";
 import type { Provider } from "@/lib/types";
 import { BUDGET_EXTRAS } from "@/lib/tools-constants";
+import { formatBelgianDate } from "@/lib/date-format";
 
 export interface BudgetPdfData {
   groupSize: number;
@@ -29,7 +30,7 @@ export function generateBudgetPdf(data: BudgetPdfData) {
   doc.setFontSize(11);
   doc.text(`Groepsgrootte: ${data.groupSize} personen`, margin, y);
   y += 10;
-  doc.text(`Datum: ${new Date().toLocaleDateString("nl-BE")}`, margin, y);
+  doc.text(`Datum: ${formatBelgianDate(new Date())}`, margin, y);
   y += 16;
 
   doc.setFontSize(14);

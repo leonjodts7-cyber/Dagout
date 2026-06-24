@@ -14,31 +14,28 @@ import "leaflet/dist/leaflet.css";
 import type { Provider } from "@/lib/types";
 import { getProviderImageUrl } from "@/lib/constants";
 
-function createGreenPin() {
-  return L.divIcon({
-    html: `<div style="width:32px;height:40px;position:relative">
-      <svg viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 0C7.163 0 0 7.163 0 16c0 10.41 14.5 23.5 16 24 1.5-.5 16-13.59 16-24C32 7.163 24.837 0 16 0z" fill="#1D9E75" stroke="white" stroke-width="1.5"/>
-        <circle cx="16" cy="16" r="6" fill="white"/>
-      </svg>
-    </div>`,
-    className: "",
-    iconSize: [32, 40],
-    iconAnchor: [16, 40],
-    popupAnchor: [0, -42],
-  });
-}
-
-const greenIcon = createGreenPin();
+const greenIcon = L.divIcon({
+  html: `<svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 0C7.163 0 0 7.163 0 16c0 9.941 14 24 16 24s16-14.059 16-24C32 7.163 24.837 0 16 0z" fill="#1D9E75"/>
+    <circle cx="16" cy="16" r="6" fill="white"/>
+  </svg>`,
+  className: "",
+  iconSize: [32, 40],
+  iconAnchor: [16, 40],
+  popupAnchor: [0, -40],
+});
 
 function MapInvalidateSize() {
   const map = useMap();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      map.invalidateSize();
-    }, 100);
-    return () => clearTimeout(timer);
+    const timer = setTimeout(() => map.invalidateSize(), 100);
+    const onResize = () => map.invalidateSize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", onResize);
+    };
   }, [map]);
 
   return null;
@@ -61,13 +58,13 @@ function MapFlyTo({
 }
 
 function buildPopupHtml(provider: Provider, imageUrl: string): string {
-  return `<div>
-    <img src="${imageUrl}" alt="${provider.name.replace(/"/g, "&quot;")}" style="width:200px;height:110px;object-fit:cover" loading="lazy" />
-    <div style="padding:10px">
-      <div style="font-weight:600;font-size:13px;margin-bottom:2px">${provider.name}</div>
-      <div style="font-size:12px;color:#666;margin-bottom:6px">${provider.city}</div>
-      <div style="font-size:13px;font-weight:600;color:#1D9E75;margin-bottom:8px">€${provider.price_from}/pers</div>
-      <a href="/activiteit/${provider.slug}" style="display:block;background:#1D9E75;color:white;text-align:center;padding:6px;border-radius:6px;font-size:12px;font-weight:500;text-decoration:none">Bekijk →</a>
+  return `<div class="dagout-popup-card">
+    <img src="${imageUrl}" alt="${provider.name.replace(/"/g, "&quot;")}" class="dagout-popup-image" loading="lazy" />
+    <div class="dagout-popup-body">
+      <div class="dagout-popup-title">${provider.name}</div>
+      <div class="dagout-popup-city">${provider.city}</div>
+      <div class="dagout-popup-price">€${provider.price_from}/pers</div>
+      <a href="/activiteit/${provider.slug}" class="dagout-popup-button">Bekijk →</a>
     </div>
   </div>`;
 }
@@ -85,17 +82,15 @@ export default function Map({
 }: MapProps) {
   const markerPositions = useMemo(
     () =>
-      providers.map((provider) => ({
-        provider,
-        imageUrl:
+      providers.map((provider) => {
+        const imageUrl =
           provider.image_url ??
-          getProviderImageUrl(provider.category, provider.slug),
-        popupHtml: buildPopupHtml(
+          getProviderImageUrl(provider.category, provider.slug);
+        return {
           provider,
-          provider.image_url ??
-            getProviderImageUrl(provider.category, provider.slug)
-        ),
-      })),
+          popupHtml: buildPopupHtml(provider, imageUrl),
+        };
+      }),
     [providers]
   );
 
@@ -130,7 +125,7 @@ export default function Map({
           >
             {provider.name}
           </Tooltip>
-          <Popup className="dagout-popup" minWidth={200} maxWidth={220}>
+          <Popup className="custom-popup" minWidth={220} maxWidth={220}>
             <div dangerouslySetInnerHTML={{ __html: popupHtml }} />
           </Popup>
         </Marker>

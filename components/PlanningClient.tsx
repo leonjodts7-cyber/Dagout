@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { createBrowserSupabase } from "@/lib/supabase/client";
 import { deletePlan, getPlans, type SavedPlan } from "@/lib/plans";
+import { formatBelgianDate } from "@/lib/date-format";
 import Spinner from "@/components/ui/Spinner";
 
 function PlanTimeline({ plan }: { plan: SavedPlan }) {
@@ -133,11 +134,7 @@ export default function PlanningClient() {
                           ` · Budget €${plan.total_budget}`}
                       </p>
                       <p className="mt-1 text-xs text-gray-400">
-                        {new Date(plan.created_at).toLocaleDateString("nl-BE", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}
+                        {formatBelgianDate(plan.created_at)}
                       </p>
                     </div>
                     <div className="flex gap-2">

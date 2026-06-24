@@ -2,15 +2,21 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import ActivityCard from "@/components/ActivityCard";
 import AiRecommendations from "@/components/AiRecommendations";
-import ProviderMap from "@/components/ProviderMap";
 import ZoekenCategoryChips from "@/components/ZoekenCategoryChips";
+import { Skeleton } from "@/components/ui/Skeleton";
 import {
   searchProviders,
   sortProviders,
   type SortOption,
 } from "@/lib/providers";
+
+const ProviderMap = dynamic(() => import("@/components/ProviderMap"), {
+  ssr: false,
+  loading: () => <Skeleton className="h-full w-full" />,
+});
 
 interface ZoekenPageClientProps {
   query: string;
@@ -31,6 +37,7 @@ export default function ZoekenPageClient({
 }: ZoekenPageClientProps) {
   const router = useRouter();
   const [sort, setSort] = useState<SortOption>("relevant");
+  const [mapReady, setMapReady] = useState(false);
 
   const providers = useMemo(
     () => searchProviders(query, region, category, personen, omgeving),
@@ -54,7 +61,7 @@ export default function ZoekenPageClient({
             <AiRecommendations query={query} region={region} />
           )}
 
-          <div className="mb-6">
+          <div className="mb-6 -mx-1 overflow-x-auto px-1 pb-1">
             <ZoekenCategoryChips
               query={query}
               region={region}
@@ -70,9 +77,9 @@ export default function ZoekenPageClient({
               value={sort}
               onChange={(e) => setSort(e.target.value as SortOption)}
               aria-label="Sorteer op"
-              className="rounded-lg border border-gray-200/80 bg-white px-4 py-2 text-sm text-gray-700 focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20"
+              className="rounded-lg border border-gray-200/80 bg-white px-4 py-2 text-sm text-gray-700 transition-colors focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20"
             >
-              <option value="relevant">Meest relevant</option>
+              <option value="relevant">Meest relevant (Pro eerst)</option>
               <option value="price-asc">Prijs laag-hoog</option>
               <option value="price-desc">Prijs hoog-laag</option>
               <option value="rating">Hoogst beoordeeld</option>
@@ -109,7 +116,14 @@ export default function ZoekenPageClient({
       </div>
 
       <div className="sticky top-[65px] order-1 h-72 lg:top-[8.5rem] lg:h-[calc(100vh-8.5rem)] lg:w-1/2">
-        <ProviderMap providers={sorted} region={region} />
+        {!mapReady && <Skeleton className="absolute inset-0 z-10 h-full w-full" />}
+        <div className={`h-full w-full ${mapReady ? "" : "opacity-0"}`}>
+          <ProviderMap
+            providers={providers}
+            region={region}
+            onReady={() => setMapReady(true)}
+          />
+        </div>
       </div>
     </div>
   );

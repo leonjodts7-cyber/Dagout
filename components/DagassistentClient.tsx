@@ -13,6 +13,7 @@ import {
 import { savePlan } from "@/lib/plans";
 import { submitInquiry } from "@/lib/inquiries";
 import { getProviderById } from "@/lib/providers";
+import { formatBelgianDate } from "@/lib/date-format";
 
 interface ChatMessageWithTime {
   role: "user" | "assistant";
@@ -134,7 +135,7 @@ export default function DagassistentClient() {
       const total = calculatePlanningTotal(planning, groupSize);
 
       await savePlan({
-        name: `Dagplanning ${new Date().toLocaleDateString("nl-BE")}`,
+        name: `Dagplanning ${formatBelgianDate(new Date())}`,
         groupSize,
         items: planning,
         totalBudget: total,

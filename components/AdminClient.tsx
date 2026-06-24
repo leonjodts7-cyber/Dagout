@@ -6,6 +6,7 @@ import { createBrowserSupabase } from "@/lib/supabase/client";
 import { isAdminEmail } from "@/lib/admin";
 import { useToast } from "@/components/ToastProvider";
 import { TableSkeleton } from "@/components/ui/Skeleton";
+import { formatBelgianDate } from "@/lib/date-format";
 
 type Tab = "listings" | "users" | "inquiries" | "settings";
 
@@ -149,9 +150,9 @@ export default function AdminClient() {
 
     toast(
       action === "approve"
-        ? "Listing goedgekeurd"
+        ? "Activiteit goedgekeurd"
         : action === "reject"
-          ? "Listing geweigerd"
+          ? "Activiteit geweigerd"
           : "Bijgewerkt"
     );
     setRejectModal(null);
@@ -184,7 +185,7 @@ export default function AdminClient() {
   }
 
   const navItems: { id: Tab; label: string }[] = [
-    { id: "listings", label: "Listings" },
+    { id: "listings", label: "Activiteiten" },
     { id: "users", label: "Gebruikers" },
     { id: "inquiries", label: "Aanvragen" },
     { id: "settings", label: "Instellingen" },
@@ -291,7 +292,7 @@ export default function AdminClient() {
                             </span>
                           </td>
                           <td className="px-4 py-3 text-gray-500">
-                            {new Date(l.created_at).toLocaleDateString("nl-BE")}
+                            {formatBelgianDate(l.created_at)}
                           </td>
                           <td className="px-4 py-3">
                             <div className="flex flex-wrap gap-1">
@@ -352,7 +353,7 @@ export default function AdminClient() {
                         <th className="px-4 py-3">E-mail</th>
                         <th className="px-4 py-3">Naam</th>
                         <th className="px-4 py-3">Aangemaakt</th>
-                        <th className="px-4 py-3">Listings</th>
+                        <th className="px-4 py-3">Activiteiten</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -361,11 +362,7 @@ export default function AdminClient() {
                           <td className="px-4 py-3">{u.email}</td>
                           <td className="px-4 py-3">{u.name}</td>
                           <td className="px-4 py-3 text-gray-500">
-                            {new Date(u.created_at).toLocaleDateString("nl-BE", {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            })}
+                            {formatBelgianDate(u.created_at)}
                           </td>
                           <td className="px-4 py-3">{u.listing_count}</td>
                         </tr>
@@ -406,7 +403,7 @@ export default function AdminClient() {
                           {inq.group_size ? `${inq.group_size} pers.` : "—"}
                         </td>
                         <td className="px-4 py-3 text-gray-500">
-                          {new Date(inq.created_at).toLocaleDateString("nl-BE")}
+                          {formatBelgianDate(inq.created_at)}
                         </td>
                         <td className="px-4 py-3">
                           <span
@@ -463,7 +460,7 @@ export default function AdminClient() {
             aria-label="Sluiten"
           />
           <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="font-bold">Listing weigeren</h3>
+            <h3 className="font-bold">Activiteit weigeren</h3>
             <p className="mt-1 text-sm text-gray-500">{rejectModal.name}</p>
             <textarea
               rows={3}

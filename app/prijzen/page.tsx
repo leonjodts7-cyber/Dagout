@@ -10,7 +10,7 @@ import { useToast } from "@/components/ToastProvider";
 import { PLAN_DETAILS } from "@/lib/provider-plans";
 
 const COMPARISON_ROWS = [
-  { feature: "Aantal listings", basis: "1", pro: "1" },
+  { feature: "Aantal activiteiten", basis: "1", pro: "1" },
   { feature: "Zichtbaar op kaart", basis: "✓", pro: "✓" },
   { feature: "Featured plaatsing", basis: "—", pro: "✓" },
   { feature: "AI prioriteit", basis: "—", pro: "✓" },
@@ -23,11 +23,11 @@ const COMPARISON_ROWS = [
 const FAQ = [
   {
     q: "Wat is het verschil tussen Basis en Pro?",
-    a: "Beide plannen geven 1 listing. Pro biedt featured plaatsing, AI-prioriteit, een Pro badge en hogere zichtbaarheid op de kaart.",
+    a: "Beide plannen geven 1 activiteit. Pro biedt featured plaatsing, AI-prioriteit, een Pro badge en hogere zichtbaarheid op de kaart.",
   },
   {
     q: "Wat houdt Featured plaatsing in?",
-    a: "Pro listings verschijnen bovenaan zoekresultaten met een Pro badge en krijgen prioriteit in AI-aanbevelingen.",
+    a: "Pro activiteiten verschijnen bovenaan zoekresultaten met een Pro badge en krijgen prioriteit in AI-aanbevelingen.",
   },
   {
     q: "Kan ik op elk moment opzeggen?",

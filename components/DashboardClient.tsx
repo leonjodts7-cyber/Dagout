@@ -415,7 +415,7 @@ export default function DashboardClient() {
                 <div className="flex items-start gap-4 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
                   <StatIcon type="active" />
                   <div>
-                    <p className="text-sm text-gray-500">Actieve listings</p>
+                    <p className="text-sm text-gray-500">Actieve activiteiten</p>
                     <p className="mt-1 text-3xl font-bold text-gray-900">{activeListings}</p>
                   </div>
                 </div>
@@ -591,7 +591,7 @@ export default function DashboardClient() {
                           {inq.group_size && <span>{inq.group_size} personen</span>}
                           {inq.preferred_date && (
                             <span>
-                              {new Date(inq.preferred_date).toLocaleDateString("nl-BE")}
+                              {formatDateShortNl(inq.preferred_date)}
                             </span>
                           )}
                         </div>
@@ -824,7 +824,7 @@ export default function DashboardClient() {
                 <dt className="text-gray-400">Gewenste datum</dt>
                 <dd>
                   {selectedInquiry.preferred_date
-                    ? new Date(selectedInquiry.preferred_date).toLocaleDateString("nl-BE")
+                    ? formatDateShortNl(selectedInquiry.preferred_date)
                     : "—"}
                 </dd>
               </div>
@@ -849,10 +849,8 @@ export default function DashboardClient() {
               <div>
                 <dt className="text-gray-400">Ontvangen op</dt>
                 <dd>
-                  {new Date(selectedInquiry.created_at).toLocaleDateString("nl-BE", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
+                  {formatDateShortNl(selectedInquiry.created_at)}{" "}
+                  {new Date(selectedInquiry.created_at).toLocaleTimeString("nl-BE", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}

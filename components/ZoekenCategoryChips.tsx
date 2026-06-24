@@ -37,7 +37,7 @@ export default function ZoekenCategoryChips({
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-nowrap gap-2 sm:flex-wrap">
       {SEARCH_FILTER_CATEGORIES.map((cat) => {
         const isActive = active === cat;
         const count = counts[cat] ?? 0;

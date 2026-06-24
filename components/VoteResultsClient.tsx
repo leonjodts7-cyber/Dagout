@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { resolveProvider } from "@/lib/providers";
+import { formatBelgianDate } from "@/lib/date-format";
 import {
   closeVoteSession,
   getVoteCounts,
@@ -70,11 +71,7 @@ export default function VoteResultsClient({ session }: VoteResultsClientProps) {
         </p>
         {session.deadline && (
           <p className="mt-1 text-sm text-gray-400">
-            Deadline:{" "}
-            {new Date(`${session.deadline}T12:00:00`).toLocaleDateString(
-              "nl-BE",
-              { day: "numeric", month: "long", year: "numeric" }
-            )}
+            Deadline: {formatBelgianDate(`${session.deadline}T12:00:00`)}
           </p>
         )}
       </div>

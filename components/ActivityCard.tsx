@@ -57,7 +57,7 @@ export default function ActivityCard({
           className="relative hidden h-[180px] w-48 shrink-0 overflow-hidden rounded-xl sm:block"
         >
           {imageUrl ? (
-            <Image src={imageUrl} alt={provider.name} fill className="object-cover" sizes="192px" />
+            <Image src={imageUrl} alt={provider.name} fill loading="lazy" className="object-cover" sizes="192px" />
           ) : (
             <div className="h-full bg-gray-100" />
           )}
@@ -122,6 +122,7 @@ export default function ActivityCard({
               src={imageUrl}
               alt={provider.name}
               fill
+              loading="lazy"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
