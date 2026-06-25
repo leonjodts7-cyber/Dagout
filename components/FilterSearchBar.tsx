@@ -58,7 +58,10 @@ export default function FilterSearchBar({
     : "flex flex-col gap-2 sm:flex-row sm:items-stretch";
 
   const homeSelectClass =
-    "min-w-[140px] flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
+    "min-w-[130px] flex-1 rounded-lg border border-[#e5e7eb] bg-white px-4 py-2.5 text-sm text-gray-700 focus:border-[#1D9E75] focus:outline-none focus:ring-2 focus:ring-[#1D9E75]/20";
+
+  const homeButtonClass =
+    "shrink-0 rounded-lg bg-[#1D9E75] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#178a66]";
 
   const selectClass = isHome
     ? homeSelectClass
@@ -125,7 +128,11 @@ export default function FilterSearchBar({
 
         <button
           type="submit"
-          className="btn-primary shrink-0 rounded-lg bg-[#1D9E75] px-8 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66] sm:min-w-[120px]"
+          className={
+            isHome
+              ? homeButtonClass
+              : "btn-primary shrink-0 rounded-lg bg-[#1D9E75] px-8 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66] sm:min-w-[120px]"
+          }
         >
           Zoek
         </button>

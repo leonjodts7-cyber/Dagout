@@ -14,26 +14,24 @@ export default function HomeActivityCard({ provider }: HomeActivityCardProps) {
   return (
     <Link
       href={`/activiteit/${provider.slug}`}
-      className="group block overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-lg"
+      className="card-lift block overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]"
     >
-      <div className="relative h-[220px] w-full overflow-hidden rounded-t-xl">
+      <div className="relative h-[200px] w-full">
         <Image
           src={imageUrl}
           alt={provider.name}
           fill
           loading="lazy"
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          className="object-cover"
           sizes="(max-width: 640px) 100vw, 33vw"
         />
       </div>
       <div className="p-4">
-        <h3 className="text-base font-semibold text-gray-900 group-hover:text-[#1D9E75]">
+        <h3 className="text-base font-semibold text-[#111827]">
           {provider.name}
         </h3>
-        <p className="mt-1 text-sm text-gray-500">
-          {provider.city} · {provider.category}
-        </p>
-        <p className="mt-2 text-sm font-semibold text-[#1D9E75]">
+        <p className="mt-1 text-sm text-[#6b7280]">{provider.city}</p>
+        <p className="mt-2 text-[15px] font-semibold text-[#1D9E75]">
           Vanaf &euro;{provider.price_from}/pers
         </p>
       </div>

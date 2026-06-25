@@ -19,15 +19,15 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-white px-6 pb-10 pt-[60px]">
-          <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-12">
+        <section className="bg-white px-6 pb-10 pt-14">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">
             <div>
-              <h1 className="max-w-[640px] text-[clamp(2rem,4vw,3rem)] font-extrabold leading-tight text-[#111111]">
+              <h1 className="max-w-[640px] text-[32px] font-bold leading-[1.2] tracking-tight text-[#111827] sm:text-[42px]">
                 Vind de perfecte teambuilding in Vlaanderen
               </h1>
-              <p className="mt-4 max-w-[640px] text-lg text-[#6b7280]">
-                Beschrijf wat jullie zoeken en onze AI vindt de beste activiteit
-                voor jouw team.
+              <p className="mt-3 max-w-[480px] text-[17px] leading-relaxed text-[#6b7280]">
+                Beschrijf wat jullie zoeken. Onze AI vindt de perfecte match voor
+                jouw team.
               </p>
               <div className="mt-8">
                 <HeroSearch />

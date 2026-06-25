@@ -1,16 +1,16 @@
 const STEPS = [
   {
-    number: "01",
+    number: "1",
     title: "Beschrijf jullie dag",
     description: "Typ in gewone taal wat jullie zoeken",
   },
   {
-    number: "02",
+    number: "2",
     title: "AI vindt de match",
     description: "Onze AI analyseert en selecteert de beste opties",
   },
   {
-    number: "03",
+    number: "3",
     title: "Neem contact op",
     description: "Stuur direct een aanvraag naar de aanbieder",
   },
@@ -19,26 +19,21 @@ const STEPS = [
 export default function HowItWorks() {
   return (
     <section className="bg-white px-6 py-16">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="text-center text-[28px] font-bold text-gray-900">
+      <div className="mx-auto max-w-[800px]">
+        <h2 className="text-center text-[28px] font-bold tracking-tight text-gray-900">
           Hoe werkt Dagout?
         </h2>
 
-        <div className="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
-          <div
-            className="absolute left-[16.67%] right-[16.67%] top-8 hidden h-px bg-[#d1fae5] md:block"
-            aria-hidden
-          />
-
+        <div className="steps-row relative mt-14 grid gap-10 md:grid-cols-3 md:gap-6">
           {STEPS.map((step) => (
             <div key={step.number} className="relative text-center">
-              <span className="text-4xl font-bold text-[#bbf7d0]">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#1D9E75] text-lg font-bold text-[#1D9E75]">
                 {step.number}
-              </span>
-              <h3 className="mt-3 text-lg font-semibold text-gray-900">
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-gray-900">
                 {step.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-gray-500">
+              <p className="mt-2 text-[15px] leading-relaxed text-[#6b7280]">
                 {step.description}
               </p>
             </div>
