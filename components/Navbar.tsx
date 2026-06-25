@@ -71,16 +71,13 @@ export default function Navbar() {
 
   const closeMobile = () => setMobileOpen(false);
   const navLink =
-    "text-sm font-medium text-gray-700 transition-colors hover:text-[#1D9E75]";
+    "text-[15px] font-medium text-gray-500 transition-colors hover:text-gray-900";
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-[#e5e7eb] bg-white">
-        <nav className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-4">
-          <Link
-            href="/"
-            className="text-[22px] font-bold text-[#1D9E75]"
-          >
+      <header className="sticky top-0 z-50 h-16 border-b border-[#e5e7eb] bg-white">
+        <nav className="mx-auto grid h-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6">
+          <Link href="/" className="text-[20px] font-bold text-[#1D9E75]">
             Dagout
           </Link>
 
@@ -116,7 +113,7 @@ export default function Navbar() {
                         key={tool.href}
                         href={tool.href}
                         onClick={() => setToolsOpen(false)}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#1D9E75]"
+                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
                       >
                         {tool.title}
                       </Link>
@@ -132,14 +129,14 @@ export default function Navbar() {
             </li>
             {user && isAdminEmail(user.email) && (
               <li>
-                <Link href="/admin" className="text-sm font-medium text-amber-600 hover:text-amber-700">
+                <Link href="/admin" className="text-[15px] font-medium text-amber-600 hover:text-amber-700">
                   Admin
                 </Link>
               </li>
             )}
           </ul>
 
-          <div className="flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end gap-4">
             <div className="hidden items-center gap-4 md:flex">
               {user ? (
                 <div ref={avatarRef} className="relative">
@@ -172,7 +169,7 @@ export default function Navbar() {
                 </div>
               ) : (
                 <>
-                  <Link href="/inloggen" className={navLink}>
+                  <Link href="/inloggen" className="text-[15px] font-medium text-gray-500 hover:text-gray-900">
                     Inloggen
                   </Link>
                   <Link
@@ -201,7 +198,7 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] flex flex-col bg-white md:hidden">
-          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+          <div className="flex h-16 items-center justify-between border-b border-gray-200 px-6">
             <Link href="/" onClick={closeMobile} className="text-xl font-bold text-[#1D9E75]">
               Dagout
             </Link>

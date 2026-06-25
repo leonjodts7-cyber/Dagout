@@ -4,20 +4,20 @@ import { TOOLS_LINKS } from "@/lib/tools-constants";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0d2818] text-white">
+    <footer className="bg-[#111827] text-white">
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link href="/" className="text-xl font-bold text-[#1D9E75]">
               Dagout
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-white/50">
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
               Teambuilding platform voor Belgische bedrijven.
             </p>
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-white/40">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               Activiteiten
             </h3>
             <ul className="mt-4 space-y-2.5">
@@ -25,7 +25,7 @@ export default function Footer() {
                 <li key={c.slug}>
                   <Link
                     href={`/zoeken?categorie=${encodeURIComponent(c.name)}`}
-                    className="text-sm text-white/60 transition-colors hover:text-white"
+                    className="text-sm text-gray-400 transition-colors hover:text-white"
                   >
                     {c.name}
                   </Link>
@@ -35,7 +35,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-white/40">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               Tools
             </h3>
             <ul className="mt-4 space-y-2.5">
@@ -43,7 +43,7 @@ export default function Footer() {
                 <li key={tool.href}>
                   <Link
                     href={tool.href}
-                    className="text-sm text-white/60 transition-colors hover:text-white"
+                    className="text-sm text-gray-400 transition-colors hover:text-white"
                   >
                     {tool.title}
                   </Link>
@@ -53,10 +53,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-white/40">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               Contact
             </h3>
-            <ul className="mt-4 space-y-2.5 text-sm text-white/60">
+            <ul className="mt-4 space-y-2.5 text-sm text-gray-400">
               <li>
                 <a href="mailto:info@dagout.be" className="hover:text-white">
                   info@dagout.be
@@ -72,7 +72,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-sm text-white/40">
+        <div className="mt-12 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
           &copy; 2026 Dagout.be
         </div>
       </div>

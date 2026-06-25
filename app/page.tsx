@@ -2,10 +2,11 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroSearch from "@/components/HeroSearch";
+import HeroMosaic from "@/components/HeroMosaic";
 import FilterSearchBar from "@/components/FilterSearchBar";
 import HomeCategoryGrid from "@/components/HomeCategoryGrid";
 import HomeActivityCard from "@/components/HomeActivityCard";
-import WhyDagout from "@/components/WhyDagout";
+import HowItWorks from "@/components/HowItWorks";
 import ForProvidersCTA from "@/components/ForProvidersCTA";
 import { MOCK_PROVIDERS } from "@/lib/providers";
 
@@ -17,46 +18,52 @@ export default function HomePage() {
       <Navbar />
 
       <main className="flex-1">
-        <section className="bg-[#0d2818] px-6 pb-0 pt-[100px] text-center">
-          <div className="mx-auto max-w-3xl">
-            <h1 className="text-[clamp(2.25rem,5vw,4rem)] font-extrabold leading-tight text-white">
-              Vind de perfecte teambuilding.
-            </h1>
-            <p className="mt-2 text-[clamp(2.25rem,5vw,4rem)] font-extrabold leading-tight text-[#4ade80]">
-              AI zoekt. Jij kiest.
-            </p>
-            <p className="mx-auto mt-5 max-w-[560px] text-lg text-white/70">
-              Beschrijf in gewone taal wat jullie zoeken. Onze AI vindt de beste
-              activiteit in Vlaanderen.
-            </p>
-            <div className="mx-auto mt-10 flex justify-center pb-20">
-              <HeroSearch />
+        {/* Hero */}
+        <section className="bg-white px-6 pb-10 pt-[60px]">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-12">
+            <div>
+              <h1 className="max-w-[640px] text-[clamp(2rem,4vw,3rem)] font-extrabold leading-tight text-[#111111]">
+                Vind de perfecte teambuilding in Vlaanderen
+              </h1>
+              <p className="mt-4 max-w-[640px] text-lg text-[#6b7280]">
+                Beschrijf wat jullie zoeken en onze AI vindt de beste activiteit
+                voor jouw team.
+              </p>
+              <div className="mt-8">
+                <HeroSearch />
+              </div>
+            </div>
+            <div className="hidden lg:block">
+              <HeroMosaic />
             </div>
           </div>
         </section>
 
-        <section className="border-b border-gray-200 bg-white px-6 py-5">
-          <div className="mx-auto max-w-5xl">
+        {/* Filters */}
+        <section className="border-y border-[#e5e7eb] bg-[#f9fafb] px-6 py-4">
+          <div className="mx-auto max-w-6xl">
             <FilterSearchBar variant="home" />
           </div>
         </section>
 
-        <section className="bg-[#f9fafb] px-6 py-20">
-          <div className="mx-auto max-w-5xl">
-            <h2 className="text-center text-[32px] font-bold text-gray-900">
+        {/* Categorieën */}
+        <section className="bg-white px-6 py-16">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="text-[28px] font-bold text-gray-900">
               Wat zoeken jullie?
             </h2>
-            <div className="mt-10">
+            <div className="mt-8">
               <HomeCategoryGrid />
             </div>
           </div>
         </section>
 
-        <section className="bg-white px-6 py-20">
-          <div className="mx-auto max-w-5xl">
-            <div className="mb-10 flex items-center justify-between gap-4">
+        {/* Populaire activiteiten */}
+        <section className="bg-[#f9fafb] px-6 py-16">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-8 flex items-center justify-between gap-4">
               <h2 className="text-[28px] font-bold text-gray-900">
-                Ontdek activiteiten
+                Populaire activiteiten
               </h2>
               <Link
                 href="/zoeken"
@@ -73,7 +80,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <WhyDagout />
+        <HowItWorks />
         <ForProvidersCTA />
       </main>
 

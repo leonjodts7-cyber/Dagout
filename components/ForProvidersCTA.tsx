@@ -1,38 +1,48 @@
 import Link from "next/link";
 
+const BENEFITS = [
+  "Gratis listing aanmaken",
+  "Ontvang aanvragen van Belgische bedrijven",
+  "Pro plan voor meer zichtbaarheid — €19/maand",
+];
+
 export default function ForProvidersCTA() {
   return (
-    <section className="bg-[#0d2818] px-6 py-20">
+    <section className="bg-[#f0fdf4] px-6 py-16">
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div>
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-[32px] font-bold text-gray-900">
             Ben jij een teambuilding aanbieder?
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-white/75">
-            Zet je activiteit op Dagout en word gevonden door Belgische bedrijven.
-          </p>
-          <p className="mt-4 text-sm font-medium text-[#4ade80]">
-            Gratis te starten. Pro vanaf €19/maand.
-          </p>
+          <ul className="mt-8 space-y-4">
+            {BENEFITS.map((benefit) => (
+              <li key={benefit} className="flex items-start gap-3 text-gray-700">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1D9E75] text-white">
+                  <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+                <span className="text-base">{benefit}</span>
+              </li>
+            ))}
+          </ul>
           <Link
             href="/aanbieders/nieuw"
-            className="mt-8 inline-flex rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-[#0d2818] transition-colors hover:bg-gray-100"
+            className="mt-8 inline-flex rounded-lg bg-[#1D9E75] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#178a66]"
           >
-            Lijst je activiteit →
+            Lijst je activiteit gratis
           </Link>
         </div>
 
         <div className="hidden lg:block">
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-            <div className="rounded-lg bg-white p-5 shadow-xl">
-              <div className="border-b border-gray-100 pb-4">
-                <p className="text-sm font-semibold text-gray-900">Dashboard</p>
-                <p className="text-xs text-gray-500">Je activiteit beheren</p>
-              </div>
-              <div className="mt-4 space-y-3">
-                <div className="h-3 w-3/4 rounded bg-gray-100" />
-                <div className="h-3 w-1/2 rounded bg-gray-100" />
-                <div className="mt-4 h-20 rounded-lg bg-[#f9fafb]" />
+          <div className="rounded-xl border border-[#bbf7d0] bg-white p-4 shadow-sm">
+            <div className="rounded-lg border border-gray-100 p-5">
+              <p className="text-sm font-semibold text-gray-900">Dashboard</p>
+              <p className="text-xs text-gray-500">Beheer je activiteit en aanvragen</p>
+              <div className="mt-5 space-y-3">
+                <div className="h-2.5 w-2/3 rounded bg-gray-100" />
+                <div className="h-2.5 w-1/2 rounded bg-gray-100" />
+                <div className="mt-4 h-24 rounded-lg bg-[#f9fafb]" />
               </div>
             </div>
           </div>
