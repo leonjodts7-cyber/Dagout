@@ -49,7 +49,7 @@ export const CATEGORY_NAMES = CATEGORIES.map((c) => c.name);
 
 export const CATEGORY_CARD_IMAGES: Record<string, string> = {
   kajakken:
-    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80",
+    "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80",
   "escape-room":
     "https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=400&q=80",
   kookworkshop:
@@ -64,7 +64,7 @@ export const CATEGORY_CARD_IMAGES: Record<string, string> = {
 
 export const PROVIDER_IMAGE_OVERRIDES: Record<string, string> = {
   "dobber-kajakken-gent":
-    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+    "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=600&q=80",
   "escape-hunt-antwerpen":
     "https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=600&q=80",
   "volta-kookworkshop-gent":
@@ -72,9 +72,9 @@ export const PROVIDER_IMAGE_OVERRIDES: Record<string, string> = {
   "lasergame-arena-brussel":
     "https://images.unsplash.com/photo-1552072805-516d4f2c3a64?w=600&q=80",
   "de-wimpe-kanovaren-herenthout":
-    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+    "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=600&q=80",
   "urban-escape-mechelen":
-    "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+    "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=600&q=80",
   "klimavontuur-leuven":
     "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
   "wellness-retreat-brugge":

@@ -2,7 +2,6 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroSearch from "@/components/HeroSearch";
-import HeroMosaic from "@/components/HeroMosaic";
 import FilterSearchBar from "@/components/FilterSearchBar";
 import HomeCategoryGrid from "@/components/HomeCategoryGrid";
 import HomeActivityCard from "@/components/HomeActivityCard";
@@ -34,7 +33,54 @@ export default function HomePage() {
               </div>
             </div>
             <div className="hidden lg:block">
-              <HeroMosaic />
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                  height: "400px",
+                }}
+              >
+                <div
+                  style={{
+                    gridRow: "span 2",
+                    borderRadius: "16px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80"
+                    alt="Kajakken teambuilding"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div style={{ borderRadius: "16px", overflow: "hidden" }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80"
+                    alt="Kookworkshop teambuilding"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div style={{ borderRadius: "16px", overflow: "hidden" }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=400&q=80"
+                    alt="Escape room teambuilding"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const KAYAK_IMAGE =
-  "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80";
+  "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80";
 const COOKING_IMAGE =
   "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&q=80";
 const ESCAPE_IMAGE =
