@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import FavoriteButton from "@/components/FavoriteButton";
 import AddToVoteButton from "@/components/AddToVoteButton";
@@ -57,7 +56,12 @@ export default function ActivityCard({
           className="relative hidden h-[180px] w-48 shrink-0 overflow-hidden rounded-xl sm:block"
         >
           {imageUrl ? (
-            <Image src={imageUrl} alt={provider.name} fill loading="lazy" className="object-cover" sizes="192px" />
+            <img
+              src={imageUrl}
+              alt={provider.name}
+              loading="lazy"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
           ) : (
             <div className="h-full bg-gray-100" />
           )}
@@ -118,13 +122,11 @@ export default function ActivityCard({
       <div className="relative min-h-0 flex-[55] overflow-hidden">
         <Link href={`/activiteit/${provider.slug}`} className="block h-full w-full">
           {imageUrl ? (
-            <Image
+            <img
               src={imageUrl}
               alt={provider.name}
-              fill
               loading="lazy"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, 33vw"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="h-full bg-gray-100" />

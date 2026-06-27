@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { CATEGORIES, CATEGORY_CARD_IMAGES } from "@/lib/constants";
 
 export default function CategoryPhotoGrid() {
@@ -15,12 +14,11 @@ export default function CategoryPhotoGrid() {
             href={`/zoeken?categorie=${encodeURIComponent(category.name)}`}
             className="card-hover group relative h-[200px] overflow-hidden rounded-2xl"
           >
-            <Image
+            <img
               src={image}
               alt={category.name}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              className="transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10 transition-colors duration-300 group-hover:from-black/65 group-hover:via-black/25" />
             <div className="absolute inset-x-0 bottom-0 p-5">

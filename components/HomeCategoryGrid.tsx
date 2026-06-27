@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { CATEGORIES, CATEGORY_CARD_IMAGES } from "@/lib/constants";
 
 export default function HomeCategoryGrid() {
@@ -12,18 +11,14 @@ export default function HomeCategoryGrid() {
           <Link
             key={category.slug}
             href={`/zoeken?categorie=${encodeURIComponent(category.name)}`}
-            className="card-lift overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+            className="group cursor-pointer overflow-hidden rounded-2xl border border-[#f3f4f6] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.10)]"
           >
-            <div className="relative h-[180px] w-full">
-              <Image
-                src={image}
-                alt={category.name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 100vw, 33vw"
-              />
-            </div>
-            <p className="px-4 py-3 text-[15px] font-semibold text-gray-900">
+            <img
+              src={image}
+              alt={category.name}
+              style={{ width: "100%", height: "180px", objectFit: "cover" }}
+            />
+            <p className="px-4 py-4 text-base font-semibold text-[#111827]">
               {category.name}
             </p>
           </Link>

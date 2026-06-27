@@ -423,7 +423,7 @@ export function searchProviders(
 
 export type SortOption = "relevant" | "price-asc" | "price-desc" | "rating";
 
-/** Pro (featured) listings first, then Basis, then by rating. */
+/** Pro (featured) listings first, then free tier, then by rating. */
 function comparePlanVisibility(a: Provider, b: Provider): number {
   const rank = (p: Provider) => (p.featured ? 2 : 1);
   const diff = rank(b) - rank(a);

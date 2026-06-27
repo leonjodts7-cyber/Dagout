@@ -18,22 +18,22 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section className="bg-white px-6 py-16">
-      <div className="mx-auto max-w-[800px]">
-        <h2 className="text-center text-[28px] font-bold tracking-tight text-gray-900">
+    <section className="bg-white py-16">
+      <div className="mx-auto max-w-[800px] px-6">
+        <h2 className="text-center text-[28px] font-bold text-[#111827]">
           Hoe werkt Dagout?
         </h2>
 
-        <div className="steps-row relative mt-14 grid gap-10 md:grid-cols-3 md:gap-6">
+        <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
           {STEPS.map((step) => (
-            <div key={step.number} className="relative text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#1D9E75] text-lg font-bold text-[#1D9E75]">
+            <div key={step.number} className="text-center">
+              <span className="block text-[48px] font-extrabold leading-none text-[#d1fae5]">
                 {step.number}
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-gray-900">
+              </span>
+              <h3 className="mt-2 text-lg font-semibold text-[#111827]">
                 {step.title}
               </h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-[#6b7280]">
+              <p className="mt-2 text-[15px] text-[#6b7280]">
                 {step.description}
               </p>
             </div>

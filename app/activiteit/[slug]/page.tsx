@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -45,14 +44,11 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
         />
 
         {imageUrl && (
-          <div className="relative h-72 w-full sm:h-[28rem]">
-            <Image
+          <div className="relative h-72 w-full overflow-hidden sm:h-[28rem]">
+            <img
               src={imageUrl}
               alt={provider.name}
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           </div>

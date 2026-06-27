@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Provider } from "@/lib/types";
 import { getProviderImageUrl } from "@/lib/constants";
@@ -16,14 +15,12 @@ export default function SearchResultCard({ provider }: SearchResultCardProps) {
       href={`/activiteit/${provider.slug}`}
       className="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
     >
-      <div className="relative h-[160px] w-[160px] shrink-0 overflow-hidden rounded-lg">
-        <Image
+      <div className="h-[160px] w-[160px] shrink-0 overflow-hidden rounded-lg">
+        <img
           src={imageUrl}
           alt={provider.name}
-          fill
           loading="lazy"
-          className="object-cover"
-          sizes="160px"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>
 

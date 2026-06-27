@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -72,7 +71,11 @@ function ActivitySelectCard({
 
       <div className="relative aspect-[4/3] w-full">
         {imageUrl ? (
-          <Image src={imageUrl} alt={provider.name} fill className="object-cover" sizes="(max-width:640px) 100vw, 50vw" />
+          <img
+            src={imageUrl}
+            alt={provider.name}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         ) : (
           <div className="h-full bg-[#1D9E75]/10" />
         )}
@@ -576,13 +579,11 @@ export default function CreateVoteSessionForm({
                     className="flex items-center gap-3 rounded-xl border border-gray-100 p-3"
                   >
                     {imageUrl && (
-                      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg">
-                        <Image
+                      <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg">
+                        <img
                           src={imageUrl}
                           alt={p.name}
-                          fill
-                          className="object-cover"
-                          sizes="56px"
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
                         />
                       </div>
                     )}

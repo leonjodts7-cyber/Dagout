@@ -16,29 +16,33 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 bg-white">
         {/* Hero */}
-        <section className="bg-white px-6 pb-10 pt-14">
-          <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">
-            <div>
-              <h1 className="max-w-[640px] text-[32px] font-bold leading-[1.2] tracking-tight text-[#111827] sm:text-[42px]">
+        <section className="px-6 pb-16">
+          <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[55fr_45fr] lg:gap-12">
+            <div className="pt-16 lg:pt-20">
+              <span className="inline-block rounded-full bg-[#f0fdf4] px-3 py-1 text-xs font-medium text-[#1D9E75]">
+                ✦ AI-gestuurd platform
+              </span>
+              <h1 className="mt-5 max-w-[540px] text-[36px] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#111827] sm:text-[44px]">
                 Vind de perfecte teambuilding in Vlaanderen
               </h1>
-              <p className="mt-3 max-w-[480px] text-[17px] leading-relaxed text-[#6b7280]">
-                Beschrijf wat jullie zoeken. Onze AI vindt de perfecte match voor
-                jouw team.
+              <p className="mt-4 max-w-[460px] text-[17px] leading-relaxed text-[#6b7280]">
+                Beschrijf in gewone taal wat jullie zoeken. Onze AI vindt de
+                perfecte activiteit voor jouw team.
               </p>
               <div className="mt-8">
                 <HeroSearch />
               </div>
             </div>
-            <div className="hidden lg:block">
+
+            <div className="hidden pt-12 lg:block lg:pt-[60px]">
               <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
                   gap: "12px",
-                  height: "400px",
+                  maxHeight: "420px",
                 }}
               >
                 <div
@@ -49,34 +53,37 @@ export default function HomePage() {
                   }}
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80"
+                    src="https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=500&q=80"
                     alt="Kajakken teambuilding"
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
+                      borderRadius: "16px",
                     }}
                   />
                 </div>
                 <div style={{ borderRadius: "16px", overflow: "hidden" }}>
                   <img
-                    src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80"
+                    src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&q=80"
                     alt="Kookworkshop teambuilding"
                     style={{
                       width: "100%",
-                      height: "100%",
+                      height: "200px",
                       objectFit: "cover",
+                      borderRadius: "16px",
                     }}
                   />
                 </div>
                 <div style={{ borderRadius: "16px", overflow: "hidden" }}>
                   <img
-                    src="https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=400&q=80"
+                    src="https://images.unsplash.com/photo-1525118354882-9c3a3501b6de?w=300&q=80"
                     alt="Escape room teambuilding"
                     style={{
                       width: "100%",
-                      height: "100%",
+                      height: "200px",
                       objectFit: "cover",
+                      borderRadius: "16px",
                     }}
                   />
                 </div>
@@ -85,40 +92,38 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Filters */}
-        <section className="border-y border-[#e5e7eb] bg-[#f9fafb] px-6 py-4">
-          <div className="mx-auto max-w-6xl">
+        {/* Filter balk */}
+        <section className="border-y border-[#e5e7eb] bg-[#f9fafb] py-4">
+          <div className="mx-auto max-w-6xl px-6">
             <FilterSearchBar variant="home" />
           </div>
         </section>
 
         {/* Categorieën */}
-        <section className="bg-white px-6 py-16">
-          <div className="mx-auto max-w-6xl">
-            <h2 className="text-[28px] font-bold text-gray-900">
+        <section className="bg-white py-16">
+          <div className="mx-auto max-w-6xl px-6">
+            <h2 className="mb-8 text-[28px] font-bold text-[#111827]">
               Wat zoeken jullie?
             </h2>
-            <div className="mt-8">
-              <HomeCategoryGrid />
-            </div>
+            <HomeCategoryGrid />
           </div>
         </section>
 
         {/* Populaire activiteiten */}
-        <section className="bg-[#f9fafb] px-6 py-16">
-          <div className="mx-auto max-w-6xl">
+        <section className="bg-[#f9fafb] py-16">
+          <div className="mx-auto max-w-6xl px-6">
             <div className="mb-8 flex items-center justify-between gap-4">
-              <h2 className="text-[28px] font-bold text-gray-900">
+              <h2 className="text-[28px] font-bold text-[#111827]">
                 Populaire activiteiten
               </h2>
               <Link
                 href="/zoeken"
-                className="text-sm font-semibold text-[#1D9E75] hover:text-[#178a66]"
+                className="text-[15px] font-semibold text-[#1D9E75] hover:text-[#178a66]"
               >
                 Bekijk alles →
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {activities.map((provider) => (
                 <HomeActivityCard key={provider.id} provider={provider} />
               ))}

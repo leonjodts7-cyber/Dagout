@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -115,12 +114,10 @@ export default function FavorietenClient() {
                       className="relative block h-40"
                     >
                       {imageUrl ? (
-                        <Image
+                        <img
                           src={imageUrl}
                           alt={fav.name}
-                          fill
-                          className="object-cover"
-                          sizes="400px"
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center bg-[#1D9E75]/10" />

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -340,13 +339,11 @@ export default function VotePageClient({ session }: VotePageClientProps) {
               className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
             >
               {imageUrl && (
-                <div className="relative h-52 w-full sm:h-64">
-                  <Image
+                <div className="h-52 w-full overflow-hidden sm:h-64">
+                  <img
                     src={imageUrl}
                     alt={provider.name}
-                    fill
-                    className="object-cover"
-                    sizes="768px"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   />
                 </div>
               )}

@@ -70,20 +70,18 @@ export default function Navbar() {
   }
 
   const closeMobile = () => setMobileOpen(false);
-  const navLink =
-    "text-[15px] font-medium text-gray-500 transition-colors hover:text-gray-900";
 
   return (
     <>
       <header className="sticky top-0 z-50 h-16 border-b border-[#e5e7eb] bg-white">
         <nav className="mx-auto grid h-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6">
-          <Link href="/" className="text-[20px] font-bold text-[#1D9E75]">
+          <Link href="/" className="text-[22px] font-bold text-[#1D9E75]">
             Dagout
           </Link>
 
           <ul className="hidden items-center justify-center gap-8 md:flex">
             <li>
-              <Link href="/zoeken" className={navLink}>
+              <Link href="/zoeken" className="text-[15px] font-medium text-[#374151] transition-colors hover:text-[#111827]">
                 Ontdek
               </Link>
             </li>
@@ -92,7 +90,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => setToolsOpen((o) => !o)}
-                  className={`flex items-center gap-1 ${navLink}`}
+                  className="flex items-center gap-1 text-[15px] font-medium text-[#374151] transition-colors hover:text-[#111827]"
                   aria-expanded={toolsOpen}
                 >
                   Tools
@@ -123,7 +121,7 @@ export default function Navbar() {
               </div>
             </li>
             <li>
-              <Link href="/aanbieders/nieuw" className={navLink}>
+              <Link href="/aanbieders/nieuw" className="text-[15px] font-medium text-[#374151] transition-colors hover:text-[#111827]">
                 Voor aanbieders
               </Link>
             </li>

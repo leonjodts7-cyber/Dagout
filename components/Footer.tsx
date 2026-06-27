@@ -5,14 +5,14 @@ import { TOOLS_LINKS } from "@/lib/tools-constants";
 export default function Footer() {
   return (
     <footer className="bg-[#111827] text-white">
-      <div className="mx-auto max-w-6xl px-6 py-14">
+      <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link href="/" className="text-xl font-bold text-[#1D9E75]">
               Dagout
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
-              Teambuilding platform voor Belgische bedrijven.
+            <p className="mt-3 text-sm leading-relaxed text-[#9ca3af]">
+              Het slimste teambuilding platform van België
             </p>
           </div>
 
@@ -25,7 +25,7 @@ export default function Footer() {
                 <li key={c.slug}>
                   <Link
                     href={`/zoeken?categorie=${encodeURIComponent(c.name)}`}
-                    className="text-sm text-gray-400 transition-colors hover:text-white"
+                    className="text-sm text-[#9ca3af] transition-colors hover:text-white"
                   >
                     {c.name}
                   </Link>
@@ -43,7 +43,7 @@ export default function Footer() {
                 <li key={tool.href}>
                   <Link
                     href={tool.href}
-                    className="text-sm text-gray-400 transition-colors hover:text-white"
+                    className="text-sm text-[#9ca3af] transition-colors hover:text-white"
                   >
                     {tool.title}
                   </Link>
@@ -56,23 +56,22 @@ export default function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               Contact
             </h3>
-            <ul className="mt-4 space-y-2.5 text-sm text-gray-400">
+            <ul className="mt-4 space-y-2.5 text-sm text-[#9ca3af]">
               <li>
                 <a href="mailto:info@dagout.be" className="hover:text-white">
                   info@dagout.be
                 </a>
               </li>
-              <li>Gent, België</li>
               <li>
                 <Link href="/aanbieders/nieuw" className="hover:text-white">
-                  Lijst je activiteit
+                  Voor aanbieders
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
+        <div className="mt-12 border-t border-[#374151] pt-6 text-center text-sm text-[#9ca3af]">
           &copy; 2026 Dagout.be
         </div>
       </div>

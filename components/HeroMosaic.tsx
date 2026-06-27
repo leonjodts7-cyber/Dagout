@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const KAYAK_IMAGE =
   "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80";
 const COOKING_IMAGE =
@@ -10,35 +8,26 @@ const ESCAPE_IMAGE =
 export default function HeroMosaic() {
   return (
     <div className="grid h-[380px] grid-cols-2 gap-3 overflow-hidden">
-      <div className="relative overflow-hidden rounded-2xl">
-        <Image
+      <div className="overflow-hidden rounded-2xl">
+        <img
           src={KAYAK_IMAGE}
           alt="Kajakken teambuilding"
-          fill
-          className="object-cover"
-          sizes="240px"
-          priority
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>
       <div className="flex flex-col gap-3">
-        <div className="relative flex-1 overflow-hidden rounded-2xl">
-          <Image
+        <div className="flex-1 overflow-hidden rounded-2xl">
+          <img
             src={COOKING_IMAGE}
             alt="Kookworkshop teambuilding"
-            fill
-            className="object-cover"
-            sizes="200px"
-            priority
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </div>
-        <div className="relative flex-1 overflow-hidden rounded-2xl">
-          <Image
+        <div className="flex-1 overflow-hidden rounded-2xl">
+          <img
             src={ESCAPE_IMAGE}
             alt="Escape room teambuilding"
-            fill
-            className="object-cover"
-            sizes="200px"
-            priority
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </div>
       </div>
