@@ -47,6 +47,58 @@ export const CATEGORIES = [
 
 export const CATEGORY_NAMES = CATEGORIES.map((c) => c.name);
 
+export const CATEGORY_STYLES: Record<
+  string,
+  { gradient: string; gradientLight: string; emoji: string }
+> = {
+  kajakken: {
+    gradient: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+    gradientLight: "linear-gradient(135deg, #7dd3fc, #38bdf8)",
+    emoji: "🛶",
+  },
+  "escape-room": {
+    gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+    gradientLight: "linear-gradient(135deg, #c4b5fd, #a78bfa)",
+    emoji: "🔐",
+  },
+  kookworkshop: {
+    gradient: "linear-gradient(135deg, #f97316, #ea580c)",
+    gradientLight: "linear-gradient(135deg, #fdba74, #fb923c)",
+    emoji: "👨‍🍳",
+  },
+  lasergame: {
+    gradient: "linear-gradient(135deg, #ef4444, #dc2626)",
+    gradientLight: "linear-gradient(135deg, #fca5a5, #f87171)",
+    emoji: "🎯",
+  },
+  outdoor: {
+    gradient: "linear-gradient(135deg, #22c55e, #16a34a)",
+    gradientLight: "linear-gradient(135deg, #86efac, #4ade80)",
+    emoji: "🏔️",
+  },
+  wellness: {
+    gradient: "linear-gradient(135deg, #ec4899, #db2777)",
+    gradientLight: "linear-gradient(135deg, #f9a8d4, #f472b6)",
+    emoji: "🧘",
+  },
+};
+
+const CATEGORY_NAME_TO_SLUG: Record<string, string> = {
+  Kajakken: "kajakken",
+  "Escape Room": "escape-room",
+  Kookworkshop: "kookworkshop",
+  Lasergame: "lasergame",
+  Outdoor: "outdoor",
+  Wellness: "wellness",
+};
+
+export function getCategoryStyle(categoryOrSlug: string) {
+  const slug =
+    CATEGORY_NAME_TO_SLUG[categoryOrSlug] ??
+    categoryOrSlug.toLowerCase().replace(/\s+/g, "-");
+  return CATEGORY_STYLES[slug] ?? CATEGORY_STYLES.outdoor;
+}
+
 export const CATEGORY_CARD_IMAGES: Record<string, string> = {
   kajakken:
     "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80",
@@ -135,59 +187,5 @@ export const SEARCH_SUGGESTIONS = [
   {
     label: "Wellness dag voor ons team 🧘",
     query: "Wellness en ontspanning teambuilding voor 12 personen, rustige sfeer",
-  },
-] as const;
-
-export const TESTIMONIALS = [
-  {
-    quote:
-      "Via Dagout vonden we binnen vijf minuten de perfecte teambuilding voor ons sales team. De AI-zoekfunctie begrijpt echt wat je bedoelt.",
-    name: "Sophie Vermeulen",
-    role: "HR Manager",
-    company: "Belfius",
-    initials: "SV",
-  },
-  {
-    quote:
-      "Eindelijk een platform dat teambuilding in Vlaanderen overzichtelijk maakt. Wij gebruiken Dagout nu voor elke bedrijfsuitstap.",
-    name: "Thomas De Smet",
-    role: "Office Manager",
-    company: "Colruyt Group",
-    initials: "TD",
-  },
-  {
-    quote:
-      "De AI-zoekfunctie bespaart ons uren zoekwerk. Onze medewerkers waren enthousiast over de escape room in Antwerpen.",
-    name: "Lien Janssens",
-    role: "Teambuilding Coördinator",
-    company: "Umicore",
-    initials: "LJ",
-  },
-] as const;
-
-export const PROVIDER_REVIEWS = [
-  {
-    author: "Marie-Claire Dubois",
-    role: "Teamlead Marketing",
-    company: "Proximus",
-    rating: 5,
-    text: "Fantastische ervaring! Het team vond de activiteit geweldig en alles was professioneel georganiseerd.",
-    date: "februari 2026",
-  },
-  {
-    author: "Pieter Wouters",
-    role: "CEO",
-    company: "Scale-up Gent",
-    rating: 5,
-    text: "Perfecte match voor ons team van 15 personen. De communicatie met de aanbieder verliep vlot via Dagout.",
-    date: "januari 2026",
-  },
-  {
-    author: "Anouk Peeters",
-    role: "People & Culture",
-    company: "Deloitte Belgium",
-    rating: 4,
-    text: "Goede prijs-kwaliteitverhouding en een unieke ervaring. We komen zeker terug voor onze volgende uitstap.",
-    date: "december 2025",
   },
 ] as const;

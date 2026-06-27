@@ -1,26 +1,28 @@
 import Link from "next/link";
 import type { Provider } from "@/lib/types";
-import { getProviderImageUrl } from "@/lib/constants";
+import { getCategoryStyle } from "@/lib/constants";
 
 interface HomeActivityCardProps {
   provider: Provider;
 }
 
 export default function HomeActivityCard({ provider }: HomeActivityCardProps) {
-  const imageUrl =
-    provider.image_url ?? getProviderImageUrl(provider.category, provider.slug);
+  const style = getCategoryStyle(provider.category);
 
   return (
     <Link
       href={`/activiteit/${provider.slug}`}
-      className="group block cursor-pointer overflow-hidden rounded-2xl border border-[#f3f4f6] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.10)]"
+      className="group block cursor-pointer overflow-hidden rounded-2xl bg-white shadow-[0_1px_4px_rgba(0,0,0,0.08)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.12)]"
     >
-      <img
-        src={imageUrl}
-        alt={provider.name}
-        style={{ width: "100%", height: "200px", objectFit: "cover" }}
-      />
-      <div className="p-4">
+      <div
+        className="flex h-[200px] items-end justify-start p-6"
+        style={{ background: style.gradientLight }}
+      >
+        <span className="text-5xl opacity-40" aria-hidden>
+          {style.emoji}
+        </span>
+      </div>
+      <div className="bg-white p-4">
         <h3 className="text-base font-semibold text-[#111827]">
           {provider.name}
         </h3>

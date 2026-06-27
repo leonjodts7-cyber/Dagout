@@ -75,7 +75,7 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-50 h-16 border-b border-[#e5e7eb] bg-white">
         <nav className="mx-auto grid h-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6">
-          <Link href="/" className="text-[22px] font-bold text-[#1D9E75]">
+          <Link href="/" className="text-xl font-bold text-[#1D9E75]">
             Dagout
           </Link>
 

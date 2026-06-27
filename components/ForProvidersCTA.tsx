@@ -1,20 +1,20 @@
 import Link from "next/link";
 
 const BENEFITS = [
-  "Gratis listing aanmaken",
-  "Aanvragen ontvangen via het platform",
-  "Pro plan voor meer zichtbaarheid — €19/maand",
+  "Gratis listing",
+  "Aanvragen ontvangen",
+  "Pro plan €19/maand",
 ];
 
 const STATS = [
-  { value: "Gratis starten", label: "listing aanmaken zonder kosten" },
-  { value: "€19/maand", label: "Pro plan voor meer zichtbaarheid" },
-  { value: "Heel Vlaanderen", label: "van Gent tot Hasselt" },
+  { value: "Gratis", label: "listing aanmaken" },
+  { value: "€19/maand", label: "Pro plan" },
+  { value: "Vlaanderen", label: "volledige dekking" },
 ];
 
 export default function ForProvidersCTA() {
   return (
-    <section className="px-6 pb-16">
+    <section className="mx-6 mb-16 mt-16">
       <div className="mx-auto max-w-6xl rounded-3xl bg-[#f0fdf4] p-10 sm:p-16">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
@@ -23,7 +23,7 @@ export default function ForProvidersCTA() {
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-[#6b7280]">
               Zet je activiteit op Dagout en word gevonden door Belgische
-              bedrijven die actief op zoek zijn naar teambuilding.
+              bedrijven.
             </p>
             <ul className="mt-8 space-y-3">
               {BENEFITS.map((benefit) => (
@@ -45,10 +45,10 @@ export default function ForProvidersCTA() {
             {STATS.map((stat) => (
               <div
                 key={stat.value}
-                className="rounded-xl bg-[#1D9E75] px-6 py-5 text-white"
+                className="rounded-xl border border-[#e5e7eb] bg-white px-6 py-5 shadow-sm"
               >
-                <p className="text-lg font-bold">{stat.value}</p>
-                <p className="mt-1 text-sm text-white/85">{stat.label}</p>
+                <p className="text-lg font-bold text-[#111827]">{stat.value}</p>
+                <p className="mt-1 text-sm text-[#6b7280]">{stat.label}</p>
               </div>
             ))}
           </div>
