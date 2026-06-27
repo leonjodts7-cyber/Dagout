@@ -1,56 +1,43 @@
 import Link from "next/link";
 
-const BENEFITS = [
-  "Gratis listing",
-  "Aanvragen ontvangen",
-  "Pro plan €19/maand",
-];
-
-const STATS = [
-  { value: "Gratis", label: "listing aanmaken" },
-  { value: "€19/maand", label: "Pro plan" },
-  { value: "Vlaanderen", label: "volledige dekking" },
+const HIGHLIGHTS = [
+  "Gratis starten",
+  "Pro zichtbaarheid",
+  "Direct aanvragen",
 ];
 
 export default function ForProvidersCTA() {
   return (
-    <section className="mx-6 mb-16 mt-16">
-      <div className="mx-auto max-w-6xl rounded-3xl bg-[#f0fdf4] p-10 sm:p-16">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+    <section className="bg-[#111827] py-12">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <h2 className="text-[32px] font-bold text-[#111827]">
+            <h2 className="text-[30px] font-bold text-white">
               Ben jij een teambuilding aanbieder?
             </h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-[#6b7280]">
-              Zet je activiteit op Dagout en word gevonden door Belgische
-              bedrijven.
+            <p className="mt-4 text-base text-white/70">
+              Bereik honderden Belgische bedrijven die actief op zoek zijn naar
+              teambuilding activiteiten.
             </p>
-            <ul className="mt-8 space-y-3">
-              {BENEFITS.map((benefit) => (
-                <li key={benefit} className="flex items-start gap-3">
-                  <span className="mt-0.5 shrink-0 text-[#1D9E75]">✓</span>
-                  <span className="text-[15px] text-[#374151]">{benefit}</span>
-                </li>
-              ))}
-            </ul>
             <Link
               href="/aanbieders/nieuw"
-              className="mt-6 inline-flex rounded-lg bg-[#1D9E75] px-7 py-3.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#178a66]"
+              className="mt-6 inline-flex rounded-lg bg-white px-7 py-3.5 text-[15px] font-semibold text-[#1D9E75] transition-colors hover:bg-gray-100"
             >
-              Lijst je activiteit gratis →
+              Ontdek de mogelijkheden →
             </Link>
           </div>
 
-          <div className="flex flex-col gap-4">
-            {STATS.map((stat) => (
-              <div
-                key={stat.value}
-                className="rounded-xl border border-[#e5e7eb] bg-white px-6 py-5 shadow-sm"
-              >
-                <p className="text-lg font-bold text-[#111827]">{stat.value}</p>
-                <p className="mt-1 text-sm text-[#6b7280]">{stat.label}</p>
-              </div>
-            ))}
+          <div className="rounded-2xl bg-[#1D9E75] p-5">
+            <div className="flex flex-col gap-3">
+              {HIGHLIGHTS.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-xl bg-white px-5 py-4 text-center text-[15px] font-semibold text-[#111827]"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

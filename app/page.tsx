@@ -1,19 +1,22 @@
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroSearch from "@/components/HeroSearch";
-import FilterSearchBar from "@/components/FilterSearchBar";
+import SpotlightProviders from "@/components/SpotlightProviders";
+import PremiumProviders from "@/components/PremiumProviders";
 import HomeCategoryGrid from "@/components/HomeCategoryGrid";
-import HomeActivityCard from "@/components/HomeActivityCard";
 import HowItWorks from "@/components/HowItWorks";
 import ForProvidersCTA from "@/components/ForProvidersCTA";
-import AdvertentiePlatformSection from "@/components/AdvertentiePlatformSection";
 import { getProviderById } from "@/lib/providers";
 
-const FEATURED_PROVIDER_IDS = ["1", "2", "3", "4", "7", "8"];
+const SPOTLIGHT_IDS = ["1", "2", "3"];
+const PREMIUM_IDS = ["4", "7", "8", "12"];
 
 export default function HomePage() {
-  const activities = FEATURED_PROVIDER_IDS.map((id) => getProviderById(id)).filter(
+  const spotlight = SPOTLIGHT_IDS.map((id) => getProviderById(id)).filter(
+    (p): p is NonNullable<ReturnType<typeof getProviderById>> => Boolean(p)
+  );
+
+  const premium = PREMIUM_IDS.map((id) => getProviderById(id)).filter(
     (p): p is NonNullable<ReturnType<typeof getProviderById>> => Boolean(p)
   );
 
@@ -22,73 +25,33 @@ export default function HomePage() {
       <Navbar />
 
       <main className="flex-1 bg-white">
-        {/* Hero — centered, no images */}
-        <section className="px-6 pb-[60px] pt-20 text-center">
+        {/* Hero */}
+        <section className="px-6 pb-10 pt-[60px] text-center">
           <div className="mx-auto max-w-6xl">
-            <h1 className="mx-auto max-w-[700px] text-[36px] font-extrabold leading-tight tracking-[-0.02em] text-[#111827] sm:text-[52px]">
+            <h1 className="mx-auto max-w-[640px] text-[36px] font-extrabold leading-tight text-[#111827] sm:text-[44px]">
               Vind de perfecte teambuilding in Vlaanderen
             </h1>
-            <p className="mx-auto mt-4 max-w-[500px] text-lg text-[#6b7280]">
-              Beschrijf wat jullie zoeken en onze AI vindt de perfecte activiteit.
+            <p className="mx-auto mt-3 max-w-[480px] text-[17px] text-[#6b7280]">
+              Beschrijf wat jullie zoeken. Onze AI vindt de beste activiteit voor
+              jouw team.
             </p>
-            <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-2">
-              {[
-                "🔒 Veilig aanvragen",
-                "✓ Gratis zoeken",
-                "⚡ Direct contact",
-              ].map((badge) => (
-                <span
-                  key={badge}
-                  className="rounded-full border border-[#e5e7eb] px-3.5 py-1.5 text-xs text-[#6b7280]"
-                >
-                  {badge}
-                </span>
-              ))}
-            </div>
             <HeroSearch />
           </div>
         </section>
 
-        {/* Filter balk */}
-        <section className="border-y border-[#e5e7eb] bg-[#f9fafb] py-4">
-          <div className="mx-auto max-w-6xl px-6">
-            <FilterSearchBar variant="home" />
-          </div>
-        </section>
+        <SpotlightProviders providers={spotlight} />
+        <PremiumProviders providers={premium} />
 
         {/* Categorieën */}
-        <section className="bg-white py-16">
+        <section className="bg-white py-12">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="mb-8 text-[30px] font-bold text-[#111827]">
+            <h2 className="mb-6 text-2xl font-bold text-[#111827]">
               Wat zoeken jullie?
             </h2>
             <HomeCategoryGrid />
           </div>
         </section>
 
-        {/* Populaire activiteiten */}
-        <section className="bg-[#f9fafb] py-16">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="mb-8 flex items-center justify-between gap-4">
-              <h2 className="text-[30px] font-bold text-[#111827]">
-                Populaire activiteiten
-              </h2>
-              <Link
-                href="/zoeken"
-                className="text-[15px] font-semibold text-[#1D9E75] hover:text-[#178a66]"
-              >
-                Bekijk alles →
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {activities.map((provider) => (
-                <HomeActivityCard key={provider.id} provider={provider} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <AdvertentiePlatformSection />
         <HowItWorks />
         <ForProvidersCTA />
       </main>

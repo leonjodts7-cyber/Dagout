@@ -46,8 +46,11 @@ export default function CategoryIcon({ slug, className = "h-16 w-16" }: Category
     case "wellness":
       return (
         <svg {...props}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c-1 3-4 5-4 8a4 4 0 008 0c0-3-3-5-4-8z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8M10 18h4" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
         </svg>
       );
     default:

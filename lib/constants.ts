@@ -48,12 +48,12 @@ export const CATEGORIES = [
 export const CATEGORY_NAMES = CATEGORIES.map((c) => c.name);
 
 export const CATEGORY_STYLES: Record<string, { color: string }> = {
-  kajakken: { color: "#0c4a6e" },
-  "escape-room": { color: "#3b0764" },
-  kookworkshop: { color: "#7c2d12" },
-  lasergame: { color: "#7f1d1d" },
-  outdoor: { color: "#14532d" },
-  wellness: { color: "#831843" },
+  kajakken: { color: "#1d6fa4" },
+  "escape-room": { color: "#5b21b6" },
+  kookworkshop: { color: "#b45309" },
+  lasergame: { color: "#b91c1c" },
+  outdoor: { color: "#166534" },
+  wellness: { color: "#9d174d" },
 };
 
 const CATEGORY_NAME_TO_SLUG: Record<string, string> = {

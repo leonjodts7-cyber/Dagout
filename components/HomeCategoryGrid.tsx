@@ -14,15 +14,12 @@ export default function HomeCategoryGrid() {
             className="group relative flex h-[200px] cursor-pointer flex-col justify-end overflow-hidden rounded-[20px] p-6 transition-transform duration-200 hover:scale-[1.02]"
             style={{ backgroundColor: style.color }}
           >
-            <div className="pointer-events-none absolute bottom-4 right-4 opacity-[0.15]">
-              <CategoryIcon slug={category.slug} className="h-20 w-20" />
+            <div className="pointer-events-none absolute right-4 top-4 opacity-90">
+              <CategoryIcon slug={category.slug} className="h-8 w-8" />
             </div>
-            <div className="relative">
-              <p className="text-xl font-bold text-white">{category.name}</p>
-              <p className="mt-1 text-[13px] text-white/70 transition-colors group-hover:text-white/90">
-                Bekijk activiteiten →
-              </p>
-            </div>
+            <p className="relative text-lg font-bold text-white">
+              {category.name}
+            </p>
           </Link>
         );
       })}
