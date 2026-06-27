@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Provider } from "@/lib/types";
 import { getCategoryStyle, getProviderImageUrl } from "@/lib/constants";
+import CategoryIcon, { resolveCategorySlug } from "@/components/CategoryIcon";
 
 interface SearchResultCardProps {
   provider: Provider;
@@ -12,9 +13,10 @@ interface SearchResultCardProps {
 export default function SearchResultCard({ provider }: SearchResultCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const style = getCategoryStyle(provider.category);
+  const slug = resolveCategorySlug(provider.category);
   const imageUrl =
     provider.image_url ?? getProviderImageUrl(provider.category, provider.slug);
-  const showGradient = imageFailed || !imageUrl;
+  const showColorFallback = imageFailed || !imageUrl;
 
   return (
     <Link
@@ -22,10 +24,12 @@ export default function SearchResultCard({ provider }: SearchResultCardProps) {
       className="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
     >
       <div
-        className="relative flex h-[160px] w-[160px] shrink-0 items-center justify-center overflow-hidden rounded-lg"
-        style={showGradient ? { background: style.gradientLight } : undefined}
+        className="relative h-[160px] w-[160px] shrink-0 overflow-hidden rounded-lg"
+        style={
+          showColorFallback ? { backgroundColor: style.color } : undefined
+        }
       >
-        {!showGradient && (
+        {!showColorFallback && (
           <img
             src={imageUrl}
             alt={provider.name}
@@ -37,9 +41,14 @@ export default function SearchResultCard({ provider }: SearchResultCardProps) {
             }}
           />
         )}
-        {showGradient && (
-          <span className="text-4xl opacity-50" aria-hidden>
-            {style.emoji}
+        {showColorFallback && (
+          <div className="absolute bottom-2 right-2 opacity-[0.15]">
+            <CategoryIcon slug={slug} className="h-12 w-12" />
+          </div>
+        )}
+        {provider.featured && (
+          <span className="absolute right-1.5 top-1.5 rounded bg-[#fef3c7] px-2 py-0.5 text-[11px] font-semibold text-[#92400e]">
+            Gesponsord
           </span>
         )}
       </div>

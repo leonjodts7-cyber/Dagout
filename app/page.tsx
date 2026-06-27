@@ -7,6 +7,7 @@ import HomeCategoryGrid from "@/components/HomeCategoryGrid";
 import HomeActivityCard from "@/components/HomeActivityCard";
 import HowItWorks from "@/components/HowItWorks";
 import ForProvidersCTA from "@/components/ForProvidersCTA";
+import AdvertentiePlatformSection from "@/components/AdvertentiePlatformSection";
 import { getProviderById } from "@/lib/providers";
 
 const FEATURED_PROVIDER_IDS = ["1", "2", "3", "4", "7", "8"];
@@ -30,6 +31,20 @@ export default function HomePage() {
             <p className="mx-auto mt-4 max-w-[500px] text-lg text-[#6b7280]">
               Beschrijf wat jullie zoeken en onze AI vindt de perfecte activiteit.
             </p>
+            <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-2">
+              {[
+                "🔒 Veilig aanvragen",
+                "✓ Gratis zoeken",
+                "⚡ Direct contact",
+              ].map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-full border border-[#e5e7eb] px-3.5 py-1.5 text-xs text-[#6b7280]"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
             <HeroSearch />
           </div>
         </section>
@@ -73,6 +88,7 @@ export default function HomePage() {
           </div>
         </section>
 
+        <AdvertentiePlatformSection />
         <HowItWorks />
         <ForProvidersCTA />
       </main>

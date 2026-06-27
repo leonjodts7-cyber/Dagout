@@ -47,40 +47,13 @@ export const CATEGORIES = [
 
 export const CATEGORY_NAMES = CATEGORIES.map((c) => c.name);
 
-export const CATEGORY_STYLES: Record<
-  string,
-  { gradient: string; gradientLight: string; emoji: string }
-> = {
-  kajakken: {
-    gradient: "linear-gradient(135deg, #0ea5e9, #0284c7)",
-    gradientLight: "linear-gradient(135deg, #7dd3fc, #38bdf8)",
-    emoji: "🛶",
-  },
-  "escape-room": {
-    gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
-    gradientLight: "linear-gradient(135deg, #c4b5fd, #a78bfa)",
-    emoji: "🔐",
-  },
-  kookworkshop: {
-    gradient: "linear-gradient(135deg, #f97316, #ea580c)",
-    gradientLight: "linear-gradient(135deg, #fdba74, #fb923c)",
-    emoji: "👨‍🍳",
-  },
-  lasergame: {
-    gradient: "linear-gradient(135deg, #ef4444, #dc2626)",
-    gradientLight: "linear-gradient(135deg, #fca5a5, #f87171)",
-    emoji: "🎯",
-  },
-  outdoor: {
-    gradient: "linear-gradient(135deg, #22c55e, #16a34a)",
-    gradientLight: "linear-gradient(135deg, #86efac, #4ade80)",
-    emoji: "🏔️",
-  },
-  wellness: {
-    gradient: "linear-gradient(135deg, #ec4899, #db2777)",
-    gradientLight: "linear-gradient(135deg, #f9a8d4, #f472b6)",
-    emoji: "🧘",
-  },
+export const CATEGORY_STYLES: Record<string, { color: string }> = {
+  kajakken: { color: "#0c4a6e" },
+  "escape-room": { color: "#3b0764" },
+  kookworkshop: { color: "#7c2d12" },
+  lasergame: { color: "#7f1d1d" },
+  outdoor: { color: "#14532d" },
+  wellness: { color: "#831843" },
 };
 
 const CATEGORY_NAME_TO_SLUG: Record<string, string> = {

@@ -28,7 +28,7 @@ export default function HeroSearch() {
   }
 
   return (
-    <div className="mx-auto mt-10 max-w-[640px]">
+    <div className="mx-auto mt-8 max-w-[640px]">
       <form onSubmit={handleSubmit}>
         <div
           className="flex flex-col gap-2 sm:flex-row sm:items-center"
