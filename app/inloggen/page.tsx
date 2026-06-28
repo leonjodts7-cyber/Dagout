@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { createBrowserSupabase } from "@/lib/supabase/client";
-import { translateAuthError } from "@/lib/auth-errors";
+import { authErrorMessage } from "@/lib/auth-errors";
+import { createBrowserSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
 type Tab = "login" | "register";
 
@@ -37,6 +37,9 @@ function AuthPageContent() {
     setMessage(null);
 
     try {
+      if (!isSupabaseConfigured()) {
+        throw new Error("SUPABASE_NOT_CONFIGURED");
+      }
       const supabase = createBrowserSupabase();
       const { error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
@@ -48,9 +51,7 @@ function AuthPageContent() {
     } catch (err) {
       setMessage({
         type: "error",
-        text: translateAuthError(
-          err instanceof Error ? err.message : "Inloggen mislukt."
-        ),
+        text: authErrorMessage(err, "Inloggen mislukt."),
       });
     } finally {
       setLoading(false);
@@ -81,6 +82,9 @@ function AuthPageContent() {
     }
 
     try {
+      if (!isSupabaseConfigured()) {
+        throw new Error("SUPABASE_NOT_CONFIGURED");
+      }
       const supabase = createBrowserSupabase();
       const { data, error } = await supabase.auth.signUp({
         email: registerEmail,
@@ -122,9 +126,7 @@ function AuthPageContent() {
     } catch (err) {
       setMessage({
         type: "error",
-        text: translateAuthError(
-          err instanceof Error ? err.message : "Registratie mislukt."
-        ),
+        text: authErrorMessage(err, "Registratie mislukt."),
       });
     } finally {
       setLoading(false);
@@ -144,6 +146,9 @@ function AuthPageContent() {
     setMessage(null);
 
     try {
+      if (!isSupabaseConfigured()) {
+        throw new Error("SUPABASE_NOT_CONFIGURED");
+      }
       const supabase = createBrowserSupabase();
       const { error } = await supabase.auth.resetPasswordForEmail(loginEmail, {
         redirectTo: `${window.location.origin}/inloggen`,
@@ -156,9 +161,7 @@ function AuthPageContent() {
     } catch (err) {
       setMessage({
         type: "error",
-        text: translateAuthError(
-          err instanceof Error ? err.message : "Reset mislukt."
-        ),
+        text: authErrorMessage(err, "Reset mislukt."),
       });
     } finally {
       setLoading(false);

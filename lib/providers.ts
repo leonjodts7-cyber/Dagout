@@ -464,6 +464,15 @@ export const SEARCH_FILTER_CATEGORIES = [
   "Wellness",
 ] as const;
 
+export function getActiveCategoryCounts(): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const provider of MOCK_PROVIDERS) {
+    if (!provider.active) continue;
+    counts[provider.category] = (counts[provider.category] ?? 0) + 1;
+  }
+  return counts;
+}
+
 export function getCategoryCounts(
   query?: string,
   region?: string,

@@ -77,7 +77,7 @@ interface MapProps {
 
 export default function Map({
   providers,
-  center = [51.0, 3.7],
+  center = [50.85, 4.35],
   zoom = 8,
 }: MapProps) {
   const markerPositions = useMemo(

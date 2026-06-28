@@ -7,12 +7,12 @@ const CHIPS = [
   { label: "Kajakken Gent", query: "Kajakken teambuilding voor 20 personen in Gent" },
   { label: "Escape room Antwerpen", query: "Escape room teambuilding Antwerpen voor 15 personen" },
   { label: "Kookworkshop Brussel", query: "Kookworkshop teambuilding Brussel voor 25 personen" },
-  { label: "Outdoor Hasselt", query: "Outdoor teambuilding Hasselt voor 15 personen" },
 ];
 
 export default function HeroSearch() {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
 
   function navigate(searchQuery: string) {
     const params = new URLSearchParams();
@@ -33,17 +33,22 @@ export default function HeroSearch() {
         <div
           className="flex flex-col gap-2 sm:flex-row sm:items-center"
           style={{
-            border: "1.5px solid #e5e7eb",
+            border: focused ? "1.5px solid #1D9E75" : "1.5px solid #e5e7eb",
             borderRadius: "50px",
             padding: "8px 8px 8px 24px",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+            boxShadow: focused
+              ? "0 0 0 3px rgba(29,158,117,0.15)"
+              : "0 4px 16px rgba(0,0,0,0.08)",
             background: "white",
+            transition: "border-color 0.2s ease, box-shadow 0.2s ease",
           }}
         >
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             placeholder="bv. kajakken voor 20 mensen in Gent"
             className="min-w-0 flex-1 border-0 bg-transparent text-base text-gray-900 outline-none placeholder:text-[#9ca3af]"
           />
@@ -56,13 +61,13 @@ export default function HeroSearch() {
         </div>
       </form>
 
-      <div className="mt-5 flex flex-wrap justify-center gap-2.5">
+      <div className="mt-5 flex flex-nowrap justify-center gap-2 overflow-x-auto pb-1">
         {CHIPS.map((chip) => (
           <button
             key={chip.label}
             type="button"
             onClick={() => navigate(chip.query)}
-            className="cursor-pointer rounded-full border border-[#e5e7eb] bg-white px-[18px] py-2 text-sm text-[#374151] transition-colors hover:border-[#1D9E75] hover:text-[#1D9E75]"
+            className="shrink-0 cursor-pointer rounded-full border border-[#e5e7eb] bg-white px-3.5 py-1.5 text-[13px] text-[#374151] transition-colors hover:border-[#1D9E75] hover:text-[#1D9E75]"
           >
             {chip.label}
           </button>

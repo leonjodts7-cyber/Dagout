@@ -21,7 +21,7 @@ export default function SearchResultCard({ provider }: SearchResultCardProps) {
   return (
     <Link
       href={`/activiteit/${provider.slug}`}
-      className="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+      className="flex cursor-pointer gap-4 rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
     >
       <div
         className="relative h-[160px] w-[160px] shrink-0 overflow-hidden rounded-lg"

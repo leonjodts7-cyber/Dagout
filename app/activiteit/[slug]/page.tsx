@@ -5,6 +5,8 @@ import BookingCard from "@/components/BookingCard";
 import MiniMap from "@/components/MiniMap";
 import PageHeader from "@/components/PageHeader";
 import ActivityCard from "@/components/ActivityCard";
+import CategoryIcon, { resolveCategorySlug } from "@/components/CategoryIcon";
+import { getCategoryStyle } from "@/lib/constants";
 import {
   DEFAULT_OPENING_HOURS,
   getProviderBySlug,
@@ -15,6 +17,10 @@ interface ActiviteitPageProps {
   params: Promise<{ slug: string }>;
 }
 
+function categoryHeroGradient(color: string): string {
+  return `radial-gradient(at 30% 25%, ${color} 0%, ${color}dd 45%, #0f172a 100%)`;
+}
+
 export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
   const { slug } = await params;
   const provider = getProviderBySlug(slug);
@@ -22,7 +28,8 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
   if (!provider) notFound();
 
   const related = getRelatedProviders(provider, 3);
-  const imageUrl = provider.image_url;
+  const style = getCategoryStyle(provider.category);
+  const categorySlug = resolveCategorySlug(provider.category);
   const indoorLabel =
     provider.indoor_outdoor === "indoor"
       ? "Binnen"
@@ -43,19 +50,36 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
           ]}
         />
 
-        {imageUrl && (
-          <div className="relative h-72 w-full overflow-hidden sm:h-[28rem]">
-            <img
-              src={imageUrl}
-              alt={provider.name}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        <div
+          className="relative flex h-72 items-end overflow-hidden px-6 pb-8 sm:h-[22rem]"
+          style={{ background: categoryHeroGradient(style.color) }}
+        >
+          <div className="pointer-events-none absolute right-8 top-8 opacity-[0.12]">
+            <CategoryIcon slug={categorySlug} className="h-32 w-32" />
           </div>
-        )}
+          {provider.featured && (
+            <span
+              className="absolute right-0 top-0 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white"
+              style={{
+                borderRadius: "0 0 0 12px",
+                background: "linear-gradient(135deg, #f59e0b, #d97706)",
+              }}
+            >
+              Uitgelicht
+            </span>
+          )}
+          <div className="relative mx-auto w-full max-w-6xl">
+            <p className="text-sm text-white/70">
+              {provider.city} · {provider.category}
+            </p>
+            <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">
+              {provider.name}
+            </h1>
+          </div>
+        </div>
 
         <div className="mx-auto max-w-6xl px-6 py-8">
-          <div className="mt-4 grid gap-10 lg:grid-cols-3">
+          <div className="grid gap-10 lg:grid-cols-3">
             <div className="space-y-10 lg:col-span-2">
               <div>
                 <div className="flex flex-wrap items-center gap-3">
@@ -65,14 +89,8 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
                   <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
                     {indoorLabel}
                   </span>
-                  <span className="text-sm text-amber-500">
-                    {provider.rating} ★
-                  </span>
                 </div>
-                <h1 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
-                  {provider.name}
-                </h1>
-                <p className="mt-2 text-lg text-gray-500">
+                <p className="mt-4 text-lg text-gray-500">
                   {provider.city}, {provider.region}
                 </p>
               </div>
@@ -139,15 +157,6 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
                 </p>
                 <div className="mt-4 h-64 overflow-hidden rounded-xl">
                   <MiniMap provider={provider} />
-                </div>
-              </section>
-
-              <section>
-                <h2 className="text-xl font-semibold text-gray-900">Reviews</h2>
-                <div className="mt-6 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center">
-                  <p className="text-sm text-gray-500">
-                    Wees de eerste om te reviewen
-                  </p>
                 </div>
               </section>
             </div>

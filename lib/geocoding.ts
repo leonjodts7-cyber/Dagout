@@ -10,7 +10,7 @@ export const REGION_CENTERS: Record<string, [number, number]> = {
   Kortrijk: [50.827, 3.2648],
 };
 
-export const FLANDERS_CENTER: [number, number] = [51.0, 3.7];
+export const FLANDERS_CENTER: [number, number] = [50.85, 4.35];
 export const FLANDERS_ZOOM = 8;
 export const REGION_ZOOM = 11;
 

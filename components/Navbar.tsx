@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { createBrowserSupabase } from "@/lib/supabase/client";
+import { createBrowserSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { NAV_TOOLS_LINKS } from "@/lib/tools-constants";
 import { isAdminEmail } from "@/lib/admin";
 import type { User } from "@supabase/supabase-js";
@@ -27,6 +27,7 @@ export default function Navbar() {
   const avatarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isSupabaseConfigured()) return;
     const supabase = createBrowserSupabase();
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     const {
@@ -141,7 +142,7 @@ export default function Navbar() {
                   <button
                     type="button"
                     onClick={() => setAvatarOpen((o) => !o)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1D9E75] text-xs font-bold text-white hover:bg-[#178a66]"
+                    className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[#1D9E75] text-sm font-semibold text-white hover:bg-[#178a66]"
                     aria-label="Accountmenu"
                   >
                     {userInitials(user)}
