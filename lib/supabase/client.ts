@@ -1,6 +1,7 @@
 "use client";
 
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 let browserClient: SupabaseClient | null = null;
 
@@ -13,7 +14,8 @@ export function isSupabaseConfigured(): boolean {
     url &&
       key &&
       url.startsWith("https://") &&
-      !url.includes("your-supabase")
+      !url.includes("your-supabase") &&
+      !url.includes("your-project-id")
   );
 }
 
@@ -31,7 +33,7 @@ export function createBrowserSupabase(): SupabaseClient {
     throw new Error("SUPABASE_INVALID_URL");
   }
 
-  browserClient = createClient(url, key, {
+  browserClient = createBrowserClient(url, key, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,

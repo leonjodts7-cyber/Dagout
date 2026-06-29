@@ -51,7 +51,7 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
         />
 
         <div
-          className="relative flex h-72 items-end overflow-hidden px-6 pb-8 sm:h-[22rem]"
+          className="relative flex h-[320px] items-end overflow-hidden px-6 pb-8"
           style={{ background: categoryHeroGradient(style.color) }}
         >
           <div className="pointer-events-none absolute right-8 top-8 opacity-[0.12]">
@@ -69,10 +69,10 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
             </span>
           )}
           <div className="relative mx-auto w-full max-w-6xl">
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-white/80">
               {provider.city} · {provider.category}
             </p>
-            <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">
+            <h1 className="mt-2 text-3xl font-bold text-white sm:text-[40px]">
               {provider.name}
             </h1>
           </div>

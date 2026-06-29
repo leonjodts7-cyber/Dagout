@@ -173,7 +173,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/aanbieders/nieuw"
-                    className="rounded-full bg-[#1D9E75] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#178a66]"
+                    className="btn-primary navbar-listing-btn"
                   >
                     Lijst je activiteit
                   </Link>
@@ -235,7 +235,11 @@ export default function Navbar() {
                 <Link href="/inloggen" onClick={closeMobile} className="text-base text-gray-600">
                   Inloggen
                 </Link>
-                <Link href="/aanbieders/nieuw" onClick={closeMobile} className="rounded-full bg-[#1D9E75] px-4 py-3 text-center text-sm font-semibold text-white">
+                <Link
+                  href="/aanbieders/nieuw"
+                  onClick={closeMobile}
+                  className="btn-primary navbar-listing-btn text-center"
+                >
                   Lijst je activiteit
                 </Link>
               </>

@@ -3,10 +3,13 @@ type CategoryIconProps = {
   className?: string;
 };
 
-export default function CategoryIcon({ slug, className = "h-16 w-16" }: CategoryIconProps) {
+export default function CategoryIcon({
+  slug,
+  className = "h-8 w-8",
+}: CategoryIconProps) {
   const props = {
     className,
-    fill: "none",
+    fill: "none" as const,
     stroke: "white",
     strokeWidth: 1.5,
     viewBox: "0 0 24 24",
@@ -17,46 +20,50 @@ export default function CategoryIcon({ slug, className = "h-16 w-16" }: Category
     case "kajakken":
       return (
         <svg {...props}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 10l4-4 4 4M12 6v12" />
+          <path d="M3 12c0 0 2-4 9-4s9 4 9 4" />
+          <path d="M7 12c0 0 1 4 5 4s5-4 5-4" />
+          <path d="M2 8l4 4-4 4" />
+          <path d="M22 8l-4 4 4 4" />
         </svg>
       );
     case "escape-room":
       return (
         <svg {...props}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 11a2 2 0 100-4 2 2 0 000 4z" />
+          <rect x="3" y="11" width="18" height="11" rx="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          <circle cx="12" cy="16" r="1" fill="white" />
         </svg>
       );
     case "kookworkshop":
       return (
         <svg {...props}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 8h12M6 8a2 2 0 01-2-2V5h16v1a2 2 0 01-2 2M6 8v10a2 2 0 002 2h8a2 2 0 002-2V8" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 14h6" />
+          <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z" />
+          <line x1="6" y1="17" x2="18" y2="17" />
         </svg>
       );
     case "lasergame":
       return (
         <svg {...props}>
-          <circle cx="12" cy="12" r="8" />
-          <circle cx="12" cy="12" r="3" />
-          <path strokeLinecap="round" d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="6" />
+          <circle cx="12" cy="12" r="2" />
+          <line x1="22" y1="12" x2="18" y2="12" />
+          <line x1="6" y1="12" x2="2" y2="12" />
+          <line x1="12" y1="6" x2="12" y2="2" />
+          <line x1="12" y1="22" x2="12" y2="18" />
         </svg>
       );
     case "wellness":
       return (
         <svg {...props}>
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-          />
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
         </svg>
       );
     default:
       return (
         <svg {...props}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 20l9-16 9 16H3z" />
+          <path d="M3 17l4-8 4 5 3-3 7 6" />
+          <path d="M20 21H4" />
         </svg>
       );
   }

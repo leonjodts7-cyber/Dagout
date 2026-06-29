@@ -2,7 +2,8 @@ export function translateAuthError(message: string): string {
   const normalized = message.trim();
 
   const map: Record<string, string> = {
-    "Failed to fetch": "Verbindingsprobleem. Probeer opnieuw.",
+    "Failed to fetch":
+      "Verbindingsprobleem. Controleer je internet en probeer opnieuw.",
     "Invalid login credentials":
       "Incorrect e-mailadres of wachtwoord.",
     "Email not confirmed":
@@ -16,9 +17,9 @@ export function translateAuthError(message: string): string {
     "Signup requires a valid password":
       "Voer een geldig wachtwoord in.",
     SUPABASE_NOT_CONFIGURED:
-      "Verbindingsprobleem. Probeer opnieuw.",
+      "Verbindingsprobleem. Controleer je internet en probeer opnieuw.",
     SUPABASE_INVALID_URL:
-      "Verbindingsprobleem. Probeer opnieuw.",
+      "Verbindingsprobleem. Controleer je internet en probeer opnieuw.",
   };
 
   for (const [key, value] of Object.entries(map)) {
@@ -31,7 +32,7 @@ export function translateAuthError(message: string): string {
     lower.includes("network") ||
     lower.includes("fetch")
   ) {
-    return "Verbindingsprobleem. Probeer opnieuw.";
+    return "Verbindingsprobleem. Controleer je internet en probeer opnieuw.";
   }
 
   return normalized || "Er is een onbekende fout opgetreden. Probeer het later opnieuw.";
@@ -55,6 +56,10 @@ function authErrorMessage(err: unknown, fallback: string): string {
     return translateAuthError(String((err as { message: unknown }).message));
   }
   return translateAuthError(fallback);
+}
+
+export function getErrorMessage(error: string): string {
+  return translateAuthError(error);
 }
 
 export { authErrorMessage };

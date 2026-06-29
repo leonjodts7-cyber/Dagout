@@ -21,7 +21,7 @@ export default function HomeCategoryGrid() {
             className="group relative flex h-[200px] cursor-pointer flex-col justify-end overflow-hidden rounded-[20px] p-6 transition-transform duration-200 hover:scale-[1.02]"
             style={{ backgroundColor: style.color }}
           >
-            <div className="pointer-events-none absolute right-4 top-4 opacity-90">
+            <div className="pointer-events-none absolute right-4 top-4 opacity-[0.35]">
               <CategoryIcon slug={category.slug} className="h-8 w-8" />
             </div>
             <div className="relative">

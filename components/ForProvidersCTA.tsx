@@ -1,25 +1,12 @@
 import Link from "next/link";
 
-const FEATURES = [
-  {
-    icon: "✓",
-    iconBg: "bg-[#f0fdf4] text-[#1D9E75]",
-    title: "Gratis listing aanmaken",
-    description: "Zet je activiteit online in 5 minuten",
-  },
-  {
-    icon: "✓",
-    iconBg: "bg-[#f0fdf4] text-[#1D9E75]",
-    title: "Aanvragen ontvangen",
-    description: "Bedrijven nemen direct contact op",
-  },
-  {
-    icon: "★",
-    iconBg: "bg-amber-50 text-amber-600",
-    title: "Pro zichtbaarheid",
-    description: "Verschijn bovenaan bij zoekresultaten",
-  },
+const DASHBOARD_STATS = [
+  { value: "12", label: "aanvragen" },
+  { value: "340", label: "views" },
+  { value: "€19", label: "/maand" },
 ];
+
+const CHART_BARS = [40, 72, 55];
 
 export default function ForProvidersCTA() {
   return (
@@ -36,35 +23,42 @@ export default function ForProvidersCTA() {
             </p>
             <Link
               href="/aanbieders/nieuw"
-              className="mt-6 inline-flex rounded-lg bg-white px-7 py-3.5 text-[15px] font-semibold text-[#1D9E75] transition-colors hover:bg-gray-100"
+              className="mt-6 inline-flex rounded-lg bg-white px-7 py-3.5 text-[15px] font-semibold text-[#1D9E75] transition-all hover:bg-gray-100 hover:shadow-md"
             >
               Ontdek de mogelijkheden →
             </Link>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-white">
-            {FEATURES.map((feature, index) => (
-              <div
-                key={feature.title}
-                className={`flex items-start gap-4 p-4 ${
-                  index < FEATURES.length - 1 ? "border-b border-[#f3f4f6]" : ""
-                }`}
-              >
-                <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base font-semibold ${feature.iconBg}`}
-                >
-                  {feature.icon}
-                </div>
-                <div>
-                  <p className="text-[15px] font-semibold text-[#111827]">
-                    {feature.title}
-                  </p>
-                  <p className="mt-0.5 text-sm text-[#6b7280]">
-                    {feature.description}
-                  </p>
-                </div>
+          <div className="rounded-2xl bg-[#1D9E75] p-5">
+            <div className="rounded-xl bg-white p-6 shadow-lg">
+              <div className="grid grid-cols-3 gap-3">
+                {DASHBOARD_STATS.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-lg bg-[#f0fdf4] px-3 py-3 text-center"
+                  >
+                    <p className="text-lg font-bold text-[#1D9E75]">
+                      {stat.value}
+                    </p>
+                    <p className="text-[11px] text-gray-500">{stat.label}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <div className="mt-6 flex h-24 items-end justify-center gap-3">
+                {CHART_BARS.map((height, i) => (
+                  <div
+                    key={i}
+                    className="w-10 rounded-t-md bg-[#1D9E75] opacity-80"
+                    style={{ height: `${height}%` }}
+                  />
+                ))}
+              </div>
+
+              <p className="mt-4 text-center text-xs text-gray-400">
+                Voorbeeld dashboard — jouw statistieken
+              </p>
+            </div>
           </div>
         </div>
       </div>

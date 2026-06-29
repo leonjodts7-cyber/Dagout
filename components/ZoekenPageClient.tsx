@@ -113,11 +113,9 @@ export default function ZoekenPageClient({
             <div className="space-y-6 pb-8">
               {sponsored.length > 0 && (
                 <div>
-                  <div className="mb-3 rounded-lg bg-[#fffbeb] px-4 py-2">
-                    <p className="text-sm font-semibold text-[#92400e]">
-                      Gesponsorde resultaten
-                    </p>
-                  </div>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-[#9ca3af]">
+                    Gesponsorde resultaten
+                  </p>
                   <div className="space-y-4">
                     {sponsored.map((provider) => (
                       <SearchResultCard key={provider.id} provider={provider} />

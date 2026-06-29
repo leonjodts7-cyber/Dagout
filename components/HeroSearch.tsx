@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 const CHIPS = [
   { label: "Kajakken Gent", query: "Kajakken teambuilding voor 20 personen in Gent" },
@@ -9,10 +9,24 @@ const CHIPS = [
   { label: "Kookworkshop Brussel", query: "Kookworkshop teambuilding Brussel voor 25 personen" },
 ];
 
+const ROTATING_PLACEHOLDERS = [
+  "bv. kajakken voor 20 mensen in Gent",
+  "bv. escape room voor 15 mensen in Antwerpen",
+  "bv. kookworkshop met lunch in Brussel",
+];
+
 export default function HeroSearch() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPlaceholderIndex((i) => (i + 1) % ROTATING_PLACEHOLDERS.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   function navigate(searchQuery: string) {
     const params = new URLSearchParams();
@@ -27,21 +41,14 @@ export default function HeroSearch() {
     navigate(query);
   }
 
+  const placeholder = focused ? "" : ROTATING_PLACEHOLDERS[placeholderIndex];
+
   return (
     <div className="mx-auto mt-8 max-w-[600px]">
       <form onSubmit={handleSubmit}>
         <div
-          className="flex flex-col gap-2 sm:flex-row sm:items-center"
-          style={{
-            border: focused ? "1.5px solid #1D9E75" : "1.5px solid #e5e7eb",
-            borderRadius: "50px",
-            padding: "8px 8px 8px 24px",
-            boxShadow: focused
-              ? "0 0 0 3px rgba(29,158,117,0.15)"
-              : "0 4px 16px rgba(0,0,0,0.08)",
-            background: "white",
-            transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-          }}
+          className="hero-search-bar flex flex-col gap-2 sm:flex-row sm:items-center"
+          data-focused={focused ? "true" : "false"}
         >
           <input
             type="text"
@@ -49,13 +56,10 @@ export default function HeroSearch() {
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            placeholder="bv. kajakken voor 20 mensen in Gent"
+            placeholder={placeholder}
             className="min-w-0 flex-1 border-0 bg-transparent text-base text-gray-900 outline-none placeholder:text-[#9ca3af]"
           />
-          <button
-            type="submit"
-            className="shrink-0 cursor-pointer rounded-full border-0 bg-[#1D9E75] px-7 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[#178a66]"
-          >
+          <button type="submit" className="btn-primary hero-search-submit shrink-0">
             Zoek met AI →
           </button>
         </div>

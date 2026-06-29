@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { Provider } from "@/lib/types";
+import HorizontalScrollRow from "@/components/HorizontalScrollRow";
 
 const SPOTLIGHT_BACKGROUNDS: Record<string, string> = {
   "1": "radial-gradient(at 40% 20%, #1e40af 0%, #0c4a6e 50%, #0f172a 100%)",
@@ -7,8 +10,31 @@ const SPOTLIGHT_BACKGROUNDS: Record<string, string> = {
   "3": "radial-gradient(at 40% 20%, #c2410c 0%, #7c2d12 50%, #0f172a 100%)",
 };
 
+const PLACEHOLDER_COUNT = 3;
+
 interface SpotlightProvidersProps {
   providers: Provider[];
+}
+
+function SpotlightPlaceholder({ index }: { index: number }) {
+  return (
+    <div
+      key={`placeholder-${index}`}
+      className="flex h-[280px] min-w-[340px] shrink-0 snap-start flex-col items-center justify-center rounded-[20px] border-2 border-dashed border-[#d1d5db] bg-[#f3f4f6] p-6 text-center"
+    >
+      <span className="text-5xl font-light text-[#9ca3af]">+</span>
+      <p className="mt-2 text-base font-medium text-[#9ca3af]">
+        Jouw activiteit hier
+      </p>
+      <p className="mt-1 text-[13px] text-[#d1d5db]">Adverteer op Dagout</p>
+      <Link
+        href="/aanbieders/nieuw"
+        className="btn-secondary mt-4 inline-flex px-5 py-2 text-sm"
+      >
+        Lijst je activiteit →
+      </Link>
+    </div>
+  );
 }
 
 export default function SpotlightProviders({ providers }: SpotlightProvidersProps) {
@@ -27,16 +53,15 @@ export default function SpotlightProviders({ providers }: SpotlightProvidersProp
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <HorizontalScrollRow>
           {providers.map((provider) => {
             const background =
-              SPOTLIGHT_BACKGROUNDS[provider.id] ??
-              SPOTLIGHT_BACKGROUNDS["1"];
+              SPOTLIGHT_BACKGROUNDS[provider.id] ?? SPOTLIGHT_BACKGROUNDS["1"];
             return (
               <Link
                 key={provider.id}
                 href={`/activiteit/${provider.slug}`}
-                className="spotlight-card group relative block h-[280px] overflow-hidden rounded-[20px] transition-transform duration-[250ms] ease-out hover:scale-[1.02]"
+                className="spotlight-card group relative block h-[280px] min-w-[340px] shrink-0 snap-start overflow-hidden rounded-[20px] transition-transform duration-[250ms] ease-out hover:scale-[1.02]"
                 style={{ background }}
               >
                 <span
@@ -61,14 +86,15 @@ export default function SpotlightProviders({ providers }: SpotlightProvidersProp
                       Vanaf &euro;{provider.price_from}/pers
                     </p>
                   </div>
-                  <span className="shrink-0 rounded-lg border border-white/30 bg-white/15 px-3.5 py-1.5 text-[13px] text-white backdrop-blur-sm">
-                    Bekijk →
-                  </span>
+                  <span className="btn-ghost shrink-0">Bekijk →</span>
                 </div>
               </Link>
             );
           })}
-        </div>
+          {Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => (
+            <SpotlightPlaceholder key={i} index={i} />
+          ))}
+        </HorizontalScrollRow>
       </div>
     </section>
   );
