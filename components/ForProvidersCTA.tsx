@@ -1,64 +1,70 @@
 import Link from "next/link";
 
-const DASHBOARD_STATS = [
-  { value: "12", label: "aanvragen" },
-  { value: "340", label: "views" },
-  { value: "€19", label: "/maand" },
+const BULLETS = [
+  "Gratis listing aanmaken",
+  "Aanvragen direct in je dashboard",
+  "Pro plan voor meer zichtbaarheid",
 ];
 
-const CHART_BARS = [40, 72, 55];
+const PROGRESS_ROWS = [
+  { label: "Views deze maand", width: "80%" },
+  { label: "Aanvragen", width: "50%" },
+  { label: "Reactietijd", width: "30%" },
+];
 
 export default function ForProvidersCTA() {
   return (
-    <section className="bg-[#111827] py-12">
+    <section className="bg-[#f9fafb] py-12">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <h2 className="text-[30px] font-bold text-white">
-              Ben jij een teambuilding aanbieder?
+            <span className="inline-block rounded-full bg-[#f0fdf4] px-3 py-1 text-xs font-semibold text-[#1D9E75]">
+              Voor aanbieders
+            </span>
+            <h2 className="mt-4 text-[28px] font-bold text-[#111827]">
+              Bereik meer klanten via Dagout
             </h2>
-            <p className="mt-4 text-base text-white/70">
-              Bereik honderden Belgische bedrijven die actief op zoek zijn naar
-              teambuilding activiteiten.
+            <p className="mt-3 text-base text-[#6b7280]">
+              Zet je activiteit online en word gevonden door Belgische bedrijven.
             </p>
+            <ul className="mt-6 space-y-2.5">
+              {BULLETS.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-[15px] text-[#374151]">
+                  <span className="text-[#1D9E75]">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
             <Link
               href="/aanbieders/nieuw"
-              className="mt-6 inline-flex rounded-lg bg-white px-7 py-3.5 text-[15px] font-semibold text-[#1D9E75] transition-all hover:bg-gray-100 hover:shadow-md"
+              className="mt-6 inline-flex rounded-lg bg-[#1D9E75] px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[#178a66]"
             >
-              Ontdek de mogelijkheden →
+              Lijst je activiteit →
             </Link>
           </div>
 
-          <div className="rounded-2xl bg-[#1D9E75] p-5">
-            <div className="rounded-xl bg-white p-6 shadow-lg">
-              <div className="grid grid-cols-3 gap-3">
-                {DASHBOARD_STATS.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-lg bg-[#f0fdf4] px-3 py-3 text-center"
-                  >
-                    <p className="text-lg font-bold text-[#1D9E75]">
-                      {stat.value}
-                    </p>
-                    <p className="text-[11px] text-gray-500">{stat.label}</p>
+          <div className="rounded-2xl border border-[#e5e7eb] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+            <p className="text-sm font-semibold text-[#374151]">
+              Dashboard voorbeeld
+            </p>
+            <div className="mt-5 space-y-4">
+              {PROGRESS_ROWS.map((row) => (
+                <div key={row.label}>
+                  <div className="mb-1.5 flex justify-between text-xs text-[#6b7280]">
+                    <span>{row.label}</span>
                   </div>
-                ))}
-              </div>
-
-              <div className="mt-6 flex h-24 items-end justify-center gap-3">
-                {CHART_BARS.map((height, i) => (
-                  <div
-                    key={i}
-                    className="w-10 rounded-t-md bg-[#1D9E75] opacity-80"
-                    style={{ height: `${height}%` }}
-                  />
-                ))}
-              </div>
-
-              <p className="mt-4 text-center text-xs text-gray-400">
-                Voorbeeld dashboard — jouw statistieken
-              </p>
+                  <div className="h-2 overflow-hidden rounded-full bg-[#f3f4f6]">
+                    <div
+                      className="h-full rounded-full bg-[#1D9E75]/70"
+                      style={{ width: row.width }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
+            <p className="mt-5 text-xs italic text-[#9ca3af]">
+              Jouw statistieken na activering
+            </p>
           </div>
         </div>
       </div>

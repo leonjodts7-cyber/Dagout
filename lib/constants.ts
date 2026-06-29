@@ -72,6 +72,86 @@ export function getCategoryStyle(categoryOrSlug: string) {
   return CATEGORY_STYLES[slug] ?? CATEGORY_STYLES.outdoor;
 }
 
+export function resolveCategorySlug(categoryOrSlug: string): string {
+  return (
+    CATEGORY_NAME_TO_SLUG[categoryOrSlug] ??
+    categoryOrSlug.toLowerCase().replace(/\s+/g, "-")
+  );
+}
+
+export const CATEGORY_ACCENT_THEMES: Record<
+  string,
+  {
+    avatarBg: string;
+    avatarColor: string;
+    cardBg: string;
+    cardBorder: string;
+    accent: string;
+    proBg: string;
+    emoji: string;
+  }
+> = {
+  kajakken: {
+    avatarBg: "#dbeafe",
+    avatarColor: "#1e40af",
+    cardBg: "#f0f9ff",
+    cardBorder: "#bae6fd",
+    accent: "#1e40af",
+    proBg: "#dbeafe",
+    emoji: "🛶",
+  },
+  "escape-room": {
+    avatarBg: "#ede9fe",
+    avatarColor: "#5b21b6",
+    cardBg: "#f5f3ff",
+    cardBorder: "#ddd6fe",
+    accent: "#5b21b6",
+    proBg: "#ede9fe",
+    emoji: "🔐",
+  },
+  kookworkshop: {
+    avatarBg: "#ffedd5",
+    avatarColor: "#c2410c",
+    cardBg: "#fff7ed",
+    cardBorder: "#fed7aa",
+    accent: "#c2410c",
+    proBg: "#ffedd5",
+    emoji: "👨‍🍳",
+  },
+  lasergame: {
+    avatarBg: "#fee2e2",
+    avatarColor: "#b91c1c",
+    cardBg: "#fef2f2",
+    cardBorder: "#fecaca",
+    accent: "#b91c1c",
+    proBg: "#fee2e2",
+    emoji: "🎯",
+  },
+  outdoor: {
+    avatarBg: "#dcfce7",
+    avatarColor: "#166534",
+    cardBg: "#f0fdf4",
+    cardBorder: "#bbf7d0",
+    accent: "#166534",
+    proBg: "#dcfce7",
+    emoji: "🏔️",
+  },
+  wellness: {
+    avatarBg: "#fce7f3",
+    avatarColor: "#9d174d",
+    cardBg: "#fdf2f8",
+    cardBorder: "#fbcfe8",
+    accent: "#9d174d",
+    proBg: "#fce7f3",
+    emoji: "🧘",
+  },
+};
+
+export function getCategoryAccentTheme(categoryOrSlug: string) {
+  const slug = resolveCategorySlug(categoryOrSlug);
+  return CATEGORY_ACCENT_THEMES[slug] ?? CATEGORY_ACCENT_THEMES.outdoor;
+}
+
 export const CATEGORY_CARD_IMAGES: Record<string, string> = {
   kajakken:
     "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80",

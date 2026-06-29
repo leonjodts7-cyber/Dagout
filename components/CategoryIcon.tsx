@@ -1,16 +1,18 @@
 type CategoryIconProps = {
   slug: string;
   className?: string;
+  stroke?: string;
 };
 
 export default function CategoryIcon({
   slug,
   className = "h-8 w-8",
+  stroke = "white",
 }: CategoryIconProps) {
   const props = {
     className,
     fill: "none" as const,
-    stroke: "white",
+    stroke,
     strokeWidth: 1.5,
     viewBox: "0 0 24 24",
     "aria-hidden": true as const,
@@ -31,7 +33,7 @@ export default function CategoryIcon({
         <svg {...props}>
           <rect x="3" y="11" width="18" height="11" rx="2" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          <circle cx="12" cy="16" r="1" fill="white" />
+          <circle cx="12" cy="16" r="1" fill={stroke} />
         </svg>
       );
     case "kookworkshop":
