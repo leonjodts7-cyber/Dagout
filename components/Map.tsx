@@ -107,7 +107,7 @@ export default function Map({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         subdomains={["a", "b", "c", "d"]}
-        maxZoom={20}
+        maxZoom={19}
       />
       <MapInvalidateSize />
       <MapFlyTo center={center} zoom={zoom} />

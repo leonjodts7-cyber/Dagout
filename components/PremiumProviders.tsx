@@ -121,6 +121,16 @@ export default function PremiumProviders({ providers }: PremiumProvidersProps) {
             <PremiumPlaceholder key={i} />
           ))}
         </HorizontalScrollRow>
+
+        <p className="mt-4 text-center text-sm text-[#6b7280]">
+          Wil jij hier ook staan?{" "}
+          <Link
+            href="/aanbieders/nieuw"
+            className="font-medium text-[#1D9E75] hover:text-[#178a66] hover:underline"
+          >
+            Lijst je activiteit →
+          </Link>
+        </p>
       </div>
     </section>
   );

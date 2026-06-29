@@ -462,6 +462,8 @@ export const SEARCH_FILTER_CATEGORIES = [
   "Lasergame",
   "Outdoor",
   "Wellness",
+  "Paintball",
+  "Wijnproeverij",
 ] as const;
 
 export function getActiveCategoryCounts(): Record<string, number> {

@@ -19,9 +19,9 @@ interface SpotlightProvidersProps {
 
 function SpotlightPlaceholder() {
   return (
-    <div className="h-[240px] w-[340px] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#e5e7eb] bg-white">
+    <div className="min-h-[220px] w-[340px] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#e5e7eb] bg-white">
       <div
-        className="flex h-[160px] flex-col items-center justify-center"
+        className="flex h-[130px] flex-col items-center justify-center"
         style={{ backgroundColor: BEIGE.surface }}
       >
         <div
@@ -35,10 +35,7 @@ function SpotlightPlaceholder() {
             +
           </span>
         </div>
-        <p
-          className="mt-2 text-xs"
-          style={{ color: BEIGE.placeholder }}
-        >
+        <p className="mt-2 text-xs" style={{ color: BEIGE.placeholder }}>
           Adverteer hier
         </p>
       </div>
@@ -94,10 +91,10 @@ export default function SpotlightProviders({ providers }: SpotlightProvidersProp
               <Link
                 key={provider.id}
                 href={`/activiteit/${provider.slug}`}
-                className="h-[240px] w-[340px] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#e5e7eb] bg-white transition-shadow duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+                className="min-h-[220px] w-[340px] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#e5e7eb] bg-white transition-shadow duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
               >
                 <div
-                  className="flex h-[160px] items-center justify-center"
+                  className="flex h-[130px] items-center justify-center"
                   style={{ backgroundColor: BEIGE.surface }}
                 >
                   <div
