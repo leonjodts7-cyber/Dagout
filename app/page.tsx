@@ -45,7 +45,7 @@ export default function HomePage() {
         {/* Categorieën */}
         <section className="bg-white py-12">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="mb-6 text-2xl font-bold text-[#111827]">
+            <h2 className="mb-6 text-[22px] font-bold text-[#111827]">
               Wat zoeken jullie?
             </h2>
             <HomeCategoryGrid />

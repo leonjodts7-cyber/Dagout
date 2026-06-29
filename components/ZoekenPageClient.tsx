@@ -49,16 +49,6 @@ export default function ZoekenPageClient({
     [providers, sort]
   );
 
-  const sponsored = useMemo(
-    () => sorted.filter((p) => p.featured),
-    [sorted]
-  );
-
-  const regular = useMemo(
-    () => sorted.filter((p) => !p.featured),
-    [sorted]
-  );
-
   const resultLabel = `${providers.length} ${
     providers.length === 1 ? "activiteit" : "activiteiten"
   }`;
@@ -110,34 +100,10 @@ export default function ZoekenPageClient({
               </button>
             </div>
           ) : (
-            <div className="space-y-6 pb-8">
-              {sponsored.length > 0 && (
-                <div>
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-[#9ca3af]">
-                    Gesponsorde resultaten
-                  </p>
-                  <div className="space-y-4">
-                    {sponsored.map((provider) => (
-                      <SearchResultCard key={provider.id} provider={provider} />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {regular.length > 0 && (
-                <div>
-                  {sponsored.length > 0 && (
-                    <p className="mb-3 text-sm font-semibold text-gray-700">
-                      Alle resultaten
-                    </p>
-                  )}
-                  <div className="space-y-4">
-                    {regular.map((provider) => (
-                      <SearchResultCard key={provider.id} provider={provider} />
-                    ))}
-                  </div>
-                </div>
-              )}
+            <div className="space-y-4 pb-8">
+              {sorted.map((provider) => (
+                <SearchResultCard key={provider.id} provider={provider} />
+              ))}
             </div>
           )}
         </div>

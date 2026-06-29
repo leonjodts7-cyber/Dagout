@@ -2,10 +2,16 @@
 
 import Link from "next/link";
 import type { Provider } from "@/lib/types";
-import { getCategoryAccentTheme } from "@/lib/constants";
 import HorizontalScrollRow from "@/components/HorizontalScrollRow";
 
-const PLACEHOLDER_COUNT = 4;
+const PLACEHOLDER_COUNT = 5;
+
+const BEIGE = {
+  surface: "#f3f0eb",
+  avatar: "#e5e0d8",
+  muted: "#a89f94",
+  placeholder: "#c4bdb5",
+};
 
 interface PremiumProvidersProps {
   providers: Provider[];
@@ -13,14 +19,36 @@ interface PremiumProvidersProps {
 
 function PremiumPlaceholder() {
   return (
-    <div className="min-w-[240px] shrink-0 snap-start overflow-hidden rounded-[14px] border border-dashed border-[#e5e7eb] bg-[#fafafa]">
-      <div className="flex h-[120px] items-center justify-center bg-[#f3f4f6]">
-        <span className="text-3xl font-light text-[#d1d5db]">+</span>
+    <div className="w-[220px] shrink-0 snap-start overflow-hidden rounded-[14px] border border-[#e5e7eb] bg-white">
+      <div
+        className="flex h-[130px] items-center justify-center"
+        style={{ backgroundColor: BEIGE.surface }}
+      >
+        <div
+          className="flex h-14 w-14 items-center justify-center rounded-full"
+          style={{ backgroundColor: BEIGE.avatar }}
+        >
+          <span
+            className="text-[22px] font-light"
+            style={{ color: BEIGE.placeholder }}
+          >
+            +
+          </span>
+        </div>
       </div>
-      <div className="space-y-1.5 p-3">
-        <div className="h-3.5 w-[70%] rounded bg-[#f3f4f6]" />
-        <div className="mt-1.5 h-3 w-[50%] rounded bg-[#f3f4f6]" />
-        <div className="mt-1 h-3 w-[40%] rounded bg-[#f3f4f6]" />
+      <div className="space-y-0 p-3">
+        <div
+          className="h-3.5 w-[70%] rounded"
+          style={{ backgroundColor: BEIGE.surface }}
+        />
+        <div
+          className="mt-1.5 h-3 w-[50%] rounded"
+          style={{ backgroundColor: BEIGE.surface }}
+        />
+        <div
+          className="mt-1 h-3 w-[35%] rounded"
+          style={{ backgroundColor: BEIGE.surface }}
+        />
       </div>
     </div>
   );
@@ -30,32 +58,48 @@ export default function PremiumProviders({ providers }: PremiumProvidersProps) {
   return (
     <section className="bg-[#f9fafb] py-12">
       <div className="mx-auto max-w-6xl px-6">
-        <h2 className="mb-6 text-2xl font-bold text-[#111827]">
-          Premium aanbieders
-        </h2>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <h2 className="text-[22px] font-bold text-[#111827]">
+            Premium aanbieders
+          </h2>
+          <Link
+            href="/zoeken"
+            className="text-sm font-medium text-[#1D9E75] hover:text-[#178a66]"
+          >
+            Bekijk alle aanbieders →
+          </Link>
+        </div>
 
         <HorizontalScrollRow>
           {providers.map((provider) => {
-            const theme = getCategoryAccentTheme(provider.category);
+            const initial = provider.name.charAt(0).toUpperCase();
 
             return (
               <Link
                 key={provider.id}
                 href={`/activiteit/${provider.slug}`}
-                className="group min-w-[240px] shrink-0 snap-start overflow-hidden rounded-[14px] border border-[#e5e7eb] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                className="group w-[220px] shrink-0 snap-start overflow-hidden rounded-[14px] border border-[#e5e7eb] bg-white transition-shadow duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
               >
                 <div
-                  className="relative flex h-[120px] items-center justify-center"
-                  style={{ backgroundColor: theme.proBg }}
+                  className="relative flex h-[130px] items-center justify-center"
+                  style={{ backgroundColor: BEIGE.surface }}
                 >
-                  <span className="text-[32px] opacity-80" aria-hidden>
-                    {theme.emoji}
-                  </span>
+                  <div
+                    className="flex h-14 w-14 items-center justify-center rounded-full"
+                    style={{ backgroundColor: BEIGE.avatar }}
+                  >
+                    <span
+                      className="text-[22px] font-semibold"
+                      style={{ color: BEIGE.muted }}
+                    >
+                      {initial}
+                    </span>
+                  </div>
                   <span
-                    className="absolute right-0 top-0 bg-[#1D9E75] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+                    className="absolute right-0 top-0 bg-[#1D9E75] px-2 py-0.5 text-[10px] font-bold text-white"
                     style={{ borderRadius: "0 14px 0 6px" }}
                   >
-                    Pro
+                    PRO
                   </span>
                 </div>
                 <div className="p-3">
@@ -66,7 +110,7 @@ export default function PremiumProviders({ providers }: PremiumProvidersProps) {
                   <p className="mt-1 text-[13px] font-semibold text-[#1D9E75]">
                     Vanaf &euro;{provider.price_from}/pers
                   </p>
-                  <span className="mt-1.5 inline-block text-xs font-medium text-[#1D9E75] group-hover:underline">
+                  <span className="mt-1.5 inline-block cursor-pointer text-xs text-[#1D9E75] group-hover:underline">
                     Bekijk →
                   </span>
                 </div>
