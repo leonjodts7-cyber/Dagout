@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import ConfettiBurst from "@/components/ConfettiBurst";
-import { resolveProvider } from "@/lib/providers";
 import { getProviderImageUrl } from "@/lib/constants";
+import type { Provider } from "@/lib/types";
 import {
   formatCountdown,
   formatDeadlineNl,
@@ -22,9 +22,13 @@ import {
 
 interface VotePageClientProps {
   session: VoteSession;
+  sessionProviders: Provider[];
 }
 
-export default function VotePageClient({ session }: VotePageClientProps) {
+export default function VotePageClient({
+  session,
+  sessionProviders,
+}: VotePageClientProps) {
   const router = useRouter();
   const [voterName, setVoterName] = useState("");
   const [votes, setVotes] = useState<Vote[]>([]);
@@ -42,9 +46,9 @@ export default function VotePageClient({ session }: VotePageClientProps) {
   const providers = useMemo(
     () =>
       session.provider_ids
-        .map((id) => resolveProvider(id))
-        .filter((p): p is NonNullable<typeof p> => Boolean(p)),
-    [session.provider_ids]
+        .map((id) => sessionProviders.find((p) => p.id === id))
+        .filter((p): p is Provider => Boolean(p)),
+    [session.provider_ids, sessionProviders]
   );
 
   const sessionStatus = getVoteSessionStatus(session);

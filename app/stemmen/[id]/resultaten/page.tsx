@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import VoteResultsClient from "@/components/VoteResultsClient";
+import { getProvidersByIds } from "@/lib/providers-unified";
 import { getVoteSessionServer } from "@/lib/voting-server";
 
 interface ResultatenPageProps {
@@ -14,11 +15,16 @@ export default async function ResultatenPage({ params }: ResultatenPageProps) {
 
   if (!session) notFound();
 
+  const sessionProviders = await getProvidersByIds(session.provider_ids);
+
   return (
     <>
       <Navbar />
       <main className="flex-1 bg-gray-50">
-        <VoteResultsClient session={session} />
+        <VoteResultsClient
+          session={session}
+          sessionProviders={sessionProviders}
+        />
       </main>
       <Footer />
     </>

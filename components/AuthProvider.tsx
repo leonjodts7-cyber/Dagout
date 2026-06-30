@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { createBrowserSupabase } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 interface AuthContextValue {
   user: User | null;
@@ -44,7 +44,12 @@ export default function AuthProvider({
   }, []);
 
   const refreshSession = useCallback(async () => {
-    const supabase = createBrowserSupabase();
+    if (!isSupabaseConfigured()) {
+      applySession(null);
+      return;
+    }
+
+    const supabase = createClient();
     const {
       data: { session: currentSession },
       error,
@@ -57,18 +62,15 @@ export default function AuthProvider({
     }
 
     applySession(currentSession);
-
-    if (currentSession) {
-      const { data, error: refreshError } =
-        await supabase.auth.refreshSession();
-      if (!refreshError && data.session) {
-        applySession(data.session);
-      }
-    }
   }, [applySession]);
 
   useEffect(() => {
-    const supabase = createBrowserSupabase();
+    if (!isSupabaseConfigured()) {
+      setLoading(false);
+      return;
+    }
+
+    const supabase = createClient();
 
     async function initSession() {
       try {

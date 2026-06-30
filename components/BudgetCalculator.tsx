@@ -2,17 +2,19 @@
 
 import { useMemo, useState } from "react";
 import BudgetInquiryModal from "@/components/BudgetInquiryModal";
-import { SAMPLE_PROVIDERS } from "@/lib/providers";
 import { BUDGET_EXTRAS } from "@/lib/tools-constants";
 import { generateBudgetPdf } from "@/lib/budget-pdf";
+import type { Provider } from "@/lib/types";
 
-export default function BudgetCalculator() {
+interface BudgetCalculatorProps {
+  activities: Provider[];
+}
+
+export default function BudgetCalculator({ activities }: BudgetCalculatorProps) {
   const [groupSize, setGroupSize] = useState(20);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-
-  const activities = SAMPLE_PROVIDERS.filter((p) => p.active);
 
   const selectedActivities = activities.filter((a) => selectedIds.includes(a.id));
 
@@ -119,6 +121,12 @@ export default function BudgetCalculator() {
                 Stap 2 — Selecteer activiteiten
               </h2>
               <p className="mt-1 text-sm text-gray-500">Kies één of meerdere activiteiten</p>
+              {activities.length === 0 ? (
+                <p className="mt-4 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-center text-sm text-gray-500">
+                  Nog geen activiteiten beschikbaar om te kiezen. Kom terug zodra er
+                  aanbieders zijn aangesloten.
+                </p>
+              ) : (
               <div className="mt-4 space-y-3">
                 {activities.map((activity) => (
                   <label
@@ -145,6 +153,7 @@ export default function BudgetCalculator() {
                   </label>
                 ))}
               </div>
+              )}
             </section>
 
             {/* Stap 3 */}

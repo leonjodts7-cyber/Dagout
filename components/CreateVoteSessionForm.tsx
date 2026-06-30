@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { createBrowserSupabase } from "@/lib/supabase/client";
 import { useFormPersistence } from "@/lib/hooks/useFormPersistence";
-import { MOCK_PROVIDERS } from "@/lib/providers";
 import { getProviderImageUrl } from "@/lib/constants";
 import {
   createVoteSession,
@@ -99,8 +98,10 @@ function ActivitySelectCard({
 
 export default function CreateVoteSessionForm({
   preselectId,
+  activities,
 }: {
   preselectId?: string;
+  activities: Provider[];
 }) {
   const router = useRouter();
   const [authLoading, setAuthLoading] = useState(true);
@@ -151,15 +152,11 @@ export default function CreateVoteSessionForm({
 
   useEffect(() => {
     if (!preselectId || selectedIds.length > 0) return;
-    const exists = MOCK_PROVIDERS.some(
-      (p) => p.id === preselectId && p.active
-    );
+    const exists = activities.some((p) => p.id === preselectId);
     if (exists) {
       setSelectedIds([preselectId]);
     }
-  }, [preselectId, selectedIds.length]);
-
-  const activities = MOCK_PROVIDERS.filter((p) => p.active);
+  }, [preselectId, selectedIds.length, activities]);
 
   const filteredActivities = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -373,7 +370,12 @@ export default function CreateVoteSessionForm({
             )}
           </p>
 
-          {filteredActivities.length === 0 ? (
+          {activities.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-gray-200 bg-white p-10 text-center text-sm text-gray-500">
+              Nog geen activiteiten beschikbaar om te kiezen. Kom terug zodra er
+              aanbieders zijn aangesloten.
+            </div>
+          ) : filteredActivities.length === 0 ? (
             <div className="rounded-xl border border-dashed border-gray-200 bg-white p-10 text-center text-sm text-gray-500">
               Geen activiteiten gevonden. Pas je zoekopdracht of filter aan.
             </div>

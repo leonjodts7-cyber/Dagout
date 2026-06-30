@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { getProvidersForAi } from "@/lib/providers";
+import { getProvidersForAi } from "@/lib/providers-unified";
 import { parsePlanningJson, stripPlanningJson } from "@/lib/planning-types";
+
+const EMPTY_REPLY =
+  "Nog geen activiteiten beschikbaar om een dagplanning samen te stellen. Kom terug zodra er aanbieders zijn aangesloten op Dagout.";
 
 const SYSTEM_PROMPT = `Je bent de AI dagassistent van Dagout.be. Je helpt bedrijven een perfecte teambuilding dag plannen in Vlaanderen.
 Je hebt toegang tot deze activiteiten: [wordt dynamisch ingevuld].
@@ -16,11 +19,15 @@ Als je een dagplanning voorstelt, geef die ook terug als JSON in dit formaat aan
 PLANNING_JSON:{"items":[{"time":"09:00","name":"...","duration":180,"price_per_person":35,"provider_id":"..."}]}`;
 
 function buildFallbackResponse(
-  messages: Array<{ role: string; content: string }>
+  messages: Array<{ role: string; content: string }>,
+  activities: Awaited<ReturnType<typeof getProvidersForAi>>
 ): { reply: string; planning: ReturnType<typeof parsePlanningJson> } {
+  if (activities.length === 0) {
+    return { reply: EMPTY_REPLY, planning: null };
+  }
+
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
   const query = lastUser?.content ?? "";
-  const activities = getProvidersForAi();
 
   const groupMatch = query.match(/(\d+)\s*(mensen|personen)/i);
   const groupSize = groupMatch ? parseInt(groupMatch[1], 10) : 20;
@@ -79,11 +86,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Berichten zijn verplicht" }, { status: 400 });
     }
 
-    const activities = getProvidersForAi();
+    const activities = await getProvidersForAi();
     const apiKey = process.env.ANTHROPIC_API_KEY;
 
+    if (activities.length === 0) {
+      return NextResponse.json({
+        reply: EMPTY_REPLY,
+        planning: null,
+        source: "empty",
+      });
+    }
+
     if (!apiKey) {
-      const fallback = buildFallbackResponse(messages);
+      const fallback = buildFallbackResponse(messages, activities);
       return NextResponse.json({
         reply: fallback.reply,
         planning: fallback.planning,

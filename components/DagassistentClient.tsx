@@ -12,8 +12,8 @@ import {
 } from "@/lib/planning-types";
 import { savePlan } from "@/lib/plans";
 import { submitInquiry } from "@/lib/inquiries";
-import { getProviderById } from "@/lib/providers";
 import { formatBelgianDate } from "@/lib/date-format";
+import type { Provider } from "@/lib/types";
 
 interface ChatMessageWithTime {
   role: "user" | "assistant";
@@ -35,7 +35,11 @@ function formatMessageTime(iso: string): string {
   });
 }
 
-export default function DagassistentClient() {
+export default function DagassistentClient({
+  providers,
+}: {
+  providers: Provider[];
+}) {
   const router = useRouter();
   const [groupSize, setGroupSize] = useState(20);
   const [messages, setMessages] = useState<ChatMessageWithTime[]>([
@@ -168,7 +172,7 @@ export default function DagassistentClient() {
     try {
       await Promise.all(
         providerIds.map((id) => {
-          const provider = getProviderById(id);
+          const provider = providers.find((p) => p.id === id);
           if (!provider) return Promise.resolve();
           const planText = planning
             .filter((p) => p.provider_id === id)

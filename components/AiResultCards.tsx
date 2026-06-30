@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { resolveProvider } from "@/lib/providers";
 import type { AiRecommendation } from "@/components/AiRecommendations";
 
 interface AiResultCardsProps {
@@ -42,8 +41,12 @@ export default function AiResultCards({
 
   if (recommendations.length === 0) {
     return (
-      <div className="flex min-h-[120px] items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
-        <p className="max-w-xs text-sm text-gray-400">{emptyMessage}</p>
+      <div className="flex min-h-[120px] flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
+        {summary ? (
+          <p className="max-w-md text-sm leading-relaxed text-gray-600">{summary}</p>
+        ) : (
+          <p className="max-w-xs text-sm text-gray-400">{emptyMessage}</p>
+        )}
       </div>
     );
   }
@@ -56,8 +59,7 @@ export default function AiResultCards({
         </div>
       )}
       {recommendations.map((rec) => {
-        const provider = resolveProvider(rec.slug || rec.id);
-        const slug = rec.slug || provider?.slug;
+        const slug = rec.slug || rec.id;
 
         return (
           <Link
@@ -71,11 +73,6 @@ export default function AiResultCards({
                 {rec.match_score}% match
               </span>
             </div>
-            {provider && (
-              <p className="mt-1 text-xs text-gray-400">
-                {provider.city} &middot; &euro;{provider.price_from}/pers
-              </p>
-            )}
             <p className="mt-3 text-sm leading-relaxed text-gray-600">
               {rec.reason}
             </p>

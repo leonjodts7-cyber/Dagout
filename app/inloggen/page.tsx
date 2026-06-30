@@ -6,7 +6,7 @@ import { FormEvent, Suspense, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { authErrorMessage } from "@/lib/auth-errors";
-import { createBrowserSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 type Tab = "login" | "register";
 
@@ -40,19 +40,29 @@ function AuthPageContent() {
       if (!isSupabaseConfigured()) {
         throw new Error("SUPABASE_NOT_CONFIGURED");
       }
-      const supabase = createBrowserSupabase();
+
+      const supabase = createClient();
       const { error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
         password: loginPassword,
       });
+
       if (error) throw error;
+
       router.push(redirectTo);
       router.refresh();
-    } catch (err) {
-      setMessage({
-        type: "error",
-        text: authErrorMessage(err, "Inloggen mislukt."),
-      });
+    } catch (err: unknown) {
+      console.error("Login error:", err);
+      const message =
+        err instanceof Error && err.message.includes("Invalid login")
+          ? "Incorrect e-mailadres of wachtwoord."
+          : err instanceof Error &&
+              (err.message.toLowerCase().includes("fetch") ||
+                err.message === "SUPABASE_NOT_CONFIGURED" ||
+                err.message === "SUPABASE_INVALID_URL")
+            ? "Verbindingsprobleem. Controleer je internet en probeer opnieuw."
+            : authErrorMessage(err, "Er ging iets mis. Probeer het opnieuw.");
+      setMessage({ type: "error", text: message });
     } finally {
       setLoading(false);
     }
@@ -85,7 +95,8 @@ function AuthPageContent() {
       if (!isSupabaseConfigured()) {
         throw new Error("SUPABASE_NOT_CONFIGURED");
       }
-      const supabase = createBrowserSupabase();
+
+      const supabase = createClient();
       const { data, error } = await supabase.auth.signUp({
         email: registerEmail,
         password: registerPassword,
@@ -123,11 +134,16 @@ function AuthPageContent() {
           text: "Account aangemaakt. Controleer je e-mail om je account te bevestigen.",
         });
       }
-    } catch (err) {
-      setMessage({
-        type: "error",
-        text: authErrorMessage(err, "Registratie mislukt."),
-      });
+    } catch (err: unknown) {
+      console.error("Register error:", err);
+      const message =
+        err instanceof Error &&
+        (err.message.toLowerCase().includes("fetch") ||
+          err.message === "SUPABASE_NOT_CONFIGURED" ||
+          err.message === "SUPABASE_INVALID_URL")
+          ? "Verbindingsprobleem. Controleer je internet en probeer opnieuw."
+          : authErrorMessage(err, "Er ging iets mis. Probeer het opnieuw.");
+      setMessage({ type: "error", text: message });
     } finally {
       setLoading(false);
     }
@@ -149,7 +165,7 @@ function AuthPageContent() {
       if (!isSupabaseConfigured()) {
         throw new Error("SUPABASE_NOT_CONFIGURED");
       }
-      const supabase = createBrowserSupabase();
+      const supabase = createClient();
       const { error } = await supabase.auth.resetPasswordForEmail(loginEmail, {
         redirectTo: `${window.location.origin}/inloggen`,
       });
@@ -220,6 +236,15 @@ function AuthPageContent() {
               }`}
             >
               {message.text}
+            </div>
+          )}
+
+          {!isSupabaseConfigured() && (
+            <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+              Supabase is niet geconfigureerd. Zet{" "}
+              <code className="text-xs">NEXT_PUBLIC_SUPABASE_URL</code> en{" "}
+              <code className="text-xs">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> in
+              je Vercel environment variables.
             </div>
           )}
 

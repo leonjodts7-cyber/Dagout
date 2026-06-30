@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
-import { getProviderBySlug } from "@/lib/providers";
+import { getProviderBySlugUnified } from "@/lib/providers-unified";
 import {
   sendInquiryConfirmation,
   sendInquiryToProvider,
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         providerEmail = authUser.user?.email ?? null;
       }
     } else if (body.providerSlug) {
-      const provider = getProviderBySlug(body.providerSlug);
+      const provider = await getProviderBySlugUnified(body.providerSlug);
       providerEmail = provider?.email ?? null;
     }
 

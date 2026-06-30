@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendVoteNotificationEmail } from "@/lib/email";
 import { SITE_URL } from "@/lib/admin";
-import { resolveProvider } from "@/lib/providers";
+import { getProviderByIdUnified } from "@/lib/providers-unified";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 export async function POST(request: NextRequest) {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true, skipped: true });
     }
 
-    const provider = resolveProvider(providerId);
+    const provider = await getProviderByIdUnified(providerId);
     const activityName = provider?.name ?? "een activiteit";
 
     await sendVoteNotificationEmail({

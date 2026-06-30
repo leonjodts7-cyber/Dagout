@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { resolveProvider } from "@/lib/providers";
 import { formatBelgianDate } from "@/lib/date-format";
+import type { Provider } from "@/lib/types";
 import {
   closeVoteSession,
   getVoteCounts,
@@ -15,9 +15,13 @@ import {
 
 interface VoteResultsClientProps {
   session: VoteSession;
+  sessionProviders: Provider[];
 }
 
-export default function VoteResultsClient({ session }: VoteResultsClientProps) {
+export default function VoteResultsClient({
+  session,
+  sessionProviders,
+}: VoteResultsClientProps) {
   const [votes, setVotes] = useState<Vote[]>([]);
   const [closed, setClosed] = useState(session.closed);
   const [loading, setLoading] = useState(false);
@@ -35,7 +39,7 @@ export default function VoteResultsClient({ session }: VoteResultsClientProps) {
   const providers = session.provider_ids
     .map((id) => ({
       id,
-      provider: resolveProvider(id),
+      provider: sessionProviders.find((p) => p.id === id),
       count: counts[id] ?? 0,
       voters: votes
         .filter((v) => v.provider_id === id)

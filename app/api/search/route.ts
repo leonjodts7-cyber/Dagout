@@ -1,10 +1,16 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
-import { MOCK_PROVIDERS, resolveProvider } from "@/lib/providers";
+import {
+  getActiveProviders,
+  getProviderBySlugUnified,
+} from "@/lib/providers-unified";
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
+
+const EMPTY_MESSAGE =
+  "We hebben nog geen activiteiten in ons systeem voor deze zoekopdracht. Dagout is net gelanceerd — kom snel terug of neem contact op via info@dagout.be.";
 
 function indoorLabel(value: string): string {
   if (value === "indoor") return "binnen";
@@ -12,7 +18,7 @@ function indoorLabel(value: string): string {
   return "beide";
 }
 
-function enrichRecommendations(
+async function enrichRecommendations(
   recommendations: Array<{
     id?: string;
     name?: string;
@@ -20,10 +26,11 @@ function enrichRecommendations(
     match_score?: number;
   }>
 ) {
-  return recommendations
-    .slice(0, 3)
-    .map((rec) => {
-      const provider = rec.id ? resolveProvider(rec.id) : undefined;
+  const enriched = await Promise.all(
+    recommendations.slice(0, 3).map(async (rec) => {
+      const provider = rec.id
+        ? await getProviderBySlugUnified(rec.id)
+        : null;
       return {
         id: provider?.id ?? rec.id ?? "",
         slug: provider?.slug ?? rec.id ?? "",
@@ -36,6 +43,9 @@ function enrichRecommendations(
         featured: provider?.featured ?? false,
       };
     })
+  );
+
+  return enriched
     .filter((rec) => rec.slug && rec.name)
     .sort((a, b) => Number(b.featured) - Number(a.featured));
 }
@@ -51,6 +61,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const providers = await getActiveProviders();
+
+    if (providers.length === 0) {
+      return NextResponse.json({
+        recommendations: [],
+        summary: EMPTY_MESSAGE,
+        empty: true,
+      });
+    }
+
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
         { error: "AI niet beschikbaar", fallback: true },
@@ -58,8 +78,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const providersContext = [...MOCK_PROVIDERS]
-      .filter((p) => p.active)
+    const providersContext = [...providers]
       .sort((a, b) => Number(b.featured) - Number(a.featured))
       .map(
         (p) =>
@@ -126,16 +145,16 @@ Analyseer de zoekopdracht en kies de beste 3 activiteiten. Geef prioriteit aan P
       );
     }
 
-    const recommendations = enrichRecommendations(parsed.recommendations ?? []);
+    const recommendations = await enrichRecommendations(
+      parsed.recommendations ?? []
+    );
 
     if (recommendations.length === 0) {
-      return NextResponse.json(
-        {
-          error: "AI kon geen resultaten genereren",
-          fallback: true,
-        },
-        { status: 200 }
-      );
+      return NextResponse.json({
+        recommendations: [],
+        summary: EMPTY_MESSAGE,
+        empty: true,
+      });
     }
 
     return NextResponse.json({

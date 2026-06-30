@@ -86,13 +86,15 @@ export default async function TeambuildingSlugPage({ params }: PageProps) {
         <section className="px-6 py-12">
           <div className="mx-auto max-w-6xl">
             <h2 className="text-xl font-semibold text-gray-900">
-              {listings.length} activiteiten gevonden
+              {listings.length === 0
+                ? "Binnenkort beschikbaar"
+                : `${listings.length} activiteiten gevonden`}
             </h2>
             {listings.length === 0 ? (
               <p className="mt-4 text-gray-500">
-                Nog geen actieve activiteiten in deze categorie.{" "}
-                <Link href="/zoeken" className="text-[#1D9E75] hover:underline">
-                  Bekijk alle activiteiten
+                Er zijn nog geen actieve activiteiten in deze categorie.{" "}
+                <Link href="/aanbieders/nieuw" className="text-[#1D9E75] hover:underline">
+                  Lijst je activiteit als eerste
                 </Link>
               </p>
             ) : (

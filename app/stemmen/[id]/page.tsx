@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import VotePageClient from "@/components/VotePageClient";
+import { getProvidersByIds } from "@/lib/providers-unified";
 import { getVoteSessionServer } from "@/lib/voting-server";
 
 interface StemmenPageProps {
@@ -14,11 +15,13 @@ export default async function StemmenPage({ params }: StemmenPageProps) {
 
   if (!session) notFound();
 
+  const sessionProviders = await getProvidersByIds(session.provider_ids);
+
   return (
     <>
       <Navbar />
       <main className="flex-1 bg-gray-50">
-        <VotePageClient session={session} />
+        <VotePageClient session={session} sessionProviders={sessionProviders} />
       </main>
       <Footer />
     </>

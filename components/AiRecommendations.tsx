@@ -51,6 +51,13 @@ export default function AiRecommendations({
 
         const data = await response.json();
 
+        if (data.empty) {
+          setError(null);
+          setRecommendations([]);
+          setSummary(data.summary ?? "");
+          return;
+        }
+
         if (data.fallback) {
           setError(data.error ?? "AI tijdelijk niet beschikbaar");
           setRecommendations([]);

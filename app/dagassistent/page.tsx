@@ -2,13 +2,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import DagassistentClient from "@/components/DagassistentClient";
+import { getActiveProviders } from "@/lib/providers-unified";
 
 export const metadata = {
   title: "AI Dagassistent — Dagout.be",
   description: "Plan een volledige teambuilding dag met onze AI-assistent.",
 };
 
-export default function DagassistentPage() {
+export default async function DagassistentPage() {
+  const providers = await getActiveProviders();
+
   return (
     <>
       <Navbar />
@@ -19,7 +22,7 @@ export default function DagassistentPage() {
             { label: "AI Dagassistent" },
           ]}
         />
-        <DagassistentClient />
+        <DagassistentClient providers={providers} />
       </main>
       <Footer />
     </>

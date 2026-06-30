@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { createBrowserSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { NAV_TOOLS_LINKS } from "@/lib/tools-constants";
 import { isAdminEmail } from "@/lib/admin";
 import type { User } from "@supabase/supabase-js";
@@ -28,7 +28,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!isSupabaseConfigured()) return;
-    const supabase = createBrowserSupabase();
+    const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     const {
       data: { subscription },
@@ -63,7 +63,7 @@ export default function Navbar() {
   }, [pathname]);
 
   async function handleLogout() {
-    const supabase = createBrowserSupabase();
+    const supabase = createClient();
     await supabase.auth.signOut();
     setAvatarOpen(false);
     router.push("/");

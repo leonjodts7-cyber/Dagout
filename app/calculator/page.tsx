@@ -2,13 +2,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import BudgetCalculator from "@/components/BudgetCalculator";
+import { getActiveProviders } from "@/lib/providers-unified";
 
 export const metadata = {
   title: "Budgetcalculator — Dagout.be",
   description: "Bereken het budget voor jullie teambuilding activiteit.",
 };
 
-export default function CalculatorPage() {
+export default async function CalculatorPage() {
+  const activities = await getActiveProviders();
+
   return (
     <>
       <Navbar />
@@ -19,7 +22,7 @@ export default function CalculatorPage() {
             { label: "Budgetcalculator" },
           ]}
         />
-        <BudgetCalculator />
+        <BudgetCalculator activities={activities} />
       </main>
       <Footer />
     </>

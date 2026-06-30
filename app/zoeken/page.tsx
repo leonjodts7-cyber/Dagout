@@ -2,6 +2,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ZoekenFilterBar from "@/components/ZoekenFilterBar";
 import ZoekenPageClient from "@/components/ZoekenPageClient";
+import {
+  getActiveProviders,
+  searchAllProviders,
+} from "@/lib/providers-unified";
 
 interface ZoekenPageProps {
   searchParams: Promise<{
@@ -23,6 +27,13 @@ export default async function ZoekenPage({ searchParams }: ZoekenPageProps) {
   const omgeving = params.omgeving ?? "";
   const aiMode = params.ai === "true";
 
+  const [providers, allActive] = await Promise.all([
+    searchAllProviders(query, region, category, personen, omgeving),
+    getActiveProviders(),
+  ]);
+
+  const isLaunchEmpty = allActive.length === 0;
+
   return (
     <>
       <Navbar />
@@ -42,6 +53,8 @@ export default async function ZoekenPage({ searchParams }: ZoekenPageProps) {
         </div>
 
         <ZoekenPageClient
+          providers={providers}
+          isLaunchEmpty={isLaunchEmpty}
           query={query}
           region={region}
           category={category}

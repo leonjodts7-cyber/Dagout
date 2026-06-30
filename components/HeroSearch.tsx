@@ -44,10 +44,10 @@ export default function HeroSearch() {
   const placeholder = focused ? "" : ROTATING_PLACEHOLDERS[placeholderIndex];
 
   return (
-    <div className="mx-auto mt-8 max-w-[600px]">
-      <form onSubmit={handleSubmit}>
+    <div className="mx-auto mt-8 w-full max-w-[600px]">
+      <form onSubmit={handleSubmit} className="w-full">
         <div
-          className="hero-search-bar flex flex-col gap-2 sm:flex-row sm:items-center"
+          className="hero-search-bar flex w-full flex-col gap-2 sm:flex-row sm:items-center"
           data-focused={focused ? "true" : "false"}
         >
           <input
@@ -59,7 +59,10 @@ export default function HeroSearch() {
             placeholder={placeholder}
             className="min-w-0 flex-1 border-0 bg-transparent text-base text-gray-900 outline-none placeholder:text-[#9ca3af]"
           />
-          <button type="submit" className="btn-primary hero-search-submit shrink-0">
+          <button
+            type="submit"
+            className="btn-primary hero-search-submit w-full shrink-0 sm:w-auto"
+          >
             Zoek met AI →
           </button>
         </div>

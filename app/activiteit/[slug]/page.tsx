@@ -7,11 +7,12 @@ import PageHeader from "@/components/PageHeader";
 import ActivityCard from "@/components/ActivityCard";
 import CategoryIcon, { resolveCategorySlug } from "@/components/CategoryIcon";
 import { getCategoryStyle } from "@/lib/constants";
+import { DEFAULT_OPENING_HOURS } from "@/lib/providers";
 import {
-  DEFAULT_OPENING_HOURS,
-  getProviderBySlug,
+  getListingExtras,
+  getProviderBySlugUnified,
   getRelatedProviders,
-} from "@/lib/providers";
+} from "@/lib/providers-unified";
 
 interface ActiviteitPageProps {
   params: Promise<{ slug: string }>;
@@ -23,11 +24,26 @@ function categoryHeroGradient(color: string): string {
 
 export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
   const { slug } = await params;
-  const provider = getProviderBySlug(slug);
+  const provider = await getProviderBySlugUnified(slug);
 
-  if (!provider) notFound();
+  if (!provider || !provider.active) notFound();
 
-  const related = getRelatedProviders(provider, 3);
+  const [related, extras] = await Promise.all([
+    getRelatedProviders(provider, 3),
+    provider.listing_id
+      ? getListingExtras(provider.listing_id)
+      : Promise.resolve(null),
+  ]);
+
+  const includes =
+    extras?.includes && extras.includes.length > 0
+      ? extras.includes
+      : provider.includes;
+  const openingHours =
+    extras?.openingHours && extras.openingHours.length > 0
+      ? extras.openingHours
+      : DEFAULT_OPENING_HOURS;
+
   const style = getCategoryStyle(provider.category);
   const categorySlug = resolveCategorySlug(provider.category);
   const indoorLabel =
@@ -109,7 +125,7 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
                   Wat is inbegrepen
                 </h2>
                 <ul className="mt-4 space-y-2">
-                  {provider.includes.map((item) => (
+                  {includes.map((item) => (
                     <li
                       key={item}
                       className="flex items-center gap-2 text-sm text-gray-600"
@@ -134,7 +150,7 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
                   Openingsuren
                 </h2>
                 <ul className="mt-4 divide-y divide-gray-100 rounded-xl border border-gray-100">
-                  {DEFAULT_OPENING_HOURS.map((row) => (
+                  {openingHours.map((row) => (
                     <li
                       key={row.day}
                       className="flex justify-between px-4 py-2.5 text-sm"

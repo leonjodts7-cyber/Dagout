@@ -4,11 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { SEARCH_FILTER_CATEGORIES } from "@/lib/providers";
 
 interface ZoekenCategoryChipsProps {
-  query: string;
-  region: string;
   category: string;
-  personen: string;
-  omgeving: string;
 }
 
 export default function ZoekenCategoryChips({
