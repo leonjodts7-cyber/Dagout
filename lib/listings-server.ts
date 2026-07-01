@@ -68,6 +68,39 @@ export async function getActiveListings(filters?: {
   }
 }
 
+export async function getListingsByCategory(
+  category: string,
+  limit?: number
+): Promise<DbListingPublic[]> {
+  return getActiveListings({ category, limit });
+}
+
+export async function getListingsByCategories(
+  categories: string[],
+  limit?: number
+): Promise<DbListingPublic[]> {
+  const results = await Promise.all(
+    categories.map((category) => getActiveListings({ category }))
+  );
+
+  const merged = new Map<string, DbListingPublic>();
+  for (const list of results) {
+    for (const listing of list) {
+      merged.set(listing.id, listing);
+    }
+  }
+
+  const sorted = [...merged.values()].sort((a, b) => {
+    const featuredDiff = Number(b.featured) - Number(a.featured);
+    if (featuredDiff !== 0) return featuredDiff;
+    return (
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+  });
+
+  return limit ? sorted.slice(0, limit) : sorted;
+}
+
 export async function getFeaturedListings(
   limit = 6
 ): Promise<DbListingPublic[]> {

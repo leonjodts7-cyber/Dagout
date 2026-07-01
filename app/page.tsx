@@ -1,32 +1,37 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroSearch from "@/components/HeroSearch";
-import SpotlightProviders from "@/components/SpotlightProviders";
-import PremiumProviders from "@/components/PremiumProviders";
-import HomeCategoryGrid from "@/components/HomeCategoryGrid";
-import HowItWorks from "@/components/HowItWorks";
-import ForProvidersCTA from "@/components/ForProvidersCTA";
+import HomeFeaturedRow from "@/components/HomeFeaturedRow";
+import HomeAdSection from "@/components/HomeAdSection";
 import {
-  getFeaturedListings,
-  getHomePremiumListings,
-} from "@/lib/listings-server";
-import { dbListingToProvider } from "@/lib/providers-unified";
+  getHomeCategoryCards,
+  getHomeFeaturedCards,
+  getHomeMultiCategoryCards,
+} from "@/lib/home-listings";
 
 export default async function HomePage() {
-  const [featuredListings, premiumListings] = await Promise.all([
-    getFeaturedListings(6),
-    getHomePremiumListings(8),
+  const [
+    featured,
+    kajakken,
+    escapeRooms,
+    kookworkshops,
+    outdoor,
+    wellness,
+  ] = await Promise.all([
+    getHomeFeaturedCards(6),
+    getHomeCategoryCards("Kajakken", 8),
+    getHomeCategoryCards("Escape Room", 8),
+    getHomeCategoryCards("Kookworkshop", 8),
+    getHomeMultiCategoryCards(["Outdoor", "Lasergame"], 8),
+    getHomeCategoryCards("Wellness", 4),
   ]);
-
-  const spotlight = featuredListings.map(dbListingToProvider);
-  const premium = premiumListings.map(dbListingToProvider);
 
   return (
     <>
       <Navbar />
 
       <main className="flex-1 bg-white">
-        <section className="px-6 pb-10 pt-[60px] text-center">
+        <section className="px-6 pb-8 pt-[60px] text-center">
           <div className="mx-auto max-w-6xl">
             <h1 className="mx-auto max-w-[640px] text-[32px] font-extrabold leading-tight text-[#111827] md:text-[44px]">
               Vind de perfecte teambuilding in Vlaanderen
@@ -39,20 +44,38 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <SpotlightProviders providers={spotlight} />
-        <PremiumProviders providers={premium} />
+        <HomeFeaturedRow items={featured} />
 
-        <section className="bg-white py-12">
-          <div className="mx-auto max-w-6xl px-6">
-            <h2 className="mb-6 text-[22px] font-bold text-[#111827]">
-              Wat zoeken jullie?
-            </h2>
-            <HomeCategoryGrid />
-          </div>
-        </section>
+        <HomeAdSection
+          title="Kajakken & Watersport"
+          viewAllHref="/zoeken?categorie=Kajakken"
+          items={kajakken}
+        />
 
-        <HowItWorks />
-        <ForProvidersCTA />
+        <HomeAdSection
+          title="Escape Rooms"
+          viewAllHref="/zoeken?categorie=Escape%20Room"
+          items={escapeRooms}
+        />
+
+        <HomeAdSection
+          title="Kookworkshops & Culinair"
+          viewAllHref="/zoeken?categorie=Kookworkshop"
+          items={kookworkshops}
+        />
+
+        <HomeAdSection
+          title="Outdoor & Avontuur"
+          viewAllHref="/zoeken?categorie=Outdoor"
+          items={outdoor}
+        />
+
+        <HomeAdSection
+          title="Wellness & Ontspanning"
+          viewAllHref="/zoeken?categorie=Wellness"
+          items={wellness}
+          rows={1}
+        />
       </main>
 
       <Footer />

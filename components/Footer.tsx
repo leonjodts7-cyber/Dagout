@@ -71,8 +71,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-[#374151] pt-6 text-center text-sm text-[#9ca3af]">
-          &copy; 2026 Dagout.be
+        <div className="mt-12 border-t border-[#374151] pt-6 text-center">
+          <p className="text-xs text-[#6b7280]">
+            Hoe werkt Dagout? Beschrijf wat jullie zoeken → AI vindt de match →
+            Neem contact op
+          </p>
+          <p className="mt-3 text-sm text-[#9ca3af]">&copy; 2026 Dagout.be</p>
         </div>
       </div>
     </footer>
