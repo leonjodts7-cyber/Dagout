@@ -32,6 +32,8 @@ const LISTING_SELECT =
 export async function getActiveListings(filters?: {
   region?: string;
   category?: string;
+  limit?: number;
+  featuredOnly?: boolean;
 }): Promise<DbListingPublic[]> {
   try {
     const supabase = getSupabaseAdmin();
@@ -40,6 +42,10 @@ export async function getActiveListings(filters?: {
       .select(LISTING_SELECT)
       .eq("status", "active");
 
+    if (filters?.featuredOnly) {
+      query = query.eq("featured", true);
+    }
+
     if (filters?.region) {
       query = query.ilike("region", filters.region);
     }
@@ -47,11 +53,31 @@ export async function getActiveListings(filters?: {
       query = query.ilike("category", filters.category);
     }
 
-    const { data } = await query.order("created_at", { ascending: false });
+    query = query
+      .order("featured", { ascending: false })
+      .order("created_at", { ascending: false });
+
+    if (filters?.limit) {
+      query = query.limit(filters.limit);
+    }
+
+    const { data } = await query;
     return (data as DbListingPublic[]) ?? [];
   } catch {
     return [];
   }
+}
+
+export async function getFeaturedListings(
+  limit = 6
+): Promise<DbListingPublic[]> {
+  return getActiveListings({ featuredOnly: true, limit });
+}
+
+export async function getHomePremiumListings(
+  limit = 8
+): Promise<DbListingPublic[]> {
+  return getActiveListings({ limit });
 }
 
 export async function getActiveListingBySlug(

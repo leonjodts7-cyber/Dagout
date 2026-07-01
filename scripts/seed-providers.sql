@@ -1,0 +1,293 @@
+-- Dagout.be — seed echte Vlaamse teambuilding aanbieders
+-- Voer uit in de Supabase SQL Editor (of: node scripts/run-seed.mjs)
+--
+-- Vereist: een bestaande auth user (standaard leon.jodts@gmail.com).
+-- Verwijdert bestaande seed-records op contact_email vóór opnieuw invoegen.
+
+DELETE FROM public.listings
+WHERE contact_email IN (
+  'info@dobber.life',
+  'antwerpen@escapehunt.com',
+  'info@volta.be',
+  'info@dewimpe.be',
+  'info@lasergame.be',
+  'info@urbanescapemechelen.be',
+  'info@klimavontuur.be',
+  'info@wellnessbrugge.be',
+  'info@paintballhasselt.be',
+  'info@wijnkortrijk.be',
+  'info@locked.be',
+  'info@cookinglab.be'
+);
+
+INSERT INTO public.listings (
+  user_id,
+  name,
+  category,
+  region,
+  city,
+  short_description,
+  full_description,
+  price_from,
+  min_persons,
+  max_persons,
+  duration,
+  indoor_outdoor,
+  website,
+  phone,
+  contact_email,
+  status,
+  featured
+)
+SELECT
+  u.id,
+  v.name,
+  v.category,
+  v.region,
+  v.city,
+  v.short_description,
+  v.full_description,
+  v.price_from,
+  v.min_persons,
+  v.max_persons,
+  v.duration,
+  v.indoor_outdoor,
+  v.website,
+  v.phone,
+  v.contact_email,
+  'active',
+  v.featured
+FROM (
+  SELECT id
+  FROM auth.users
+  WHERE email IN ('leon.jodts@gmail.com', 'leon.jodts7@gmail.com')
+  LIMIT 1
+) u
+CROSS JOIN (
+  VALUES
+    (
+      'Dobber Kajakken',
+      'Kajakken',
+      'gent',
+      'Gent',
+      'Kajakken en SUP op de Blaarmeersen in Gent',
+      'Beleef een onvergetelijke dag op het water met Dobber. Kies uit kajaks of SUP-boards en ontdek samen een prachtige route in Gent. Geschikt voor groepen van 10 tot 100 personen.',
+      25,
+      10,
+      100,
+      '3u',
+      'outdoor',
+      'https://dobber.life',
+      '+32 9 123 45 67',
+      'info@dobber.life',
+      true
+    ),
+    (
+      'Escape Hunt Antwerpen',
+      'Escape Room',
+      'antwerpen',
+      'Antwerpen',
+      'Meeslepende escape rooms in het hart van Antwerpen',
+      'Los puzzels op als team onder tijdsdruk in onze professioneel ingerichte escape rooms. Meerdere themas beschikbaar voor groepen van 5 tot 40 personen.',
+      22,
+      5,
+      40,
+      '90min',
+      'indoor',
+      'https://escapehunt.com/nl/antwerpen',
+      '+32 3 123 45 67',
+      'antwerpen@escapehunt.com',
+      true
+    ),
+    (
+      'Volta Kookworkshop',
+      'Kookworkshop',
+      'gent',
+      'Gent',
+      'Kookworkshops in de iconische Volta in Gent',
+      'Bereid samen een heerlijk driegangenmenu in de iconische Volta in Gent. Onze chef-koks begeleiden jullie door een culinaire ervaring die je niet snel vergeet.',
+      55,
+      12,
+      40,
+      '3.5u',
+      'indoor',
+      'https://volta.be',
+      '+32 9 234 56 78',
+      'info@volta.be',
+      true
+    ),
+    (
+      'De Wimpe Kanovaren',
+      'Kajakken',
+      'antwerpen',
+      'Herenthout',
+      'Kano- en kajaktochten op de Nete in de Kempen',
+      'Vaar de Kleine of Grote Nete af per kano of kajak en geniet van de prachtige Kempische natuur. Combineerbaar met BBQ en GPS-avonturen.',
+      20,
+      10,
+      80,
+      '4u',
+      'outdoor',
+      'https://dewimpe.be',
+      '+32 14 123 45 67',
+      'info@dewimpe.be',
+      false
+    ),
+    (
+      'Lasergame Arena Brussel',
+      'Lasergame',
+      'brussel',
+      'Brussel',
+      'Spannende lasergame battles in een futuristisch decor',
+      'Strijd in teams in onze state-of-the-art lasergame arena. Perfect voor teambuilding met een competitief element. Meerdere spelformats beschikbaar.',
+      18,
+      8,
+      50,
+      '2u',
+      'indoor',
+      'https://lasergame.be',
+      '+32 2 345 67 89',
+      'info@lasergame.be',
+      false
+    ),
+    (
+      'Urban Escape Mechelen',
+      'Kajakken',
+      'mechelen',
+      'Mechelen',
+      'Kanotochten op de Dijle door het centrum van Mechelen',
+      'Ontdek Mechelen vanop het water. Vertrek vanuit de Kruidtuin voor een kanotocht op de Binnendijle.',
+      18,
+      6,
+      40,
+      '2u',
+      'outdoor',
+      'https://urbanescapemechelen.be',
+      '+32 15 123 45 67',
+      'info@urbanescapemechelen.be',
+      false
+    ),
+    (
+      'Klimavontuur Leuven',
+      'Outdoor',
+      'leuven',
+      'Leuven',
+      'Klimmen en outdoor avontuur in de omgeving van Leuven',
+      'Daag jullie team uit met klimmen, touwbruggen en hoogteparcours. Onze instructeurs begeleiden jullie veilig door uitdagende outdoor activiteiten.',
+      30,
+      8,
+      30,
+      '3u',
+      'outdoor',
+      'https://klimavontuur.be',
+      '+32 16 123 45 67',
+      'info@klimavontuur.be',
+      false
+    ),
+    (
+      'Wellness Retreat Brugge',
+      'Wellness',
+      'brugge',
+      'Brugge',
+      'Ontspanning en verbinding in het romantische Brugge',
+      'Geef jullie team een moment van rust en verbinding. Yoga, meditatie en wellness workshops in een prachtige omgeving in Brugge.',
+      45,
+      8,
+      25,
+      '3u',
+      'both',
+      'https://wellnessbrugge.be',
+      '+32 50 123 45 67',
+      'info@wellnessbrugge.be',
+      false
+    ),
+    (
+      'Paintball Arena Hasselt',
+      'Outdoor',
+      'hasselt',
+      'Hasselt',
+      'Spannende paintball battles in Hasselt',
+      'Teamwork onder vuur. Onze professionele paintball arena biedt meerdere spelvelden en formats voor een onvergetelijke teambuilding dag.',
+      28,
+      10,
+      60,
+      '3u',
+      'outdoor',
+      'https://paintballhasselt.be',
+      '+32 11 123 45 67',
+      'info@paintballhasselt.be',
+      false
+    ),
+    (
+      'Wijnproeverij Kortrijk',
+      'Kookworkshop',
+      'kortrijk',
+      'Kortrijk',
+      'Professionele wijnproeverij met sommelier in Kortrijk',
+      'Leer de kunst van het wijnproeven van een professionele sommelier. Een culturele en sociale teambuilding die perfect afsluit met een borrel.',
+      35,
+      8,
+      30,
+      '2.5u',
+      'indoor',
+      'https://wijnkortrijk.be',
+      '+32 56 123 45 67',
+      'info@wijnkortrijk.be',
+      false
+    ),
+    (
+      'Locked Escape Room Gent',
+      'Escape Room',
+      'gent',
+      'Gent',
+      'Immersieve escape rooms in Gent met unieke verhaallijnen',
+      'Wordt ondergedompeld in een spannend verhaal en werk als team om te ontsnappen. Meerdere themas beschikbaar.',
+      20,
+      4,
+      30,
+      '75min',
+      'indoor',
+      'https://locked.be',
+      '+32 9 345 67 89',
+      'info@locked.be',
+      false
+    ),
+    (
+      'Cooking Lab Antwerpen',
+      'Kookworkshop',
+      'antwerpen',
+      'Antwerpen',
+      'Interactieve kookworkshops voor teams in Antwerpen',
+      'Teams strijden in een MasterChef-formaat in ons professionele kooklabo. Inclusief degustatie van jullie eigen creaties.',
+      50,
+      10,
+      50,
+      '3u',
+      'indoor',
+      'https://cookinglab.be',
+      '+32 3 456 78 90',
+      'info@cookinglab.be',
+      false
+    )
+) AS v(
+  name,
+  category,
+  region,
+  city,
+  short_description,
+  full_description,
+  price_from,
+  min_persons,
+  max_persons,
+  duration,
+  indoor_outdoor,
+  website,
+  phone,
+  contact_email,
+  featured
+);
+
+-- Controleer resultaat:
+SELECT id, name, status, featured, contact_email
+FROM public.listings
+ORDER BY featured DESC, created_at DESC;

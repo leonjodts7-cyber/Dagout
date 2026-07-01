@@ -6,8 +6,21 @@ import PremiumProviders from "@/components/PremiumProviders";
 import HomeCategoryGrid from "@/components/HomeCategoryGrid";
 import HowItWorks from "@/components/HowItWorks";
 import ForProvidersCTA from "@/components/ForProvidersCTA";
+import {
+  getFeaturedListings,
+  getHomePremiumListings,
+} from "@/lib/listings-server";
+import { dbListingToProvider } from "@/lib/providers-unified";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [featuredListings, premiumListings] = await Promise.all([
+    getFeaturedListings(6),
+    getHomePremiumListings(8),
+  ]);
+
+  const spotlight = featuredListings.map(dbListingToProvider);
+  const premium = premiumListings.map(dbListingToProvider);
+
   return (
     <>
       <Navbar />
@@ -26,8 +39,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <SpotlightProviders />
-        <PremiumProviders />
+        <SpotlightProviders providers={spotlight} />
+        <PremiumProviders providers={premium} />
 
         <section className="bg-white py-12">
           <div className="mx-auto max-w-6xl px-6">
