@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import AiRecommendations from "@/components/AiRecommendations";
-import SearchResultCard from "@/components/SearchResultCard";
+import ListingCard from "@/components/ListingCard";
 import ZoekenCategoryChips from "@/components/ZoekenCategoryChips";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { sortProviders, type SortOption } from "@/lib/providers-unified";
@@ -134,7 +134,11 @@ export default function ZoekenPageClient({
           ) : (
             <div className="space-y-4 pb-8">
               {sorted.map((provider) => (
-                <SearchResultCard key={provider.id} provider={provider} />
+                <ListingCard
+                  key={provider.id}
+                  layout="search"
+                  provider={provider}
+                />
               ))}
             </div>
           )}

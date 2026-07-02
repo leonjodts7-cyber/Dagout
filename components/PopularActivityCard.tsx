@@ -1,4 +1,4 @@
-import ActivityCard from "@/components/ActivityCard";
+import ListingCard from "@/components/ListingCard";
 import type { Provider } from "@/lib/types";
 
 interface PopularActivityCardProps {
@@ -6,5 +6,5 @@ interface PopularActivityCardProps {
 }
 
 export default function PopularActivityCard({ provider }: PopularActivityCardProps) {
-  return <ActivityCard provider={provider} showFavorite />;
+  return <ListingCard provider={provider} />;
 }

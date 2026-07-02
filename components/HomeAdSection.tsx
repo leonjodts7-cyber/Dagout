@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AdListingCard from "@/components/AdListingCard";
+import ListingCard from "@/components/ListingCard";
 import type { HomeCardItem } from "@/lib/home-listings";
 
 interface HomeAdSectionProps {
@@ -33,9 +33,9 @@ export default function HomeAdSection({
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {displayItems.map((item, index) => (
-            <AdListingCard key={index} item={item} />
+            <ListingCard key={index} item={item} />
           ))}
         </div>
       </div>

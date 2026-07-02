@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import ActivityCard from "@/components/ActivityCard";
+import ListingCard from "@/components/ListingCard";
 import AiRecommendations from "@/components/AiRecommendations";
 import { sortProviders } from "@/lib/providers";
 import type { Provider } from "@/lib/types";
@@ -79,11 +79,10 @@ export default function ZoekenResults({
           </div>
         ) : (
           sorted.map((provider) => (
-            <ActivityCard
+            <ListingCard
               key={provider.id}
+              layout="search"
               provider={provider}
-              variant="list"
-              showFavorite
             />
           ))
         )}

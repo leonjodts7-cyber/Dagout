@@ -5,7 +5,7 @@ import BackButton from "@/components/BackButton";
 import BookingCard from "@/components/BookingCard";
 import MiniMap from "@/components/MiniMap";
 import PageHeader from "@/components/PageHeader";
-import ActivityCard from "@/components/ActivityCard";
+import ListingCard from "@/components/ListingCard";
 import CategoryIcon, { resolveCategorySlug } from "@/components/CategoryIcon";
 import { getCategoryStyle } from "@/lib/constants";
 import { DEFAULT_OPENING_HOURS } from "@/lib/providers";
@@ -208,9 +208,9 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
               <h2 className="text-2xl font-bold text-gray-900">
                 Gerelateerde activiteiten
               </h2>
-              <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 {related.map((p) => (
-                  <ActivityCard key={p.id} provider={p} showFavorite />
+                  <ListingCard key={p.id} provider={p} />
                 ))}
               </div>
             </section>

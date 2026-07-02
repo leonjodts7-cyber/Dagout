@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AdListingCard from "@/components/AdListingCard";
+import ListingCard from "@/components/ListingCard";
 import HorizontalScrollRow from "@/components/HorizontalScrollRow";
 import type { HomeCardItem } from "@/lib/home-listings";
 
@@ -25,11 +25,10 @@ export default function HomeFeaturedRow({ items }: HomeFeaturedRowProps) {
 
         <HorizontalScrollRow>
           {items.map((item, index) => (
-            <AdListingCard
+            <ListingCard
               key={index}
               item={item}
-              variant="teaser"
-              className="w-[220px] shrink-0 snap-start"
+              className="w-[min(85vw,280px)] shrink-0 snap-start sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-60px)/4)]"
             />
           ))}
         </HorizontalScrollRow>
