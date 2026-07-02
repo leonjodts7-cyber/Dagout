@@ -31,8 +31,16 @@ export default async function HomePage() {
       <Navbar />
 
       <main className="flex-1 bg-white">
-        <section className="px-6 pb-8 pt-[60px] text-center">
-          <div className="mx-auto max-w-6xl">
+        <section className="relative overflow-hidden px-6 pb-8 pt-[60px] text-center">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-[100px] -top-[100px] z-[-1] h-[400px] w-[400px] rounded-full bg-[#f0fdf4]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-[50px] -left-[150px] z-[-1] h-[300px] w-[300px] rounded-full bg-[#f0fdf4]"
+          />
+          <div className="relative mx-auto max-w-6xl">
             <h1 className="mx-auto max-w-[640px] text-[32px] font-extrabold leading-tight text-[#111827] md:text-[44px]">
               Vind de perfecte teambuilding in Vlaanderen
             </h1>

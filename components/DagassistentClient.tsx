@@ -207,24 +207,24 @@ export default function DagassistentClient({
   return (
     <div className="flex min-h-[calc(100vh-65px)] flex-col">
       {/* Header */}
-      <div className="bg-[#0a2a1f] px-6 py-8 text-white">
+      <div className="border-b border-[#e5e7eb] bg-white px-6 py-8">
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-2xl font-bold sm:text-3xl">AI Dagassistent</h1>
-          <p className="mt-1 text-white/70">
+          <h1 className="text-2xl font-bold text-[#111827]">AI Dagassistent</h1>
+          <p className="mt-1 text-[#6b7280]">
             Beschrijf jullie dag en ik stel alles samen
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-3">
-            <span className="text-sm text-white/70">Groepsgrootte</span>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm">
+            <span className="text-sm text-[#6b7280]">Groepsgrootte</span>
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#f3f4f6] px-4 py-2">
               <input
                 type="number"
                 min={5}
                 max={200}
                 value={groupSize}
                 onChange={(e) => setGroupSize(Number(e.target.value))}
-                className="w-14 border-0 bg-transparent text-center text-sm font-semibold text-white focus:outline-none"
+                className="w-14 border-0 bg-transparent text-center text-sm font-semibold text-[#111827] focus:outline-none"
               />
-              <span className="text-sm text-white/70">personen</span>
+              <span className="text-sm text-[#6b7280]">personen</span>
             </div>
           </div>
         </div>

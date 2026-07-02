@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BackButton from "@/components/BackButton";
 import BookingCard from "@/components/BookingCard";
 import MiniMap from "@/components/MiniMap";
 import PageHeader from "@/components/PageHeader";
@@ -18,8 +19,12 @@ interface ActiviteitPageProps {
   params: Promise<{ slug: string }>;
 }
 
-function categoryHeroGradient(color: string): string {
-  return `radial-gradient(at 30% 25%, ${color} 0%, ${color}dd 45%, #0f172a 100%)`;
+function formatDuration(minutes: number): string {
+  if (minutes < 60) return `${minutes} min`;
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (rest === 0) return `${hours} uur`;
+  return `${hours}u ${rest}min`;
 }
 
 export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
@@ -56,6 +61,7 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
   return (
     <>
       <Navbar />
+      <BackButton />
 
       <main className="flex-1">
         <PageHeader
@@ -67,28 +73,23 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
         />
 
         <div
-          className="relative flex h-[320px] items-end overflow-hidden px-6 pb-8"
-          style={{ background: categoryHeroGradient(style.color) }}
+          className="relative mt-2 flex h-[240px] items-end overflow-hidden px-6 pb-8"
+          style={{ backgroundColor: style.color }}
         >
-          <div className="pointer-events-none absolute right-8 top-8 opacity-[0.12]">
-            <CategoryIcon slug={categorySlug} className="h-32 w-32" />
+          <div className="pointer-events-none absolute right-8 top-8 opacity-[0.15]">
+            <CategoryIcon slug={categorySlug} className="h-28 w-28" stroke="#fff" />
           </div>
           {provider.featured && (
             <span
-              className="absolute right-0 top-0 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white"
-              style={{
-                borderRadius: "0 0 0 12px",
-                background: "linear-gradient(135deg, #f59e0b, #d97706)",
-              }}
+              className="absolute right-0 top-0 bg-[#1D9E75] px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white"
+              style={{ borderRadius: "0 0 0 12px" }}
             >
-              Uitgelicht
+              PRO
             </span>
           )}
           <div className="relative mx-auto w-full max-w-6xl">
-            <p className="text-sm text-white/80">
-              {provider.city} · {provider.category}
-            </p>
-            <h1 className="mt-2 text-3xl font-bold text-white sm:text-[40px]">
+            <p className="text-sm text-white/85">{provider.city}</p>
+            <h1 className="mt-1 text-3xl font-bold text-white sm:text-[40px]">
               {provider.name}
             </h1>
           </div>
@@ -97,20 +98,6 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
         <div className="mx-auto max-w-6xl px-6 py-8">
           <div className="grid gap-10 lg:grid-cols-3">
             <div className="space-y-10 lg:col-span-2">
-              <div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="rounded-full bg-[#1D9E75]/10 px-3 py-1 text-sm font-medium text-[#1D9E75]">
-                    {provider.category}
-                  </span>
-                  <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
-                    {indoorLabel}
-                  </span>
-                </div>
-                <p className="mt-4 text-lg text-gray-500">
-                  {provider.city}, {provider.region}
-                </p>
-              </div>
-
               <section>
                 <h2 className="text-xl font-semibold text-gray-900">
                   Over deze activiteit
@@ -118,6 +105,36 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
                 <p className="mt-4 leading-relaxed text-gray-600">
                   {provider.description}
                 </p>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-semibold text-gray-900">Details</h2>
+                <dl className="mt-4 grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                    <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                      Duur
+                    </dt>
+                    <dd className="mt-1 text-sm font-semibold text-gray-900">
+                      {formatDuration(provider.duration_minutes)}
+                    </dd>
+                  </div>
+                  <div className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                    <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                      Groepsgrootte
+                    </dt>
+                    <dd className="mt-1 text-sm font-semibold text-gray-900">
+                      {provider.min_persons}–{provider.max_persons} personen
+                    </dd>
+                  </div>
+                  <div className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                    <dt className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                      Locatie
+                    </dt>
+                    <dd className="mt-1 text-sm font-semibold text-gray-900">
+                      {indoorLabel}
+                    </dd>
+                  </div>
+                </dl>
               </section>
 
               <section>
@@ -137,7 +154,11 @@ export default async function ActiviteitPage({ params }: ActiviteitPageProps) {
                         strokeWidth={2}
                         viewBox="0 0 24 24"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                       {item}
                     </li>

@@ -6,7 +6,7 @@ export const BUDGET_EXTRAS = [
 ] as const;
 
 export const NAV_TOOLS_LINKS = [
-  { href: "/calculator", title: "Calculator" },
+  { href: "/calculator", title: "Budgetcalculator" },
   { href: "/stemmen/nieuw", title: "Team stemmen" },
   { href: "/dagassistent", title: "AI Dagassistent" },
 ] as const;

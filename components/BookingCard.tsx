@@ -27,7 +27,7 @@ export default function BookingCard({ provider }: BookingCardProps) {
   return (
     <>
       <div className="sticky top-24 rounded-2xl border border-gray-100 bg-white p-6 shadow-lg">
-        <p className="text-[28px] font-bold text-[#111827]">
+        <p className="text-[28px] font-bold text-[#1D9E75]">
           &euro;{provider.price_from}
         </p>
         <p className="text-[13px] text-gray-500">Per persoon</p>

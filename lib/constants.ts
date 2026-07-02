@@ -152,6 +152,39 @@ export function getCategoryAccentTheme(categoryOrSlug: string) {
   return CATEGORY_ACCENT_THEMES[slug] ?? CATEGORY_ACCENT_THEMES.outdoor;
 }
 
+export const CATEGORY_CARD_ACCENTS: Record<
+  string,
+  { accent: string; avatarBg: string; avatarColor: string }
+> = {
+  kajakken: { accent: "#38bdf8", avatarBg: "#e0f2fe", avatarColor: "#0369a1" },
+  "escape-room": {
+    accent: "#a78bfa",
+    avatarBg: "#ede9fe",
+    avatarColor: "#6d28d9",
+  },
+  kookworkshop: {
+    accent: "#fb923c",
+    avatarBg: "#ffedd5",
+    avatarColor: "#c2410c",
+  },
+  lasergame: {
+    accent: "#f87171",
+    avatarBg: "#fee2e2",
+    avatarColor: "#b91c1c",
+  },
+  outdoor: { accent: "#4ade80", avatarBg: "#dcfce7", avatarColor: "#15803d" },
+  wellness: {
+    accent: "#f472b6",
+    avatarBg: "#fce7f3",
+    avatarColor: "#be185d",
+  },
+};
+
+export function getCategoryCardAccent(categoryOrSlug: string) {
+  const slug = resolveCategorySlug(categoryOrSlug);
+  return CATEGORY_CARD_ACCENTS[slug] ?? null;
+}
+
 export const CATEGORY_CARD_IMAGES: Record<string, string> = {
   kajakken:
     "https://images.unsplash.com/photo-1593773736752-e54fbf80f6cf?w=400&q=80",

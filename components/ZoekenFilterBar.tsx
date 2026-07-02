@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { REGIONS, CATEGORY_NAMES } from "@/lib/constants";
 import { PERSONEN_OPTIONS, OMGEVING_OPTIONS } from "@/components/FilterSearchBar";
 
@@ -28,6 +28,20 @@ export default function ZoekenFilterBar({
   const [category, setCategory] = useState(defaultCategory);
   const [personen, setPersonen] = useState(defaultPersonen);
   const [omgeving, setOmgeving] = useState(defaultOmgeving);
+
+  useEffect(() => {
+    setQuery(defaultQuery);
+    setRegion(defaultRegion);
+    setCategory(defaultCategory);
+    setPersonen(defaultPersonen);
+    setOmgeving(defaultOmgeving);
+  }, [
+    defaultQuery,
+    defaultRegion,
+    defaultCategory,
+    defaultPersonen,
+    defaultOmgeving,
+  ]);
 
   const navigate = useCallback(
     (overrides?: {

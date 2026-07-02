@@ -18,7 +18,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-              Activiteiten
+              Ontdek
             </h3>
             <ul className="mt-4 space-y-2.5">
               {CATEGORIES.map((c) => (
@@ -76,7 +76,12 @@ export default function Footer() {
             Hoe werkt Dagout? Beschrijf wat jullie zoeken → AI vindt de match →
             Neem contact op
           </p>
-          <p className="mt-3 text-sm text-[#9ca3af]">&copy; 2026 Dagout.be</p>
+          <p className="mt-3 text-xs text-[#9ca3af]">
+            Dagout.be — Het teambuilding platform van Vlaanderen
+          </p>
+          <p className="mt-2 text-sm text-[#9ca3af]">
+            &copy; 2026 Dagout.be — Alle rechten voorbehouden
+          </p>
         </div>
       </div>
     </footer>
